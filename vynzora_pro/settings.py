@@ -15,6 +15,10 @@ import os
 from django.conf.urls import handler404
 import dj_database_url
 from decouple import config
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -46,7 +50,10 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'django.contrib.sitemaps',
     'vynzora_app',
+    'cloudinary',
+    'cloudinary_storage',
 ]
+
 
 
 SITE_ID = 1
@@ -149,7 +156,7 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 
 
-MEDIA_URL = '/media/' 
+MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 X_FRAME_OPTIONS = 'SAMEORIGIN'
@@ -176,3 +183,15 @@ MESSAGE_TAGS = {
 SECURE_SSL_REDIRECT = True
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
+
+CLOUDINARY_URL = os.getenv('CLOUDINARY_URL')
+
+# Cloudinary configuration
+cloudinary.config( 
+  cloud_name = "your_cloud_name", 
+  api_key = "your_api_key", 
+  api_secret = "your_api_secret" 
+)
+
+# Media files storage
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'

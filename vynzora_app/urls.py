@@ -139,9 +139,6 @@ urlpatterns = [
     path('banners/update/<int:pk>/', views.update_banner, name='update_banner'),
     path('banners/delete/<int:pk>/', views.delete_banner, name='delete_banner'),
     
+]
 
-
-
-
-]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 handler404 = 'vynzora_app.views.page_404'
