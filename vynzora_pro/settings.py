@@ -33,7 +33,7 @@ SECRET_KEY =  config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['vynzora-3.onrender.com', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['vynzora-4.onrender.com', 'localhost', '127.0.0.1']
 
 
 
@@ -186,11 +186,13 @@ CSRF_COOKIE_SECURE = True
 
 CLOUDINARY_URL = os.getenv('CLOUDINARY_URL')
 
-# Cloudinary configuration
-cloudinary.config( 
-  cloud_name = "your_cloud_name", 
-  api_key = "your_api_key", 
-  api_secret = "your_api_secret" 
+
+
+cloudinary.config(
+    cloud_name = os.getenv('CLOUDINARY_CLOUD_NAME'),
+    api_key = os.getenv('CLOUDINARY_API_KEY'),
+    api_secret = os.getenv('CLOUDINARY_API_SECRET'),
+    secure = True
 )
 
 # Media files storage
