@@ -10,7 +10,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Place favicon.ico in the root directory -->
-    <link rel="shortcut icon" type="image/x-icon" href="{% static 'assets/img/logo/favicon.png' %}">
+   
+
+    <link rel="shortcut icon" href="{% static 'favicon.ico' %}">
 
     <!-- CSS here -->
     <link rel="stylesheet" href="{% static 'assets/css/bootstrap.css' %}">
@@ -429,7 +431,7 @@ Kochi, Kerala 683104, India</a>
                 </div>
 
                 <!-- Solutions Links -->
-                <div class="col-lg-3 col-md-6 col-sm-6">
+                {% comment %} <div class="col-lg-3 col-md-6 col-sm-6">
                     <div class="tp-footer-wd-widget tp-footer-cst-widget ml-60 mb-40 tp_fade_anim" data-delay=".7">
                         <h3 class="tp-footer-widget-title tp-ff-dm fs-27 fw-600 mb-30 tp-text-grey-5">Solutions</h3>
                         <ul>
@@ -439,12 +441,23 @@ Kochi, Kerala 683104, India</a>
                             <li><a href="#">Web Design</a></li>
                         </ul>
                     </div>
-                </div>
+                </div> {% endcomment %}
+                <div class="col-lg-3 col-md-6 col-sm-6">
+    <div class="tp-footer-wd-widget tp-footer-cst-widget ml-60 mb-40 tp_fade_anim" data-delay=".7">
+        <h3 class="tp-footer-widget-title tp-ff-dm fs-27 fw-600 mb-30 tp-text-grey-5">Solutions</h3>
+        <ul>
+            {% for service in services %}
+                <li><a href="{{ service.url }}">{{ service.name }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+
 
                 <!-- Newsletter & Social -->
                 <div class="col-lg-3 col-md-6 col-sm-6">
                     <div class="tp-footer-widget-form tp-footer-cst-widget-form tp-footer-wd-widget-form mb-40">
-                        <h3 class="tp-footer-widget-title tp-ff-dm fs-27 fw-600 mb-35 tp_fade_anim" data-delay=".9">Newsletter</h3>
+                        <h3 class="tp-footer-widget-title tp-ff-dm fs-27 fw-600 mb-35 tp_fade_anim" data-delay=".9" style="color: #fff;">Newsletter</h3>
                         <form class="p-relative mb-30 tp_fade_anim" data-delay=".9" action="#">
                             <input class="tp-input" type="text" placeholder="Email Address" aria-label="Email Address">
                             <button class="tp-button" type="submit" aria-label="Subscribe">
@@ -454,7 +467,7 @@ Kochi, Kerala 683104, India</a>
                             </button>
                         </form>
                         <div class="tp-footer-wd-social">
-                            <div class="tp_fade_anim d-inline-block" data-delay=".3" data-fade-from="top" data-ease="bounce">
+                            {% comment %} <div class="tp_fade_anim d-inline-block" data-delay=".3" data-fade-from="top" data-ease="bounce">
                             <a href="#" aria-label="Dribbble"><i class="fa-brands fa-dribbble"></i></a>
                             </div>
                             <div class="tp_fade_anim d-inline-block" data-delay=".5" data-fade-from="top" data-ease="bounce">
@@ -462,9 +475,13 @@ Kochi, Kerala 683104, India</a>
                             </div>
                             <div class="tp_fade_anim d-inline-block" data-delay=".7" data-fade-from="top" data-ease="bounce">
                             <a href="#" aria-label="Pinterest"><i class="fa-brands fa-pinterest"></i></a>
-                            </div>
+                            </div> {% endcomment %}
+                                <a href="https://www.instagram.com/vynzora/?hl=en" target="_blank" aria-label="Instagram">
+        <i class="fa-brands fa-instagram"></i>
+    </a>
+
                             <div class="tp_fade_anim d-inline-block" data-delay=".9" data-fade-from="top" data-ease="bounce">
-                            <a href="#" aria-label="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
+                            <a href="https://www.linkedin.com/company/vynzora/posts/?feedView=all" aria-label="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
                             </div>
                         </div>
                     </div>
@@ -475,22 +492,33 @@ Kochi, Kerala 683104, India</a>
 
         <!-- Footer Menu -->
         <div class="tp-footer-cst-menu-wrap">
-            <div class="container">
+            {% comment %} <div class="container">
                 <div class="row">
                 <div class="col-12">
                     <div class="tp-footer-cst-menu">
                         <ul>
-                            <li><a href="#">Home</a></li>
-                            <li><a href="#">Portfolio</a></li>
-                            <li><a href="#">Company</a></li>
+                            <li><a href="{% url 'index' %}">Home</a></li>
+                            <li><a href="{% url 'portfolio' %}">Portfolio</a></li>
+                            <li><a href="#"></a></li>
                             <li><a href="#">Pages</a></li>
                             <li><a href="#">Contact</a></li>
                         </ul>
                     </div>
                 </div>
                 </div>
-            </div>
+            </div> {% endcomment %}
         </div> 
+        <style>
+            .tp-footer-cst-menu-wrap {
+    border-bottom: none;
+    padding: 0%;
+}
+
+.next-section-class {
+    border-top: 1px solid #ccc;
+}
+
+        </style>
 
         <!-- Footer Bottom -->
         <div class="tp-footer-cst-bottom">

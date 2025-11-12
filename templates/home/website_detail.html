@@ -9,7 +9,7 @@
         <meta name="description" content="{{ website.meta_description }}">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <!-- Place favicon.ico in the root directory -->
-    <link rel="shortcut icon" type="image/x-icon" href="{% static 'assets/img/logo/logo.webp' %}">
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'favicon.ico' %}">
 
          <!-- Google Tag Manager -->
         <script>
@@ -86,11 +86,11 @@
         </div>
         <!-- backtotop area end -->
         <!-- tp-offcanvus-area-start -->
-        <div class="tp-offcanvas-area">
+         <div class="tp-offcanvas-area">
             <div class="tp-offcanvas">
                 <div class="tp-offcanvas-top d-flex align-items-center justify-content-between">
                     <div class="tp-offcanvas-logo">
-                        <a href="index.html">
+                        <a href="index.html" class="logo">
                                     <img data-width="150" src="{% static 'assets/img/logo/logo22.png' %}" alt="logo">
                         </a>
                     </div>
@@ -104,55 +104,37 @@
                     </div>
                 </div>
                 <div class="tp-offcanvas-content d-none d-xl-block">
-                    <h3 class="tp-offcanvas-title">Hello There!</h3>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, </p>
+                    <h3 class="tp-offcanvas-title">Welcome!</h3>
+                    <p>Explore our latest projects and creative works.</p>
                 </div>
                 <div class="tp-offcanvas-menu d-xl-none">
                     <nav></nav>
                 </div>
                 <div class="tp-offcanvas-gallery d-none d-xl-block">
                     <div class="row gx-2">
+                         {% for project in projects %}
                         <div class="col-md-3 col-3">
                             <div class="tp-offcanvas-gallery-img fix">
-                                <a class="popup-image" href="{% static 'assets/img/offcanvas/offcanvas-1.webp' %}">
-                                    <img src="{% static 'assets/img/offcanvas/offcanvas-1.webp' %}" alt="">
+                                <a class="popup-image" href="{{ project.project_image.url }}" target="_blank">
+                                    <img src="{{ project.project_image.url }}" alt="{{ project.project_name }}" style="height: 70px;">
                                 </a>
                             </div>
                         </div>
-                        <div class="col-md-3 col-3">
-                            <div class="tp-offcanvas-gallery-img fix">
-                                <a class="popup-image" href="{% static 'assets/img/offcanvas/offcanvas-2.webp' %}">
-                                    <img src="{% static 'assets/img/offcanvas/offcanvas-2.webp' %}" alt="">
-                                </a>
-                            </div>
-                        </div>
-                        <div class="col-md-3 col-3">
-                            <div class="tp-offcanvas-gallery-img fix">
-                                <a class="popup-image" href="{% static 'assets/img/offcanvas/offcanvas-3.webp' %}">
-                                    <img src="{% static 'assets/img/offcanvas/offcanvas-3.webp' %}" alt="">
-                                </a>
-                            </div>
-                        </div>
-                        <div class="col-md-3 col-3">
-                            <div class="tp-offcanvas-gallery-img fix">
-                                <a class="popup-image" href="{% static 'assets/img/offcanvas/offcanvas-4.webp' %}">
-                                    <img src="{% static 'assets/img/offcanvas/offcanvas-4.webp' %}" alt="">
-                                </a>
-                            </div>
-                        </div>
+                       {% endfor %}
                     </div>
                 </div>
                 <div class="tp-offcanvas-contact">
                     <h3 class="tp-offcanvas-title sm">Information</h3>
                     <ul>
                         <li>
-                            <a href="tel:1245654">+ 4 20 7700 1007</a>
+                            <a href="tel:1245654">+91 8590627934</a>
                         </li>
                         <li>
-                            <a href="mailto:hello@vynzora.com">hello@vynzora.com</a>
+                            <a href="mailto:support@vynzora.com">support@vynzora.com</a>
                         </li>
                         <li>
-                            <a href="#">Avenue de Roma 158b, Lisboa</a>
+                            <a href="#">5/257A8, FACT Kalamassery
+Kochi, Kerala 683104, India</a>
                         </li>
                     </ul>
                 </div>
@@ -160,7 +142,7 @@
                     <h3 class="tp-offcanvas-title sm">Follow Us</h3>
                     <ul>
                         <li>
-                            <a href="#">
+                            <a href="https://www.instagram.com/vynzora/?hl=en">
                                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M11.25 1.5H4.75C2.95507 1.5 1.5 2.95507 1.5 4.75V11.25C1.5 13.0449 2.95507 14.5 4.75 14.5H11.25C13.0449 14.5 14.5 13.0449 14.5 11.25V4.75C14.5 2.95507 13.0449 1.5 11.25 1.5Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                                     <path d="M10.6016 7.5907C10.6818 8.13166 10.5894 8.68414 10.3375 9.16955C10.0856 9.65497 9.68711 10.0486 9.19862 10.2945C8.71014 10.5404 8.15656 10.6259 7.61663 10.5391C7.0767 10.4522 6.57791 10.1972 6.19121 9.81055C5.80451 9.42385 5.54959 8.92506 5.46271 8.38513C5.37583 7.8452 5.46141 7.29163 5.70728 6.80314C5.95315 6.31465 6.34679 5.91613 6.83221 5.66425C7.31763 5.41238 7.87011 5.31998 8.41107 5.4002C8.96287 5.48202 9.47372 5.73915 9.86817 6.1336C10.2626 6.52804 10.5197 7.0389 10.6016 7.5907Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -169,30 +151,27 @@
                             </a>
                         </li>
                         <li>
-                            <a href="#">
-                                <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M2.50589 12.7494C4.57662 16.336 9.16278 17.5648 12.7494 15.4941C14.2113 14.65 15.2816 13.388 15.8962 11.9461C16.7895 9.85066 16.7208 7.37526 15.4941 5.25063C14.2674 3.12599 12.1581 1.82872 9.89669 1.55462C8.34063 1.366 6.71259 1.66183 5.25063 2.50589C1.66403 4.57662 0.435172 9.16278 2.50589 12.7494Z" stroke="currentColor" stroke-width="1.5"/>
-                                    <path d="M12.7127 15.4292C12.7127 15.4292 12.0086 10.4867 10.5011 7.87559C8.99362 5.26451 5.28935 2.57155 5.28935 2.57155M5.68449 15.6124C6.79553 12.2606 12.34 8.54524 16.3975 9.43537M12.311 2.4082C11.1953 5.72344 5.75732 9.38453 1.71875 8.58915" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-                                </svg>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                <svg width="18" height="11" viewBox="0 0 18 11" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M1 5.5715H6.33342C7.62867 5.5715 8.61917 6.56199 8.61917 7.85725C8.61917 9.15251 7.62867 10.143 6.33342 10.143H1.76192C1.30477 10.143 1 9.83823 1 9.38108V1.76192C1 1.30477 1.30477 1 1.76192 1H5.5715C6.86676 1 7.85725 1.99049 7.85725 3.28575C7.85725 4.58101 6.86676 5.5715 5.5715 5.5715H1Z" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10"></path>
-                                    <path d="M10.9062 7.09454H17.0016C17.0016 5.41832 15.6301 4.04688 13.9539 4.04688C12.2777 4.04688 10.9062 5.41832 10.9062 7.09454ZM10.9062 7.09454C10.9062 8.77076 12.2777 10.1422 13.9539 10.1422H15.2492" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"></path>
-                                    <path d="M16.1125 1.44434H11.668" stroke="currentColor" stroke-width="1.2" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"></path>
-                                </svg>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                <svg width="18" height="14" viewBox="0 0 18 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M12.75 13H5.25C3 13 1.5 11.5 1.5 9.25V4.75C1.5 2.5 3 1 5.25 1H12.75C15 1 16.5 2.5 16.5 4.75V9.25C16.5 11.5 15 13 12.75 13Z" stroke="currentColor" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-                                    <path d="M8.70676 5.14837L10.8006 6.40465C11.5543 6.90716 11.5543 7.66093 10.8006 8.16344L8.70676 9.41972C7.86923 9.92224 7.19922 9.50348 7.19922 8.5822V6.06964C7.19922 4.98086 7.86923 4.64585 8.70676 5.14837Z" fill="currentColor"/>
-                                </svg>
-                            </a>
-                        </li>
+  <a href="https://www.linkedin.com/company/vynzora/posts/?feedView=all" aria-label="LinkedIn">
+    <svg 
+      xmlns="http://www.w3.org/2000/svg" 
+      width="16" 
+      height="16" 
+      viewBox="0 0 24 24" 
+      fill="none" 
+      stroke="currentColor" 
+      stroke-width="1.5" 
+      stroke-linecap="round" 
+      stroke-linejoin="round">
+      <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+      <path d="M8 11v5"></path>
+      <path d="M8 8h.01"></path>
+      <path d="M12 11v5"></path>
+      <path d="M12 13a2 2 0 0 1 4 0v3"></path>
+    </svg>
+  </a>
+</li>
+
+                       
                     </ul>
                 </div>
             </div>
@@ -1231,12 +1210,13 @@
                     </div>
 
                     <!-- Services List -->
-                    {% if website.services.all %}
+                    {% if services %}
                     <div class="tp-services-list-wrap">
                         <div class="row">
-                            {% for service in website.services.all %}
+                            {% for service in services %}
                             <div class="col-lg-6 col-md-12 mb-40">
-                                <div class="tp-service-item-card p-relative">
+                             <a href="{% url 'service_detail' service.id %}" class="text-decoration-none">
+                                <div class="tp-service-item-card p-relative" >
                                     <div class="tp-service-ai-item-main">
                                         <div class="tp-service-ai-item">
                                             <div class="d-flex align-items-start mb-20">
@@ -1245,11 +1225,11 @@
                                                 </span>
                                                 <div class="tp-service-content-wrap flex-grow-1">
                                                     <h3 class="tp-service-ai-title tp-ff-jakarta fs-36 fs-xl-32 fs-lg-28 fs-md-24 fs-sm-22 ls-m-4 lh-120-per tp-text-common-black-6 mb-20">
-                                                        <span class="title-slide-gradient">{{ service.heading }}</span>
+                                                        <span class="title-slide-gradient">{{ service.name }}</span>
                                                     </h3>
                                                     <div class="tp-service-description">
                                                         <p class="tp-ff-inter fw-400 fs-16 fs-sm-15 ls-m-2 lh-160-per tp-text-common-black-5">
-                                                            {{ service.description|linebreaks }}
+                                                            {{ service.description|truncatewords:40|linebreaks }}
                                                         </p>
                                                     </div>
                                                 </div>
@@ -1257,6 +1237,7 @@
                                         </div>
                                     </div>
                                 </div>
+                            </a>
                             </div>
                             {% endfor %}
                         </div>
@@ -1465,7 +1446,7 @@
 </style>
                   
                     <!-- tp-testimonial-area-start -->
-                    <div class="tp-testimonial-area pt-155 tp-bg-common-white pb-120 p-relative z-index-1">
+                    {% comment %} <div class="tp-testimonial-area pt-155 tp-bg-common-white pb-120 p-relative z-index-1">
                         <img class="tp-testimonial-ai-shape p-absolute" src="{% static 'assets/img/pricing/shape.webp' %}" alt="">
                         <div class="container-fluid container-1524">
                             <div class="row align-items-end mb-35">
@@ -1567,7 +1548,276 @@
                                 </div>
                             </div>
                         </div>
+                    </div> {% endcomment %}
+                                <div class="tp-testimonial-area pt-155 tp-bg-common-white pb-120 p-relative z-index-1">
+    <img class="tp-testimonial-ai-shape p-absolute" src="{% static 'assets/img/pricing/shape.webp' %}" alt="">
+    <div class="container-fluid container-1524">
+        <div class="row align-items-end mb-35">
+            <div class="col-lg-7">
+                <div class="tp-testimonial-ai-title-wrap mb-40">
+                    <span class="tp-ff-inter fw-500 fs-18 ls-m-4 tp-text-common-black-5 mb-10 d-inline-block tp_fade_anim" data-delay=".3">/ Our Testimonial /</span>
+                    <h2 class="tp-section-ai-title fs-72 fs-xl-65 fs-lg-55 fs-sm-45 fs-xs-40 fw-600 ls-m-4 tp-ff-jakarta tp-text-common-black-6 tp_fade_anim" data-delay=".5">
+                        Resonance is trusted by <span class="title-slide-gradient">1,1000+</span>
+                        Customers.
+                    </h2>
+                </div>
+            </div>
+            <div class="col-lg-5">
+                <div class="d-flex justify-content-lg-end tp_fade_anim" data-delay=".7" data-fade-from="bottom" data-ease="bounce">
+                    <div class="tp-testimonial-it-ratings-wrap d-flex align-items-center mb-50">
+                        <span class="mr-15">
+                            <svg width="34" height="38" viewBox="0 0 34 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M34 31.2752C30.4497 35.2736 25.2088 37.8026 19.3628 37.8026C8.66901 37.8026 0 29.3402 0 18.9013C0 8.4624 8.66901 0 19.3628 0C25.2087 0 30.4495 2.52892 33.9998 6.52719L28.4236 11.2411C26.2258 8.76607 22.9816 7.20058 19.3628 7.20058C12.7428 7.20058 7.37627 12.4392 7.37627 18.9014C7.37627 25.3636 12.7428 30.6022 19.3628 30.6022C22.9818 30.6022 26.2262 29.0366 28.4239 26.5613L34 31.2752Z" fill="#10302A"/>
+                                <path d="M19.3625 25.2024C22.927 25.2024 25.8167 22.3816 25.8167 18.902C25.8167 15.4224 22.927 12.6016 19.3625 12.6016C15.7979 12.6016 12.9082 15.4224 12.9082 18.902C12.9082 22.3816 15.7979 25.2024 19.3625 25.2024Z" fill="#EF2B10"/>
+                            </svg>
+                        </span>
+                        <div>
+                            <div class="tp-testimonial-it-icon d-flex align-items-center">
+                                <span class="tp-ff-inter fw-600 fs-16 lh-1 ls-m-4 text-uppercase tp-text-common-black-1 mr-10">4.9/5</span>
+                                <div class="tp-testimonial-it-star lh-1">
+                                    <i class="fa-solid fa-star-sharp"></i>
+                                    <i class="fa-solid fa-star-sharp"></i>
+                                    <i class="fa-solid fa-star-sharp"></i>
+                                    <i class="fa-solid fa-star-sharp"></i>
+                                    <i class="fa-solid fa-star-sharp"></i>
+                                </div>
+                            </div>
+                            <span class="tp-ff-inter fw-500 fs-13 ls-m-1 tp-text-common-black-1 lh-1">Based on 24 reviews on Clutch</span>
+                        </div>
                     </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 p-relative">
+                <div class="swiper tp-testimonial-ai-slide-active">
+                    <div class="swiper-wrapper slide-transtion">
+                        
+                        {% for rev in testimonials %}
+                        <div class="swiper-slide tp-bg-common-white">
+                            <div class="row align-items-center">
+                                <div class="col-xxl-5 col-xl-4">
+                                    <div class="tp-testimonial-ai-avatar mb-30 text-center">
+                                        <img src="{{ rev.client_image.url }}" alt="{{ rev.client_name }}"
+                                            style="width:220px; height:220px; border-radius:50%; object-fit:cover; display:block; margin:0 auto 15px auto;">
+
+                                        <h3 class="tp-ff-jakarta fw-600 fs-28 ls-m-3 tp-text-common-black-5 mb-10" 
+                                            style="margin: 0; text-align: center;">
+                                            {{ rev.client_name }}
+                                        </h3>
+
+                                        <span class="tp-testimonial-ai-profeson d-inline-block tp-round-36 tp-bg-common-black-5 tp-ff-dm fw-500 fs-18 ls-m-2 tp-text-grey-5" 
+                                            style="display:inline-block; margin-top:5px; text-align:center;">
+                                            {{ rev.designation }}
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="col-xxl-7 col-xl-8">
+                                    <div class="tp-testimonial-ai-content ml-35 mr-60">
+                                        <div class="d-sm-flex">
+                                            <span class="mr-30">
+                                                <svg width="60" height="48" viewBox="0 0 60 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M12.3589 19.1764C13.0909 14.575 18.8427 9.65983 23.3395 9.55525C23.6532 9.55525 23.967 9.45068 24.1761 9.24152C24.3853 9.13694 24.5944 9.03237 24.699 8.71863C26.2677 5.79047 25.431 3.48977 22.8166 1.60738C19.7839 -0.588741 14.9733 1.60738 12.568 3.59435C6.50256 8.61406 0.332502 17.2938 0.646233 25.5556C-0.399539 31.0983 -0.190385 37.0591 1.37827 41.9742C2.42405 45.1115 5.45679 46.6802 8.5941 46.8893C11.7314 47.0987 18.2152 48.0397 21.0388 46.1575C23.8624 44.2749 24.0715 40.6147 24.3853 37.4776C24.699 34.0265 25.6402 27.5425 22.712 24.8235C19.7839 22.2091 11.4177 25.0327 12.3589 19.1764ZM46.8694 19.1764C47.6014 14.575 53.353 9.65983 57.85 9.55525C58.1637 9.55525 58.4774 9.45068 58.6866 9.24152C58.8959 9.13694 59.1049 9.03237 59.2097 8.71863C60.7783 5.79047 59.9417 3.48977 57.3273 1.60738C54.2945 -0.588741 49.484 1.60738 47.0785 3.59435C41.0131 8.61406 34.843 17.294 35.1567 25.5556C34.111 31.0983 34.3201 37.0591 35.8886 41.9742C36.9344 45.1115 39.9671 46.6802 43.1046 46.8893C46.2419 47.0987 52.7257 48.0397 55.5493 46.1575C58.3727 44.2749 58.582 40.6147 58.8958 37.4776C59.2095 34.0265 60.1507 27.5425 57.2225 24.8235C54.2944 22.2091 45.8236 25.0327 46.8694 19.1764Z" fill="#111112"/>
+                                                </svg>
+                                            </span>
+
+                                            <div class="position-relative w-100">
+                                                <p class="pt-10 tp-ff-dm fw-400 fs-32 fs-sm-25 fs-xs-20 ls-m-4 lh-150-per tp-text-border-2 mb-0">
+                                                    {{ rev.review|safe }}
+                                                </p>
+                                                
+                                                <span class="position-absolute" style="bottom: 0; right: 0;  transform: translateY(30%);">
+                                                    <svg width="60" height="47" viewBox="0 0 60 47" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <path d="M47.6411 27.9464C46.9091 32.5172 41.1573 37.3997 36.6605 37.5036C36.3468 37.5036 36.033 37.6075 35.8239 37.8153C35.6147 37.9191 35.4056 38.023 35.301 38.3347C33.7323 41.2434 34.569 43.5288 37.1834 45.3987C40.2161 47.5802 45.0267 45.3987 47.432 43.4249C53.4974 38.4386 59.6675 29.8165 59.3538 21.6096C60.3995 16.1036 60.1904 10.1825 58.6217 5.3C57.576 2.18351 54.5432 0.625275 51.4059 0.417507C48.2686 0.209576 41.7848 -0.725197 38.9612 1.14452C36.1376 3.01458 35.9285 6.65047 35.6147 9.76678C35.301 13.1949 34.3598 19.6358 37.288 22.3367C40.2161 24.9338 48.5823 22.129 47.6411 27.9464ZM13.1306 27.9464C12.3986 32.5172 6.64701 37.3997 2.15002 37.5036C1.83628 37.5036 1.52255 37.6075 1.3134 37.8153C1.10408 37.9191 0.895092 38.023 0.79034 38.3347C-0.778316 41.2434 0.0583 43.5288 2.67273 45.3987C5.70547 47.5802 10.516 45.3987 12.9215 43.4249C18.9869 38.4386 25.157 29.8163 24.8433 21.6096C25.889 16.1036 25.6799 10.1825 24.1114 5.3C23.0656 2.18351 20.0329 0.625275 16.8954 0.417507C13.7581 0.209576 7.2743 -0.725197 4.45071 1.14452C1.6273 3.01458 1.41798 6.65047 1.10424 9.76678C0.790512 13.1949 -0.150684 19.6358 2.77748 22.3367C5.70564 24.9338 14.1764 22.129 13.1306 27.9464Z" fill="#111112"/>
+                                                    </svg>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                        
+                    </div>
+                    
+                    <!-- Pagination Dots -->
+                    <div class="tp-testimonial-pagination"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% comment %} <style>
+.testimonial-bottom-quote {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    transform: translateY(30%); /* desktop position */
+}
+
+/* Mobile adjustment */
+@media (max-width: 768px) {
+    .testimonial-bottom-quote {
+        transform: translateY(50%); /* push it slightly lower */
+    }
+}
+</style> {% endcomment %}
+
+
+<script>
+(function() {
+    'use strict';
+    
+    // Wait for DOM to be fully loaded
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initTestimonialSlider);
+    } else {
+        initTestimonialSlider();
+    }
+    
+    function initTestimonialSlider() {
+        // Only target the specific testimonial slider
+        var testimonialSlider = document.querySelector('.tp-testimonial-ai-slide-active');
+        
+        if (!testimonialSlider) {
+            console.warn('Testimonial slider not found');
+            return;
+        }
+        
+        // Check if Swiper is already initialized on this element
+        if (testimonialSlider.swiper) {
+            testimonialSlider.swiper.destroy(true, true);
+        }
+        
+        // Count total slides
+        var totalSlides = testimonialSlider.querySelectorAll('.swiper-slide').length;
+        
+        // Initialize Swiper only for testimonial section
+        var testimonialSwiper = new Swiper('.tp-testimonial-ai-slide-active', {
+            slidesPerView: 1,
+            spaceBetween: 30,
+            loop: false,
+            autoplay: {
+                delay: 6000,
+                disableOnInteraction: false,
+                pauseOnMouseEnter: true
+            },
+            speed: 1000,
+            pagination: {
+                el: '.tp-testimonial-ai-slide-active .tp-testimonial-pagination',
+                clickable: true,
+                dynamicBullets: false,
+                renderBullet: function (index, className) {
+                    return '<span class="' + className + '" data-index="' + index + '"></span>';
+                }
+            },
+            watchSlidesProgress: true,
+            watchSlidesVisibility: true,
+            observer: true,
+            observeParents: true,
+            on: {
+                init: function() {
+                    console.log('Testimonial slider initialized with ' + totalSlides + ' slides');
+                },
+                slideChange: function() {
+                    console.log('Current slide: ' + (this.activeIndex + 1) + ' of ' + totalSlides);
+                },
+                reachEnd: function() {
+                    var swiper = this;
+                    setTimeout(function() {
+                        swiper.autoplay.stop();
+                        swiper.slideTo(0, 1000);
+                        setTimeout(function() {
+                            swiper.autoplay.start();
+                        }, 1000);
+                    }, 6000);
+                }
+            }
+        });
+    }
+})();
+</script>
+
+<style>
+/* Testimonial pagination styling - scoped to testimonial section only */
+.tp-testimonial-ai-slide-active .tp-testimonial-pagination {
+    text-align: center;
+    position: relative;
+    margin-top: 50px;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.tp-testimonial-ai-slide-active .tp-testimonial-pagination .swiper-pagination-bullet {
+    width: 10px;
+    height: 10px;
+    background: #d1d5db;
+    opacity: 0.4;
+    margin: 0;
+    transition: all 0.3s ease;
+    border-radius: 50%;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    display: inline-block;
+}
+
+.tp-testimonial-ai-slide-active .tp-testimonial-pagination .swiper-pagination-bullet:hover {
+    opacity: 0.7;
+    transform: scale(1.15);
+}
+
+.tp-testimonial-ai-slide-active .tp-testimonial-pagination .swiper-pagination-bullet-active {
+    background: #111112;
+    opacity: 1;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    transform: scale(1.4);
+}
+
+/* Ensure content doesn't break - scoped to testimonial only */
+.tp-testimonial-ai-slide-active .tp-testimonial-ai-content p {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+}
+
+/* Smooth transitions - scoped to testimonial only */
+.tp-testimonial-ai-slide-active .swiper-slide {
+    opacity: 1;
+    transition: opacity 1s ease;
+}
+
+.tp-testimonial-ai-slide-active .swiper-slide-active {
+    opacity: 1;
+}
+
+/* Prevent layout shifts */
+.tp-testimonial-ai-slide-active {
+    position: relative;
+    overflow: hidden;
+}
+
+/* Position closing quotation at top right */
+.tp-testimonial-ai-slide-active .position-relative {
+    position: relative;
+}
+
+.tp-testimonial-ai-slide-active .position-absolute {
+    position: absolute;
+}
+
+.tp-testimonial-ai-slide-active .w-100 {
+    width: 100%;
+}
+</style>
                     <!-- tp-testimonial-area-end -->
                     <!-- tp-faq-area-start -->
                     <div class="tp-faq-area tp-bg-common-black-5 pt-155 pb-100 p-relative z-index-1">
@@ -1678,7 +1928,7 @@
                                                 Transform Ideas into <br>Intelligent Solutions with Us
                                             </h2>
                                             <div class="tp_fade_anim" data-delay=".5" data-fade-from="bottom" data-ease="bounce">
-                                                <a href="contact-us-light.html" class="tp-btn-ai-xxl tp-bg-common-angry tp-btn-switch-2-animation p-relative hover-text-white d-inline-block text-uppercase tp-text-grey-5 lh-1 fs-16 fw-700 tp-ff-dm">
+                                                <a href="{% url 'contact' %}" class="tp-btn-ai-xxl tp-bg-common-angry tp-btn-switch-2-animation p-relative hover-text-white d-inline-block text-uppercase tp-text-grey-5 lh-1 fs-16 fw-700 tp-ff-dm">
                                                     <span class="d-flex align-items-center justify-content-center">
                                                         <span class="btn-text">Get Starteed Now</span>
                                                         <span class="btn-icon">
@@ -1766,7 +2016,7 @@
                 </div>
 
                 <div class="tp-blog-ai-btn d-flex justify-content-between mt-auto pt-3">
-                    <a href="#" class="tp-btn-switch-2-animation p-relative hover-text-white d-inline-block text-uppercase tp-text-grey-5 lh-1 fs-16 fw-700 tp-ff-dm">
+                    <a href="{% url 'blog_details' blog.slug %}" class="tp-btn-switch-2-animation p-relative hover-text-white d-inline-block text-uppercase tp-text-grey-5 lh-1 fs-16 fw-700 tp-ff-dm">
                         <span class="d-flex align-items-center justify-content-center">
                             <span class="btn-text">Read More</span>
                             <span class="btn-icon">
@@ -1918,7 +2168,7 @@
                     </div> {% endcomment %}
                     <!-- tp-blog-area-end -->
                 </main>
-                <footer>
+                 <footer>
                     <!-- tp-footer-area-start -->
                     <div class="tp-footer-area pt-155 bg-position" data-background="{% static 'assets/img/footer/ai/bg.webp' %}">
                         <div class="container-fluid container-1524">
@@ -1927,7 +2177,7 @@
                                     <div class="tp-footer-ai-widget mb-40 tp_fade_anim" data-delay=".3">
                                         <h5 class="tp-ff-jakarta fw-600 fs-18 lh-140-per ls-m-2 text-uppercase tp-text-common-black-5 mb-15">location</h5>
                                         <a href="#" class="tp-ff-dm fs-18 lh-140-per ls-m-2 tp-text-common-black-5 opacity-8 underline-black">
-                                            2118 Thornridge Cir. Syracuse,<br>Connecticut 35624
+                                            5/257A8, FACT Kalamassery <br> Kochi, Kerala 683104, India
                                         </a>
                                     </div>
                                 </div>
@@ -1935,10 +2185,10 @@
                                     <div class="tp-footer-ai-widget widget-2 mb-40 tp_fade_anim" data-delay=".5">
                                         <h5 class="tp-ff-jakarta fw-600 fs-18 lh-140-per ls-m-2 text-uppercase tp-text-common-black-5 mb-15">Contract</h5>
                                         <div class="mb-10">
-                                            <a href="tel:+025(256)956965" class="tp-ff-dm fs-18 lh-140-per ls-m-2 tp-text-common-black-5 opacity-8 underline-black">+025 (256) 956 965 </a>
+                                            <a href="tel:+025(256)956965" class="tp-ff-dm fs-18 lh-140-per ls-m-2 tp-text-common-black-5 opacity-8 underline-black">+91 8590627934 </a>
                                         </div>
                                         <div>
-                                            <a href="mailto:hello@vynzora.com" class="tp-ff-dm fs-18 lh-140-per ls-m-2 tp-text-common-black-5 opacity-8 underline-black">hello@vynzora.com</a>
+                                            <a href="mailto:hello@vynzora.com" class="tp-ff-dm fs-18 lh-140-per ls-m-2 tp-text-common-black-5 opacity-8 underline-black">support@vynzora.com</a>
                                         </div>
                                     </div>
                                 </div>
@@ -1948,9 +2198,9 @@
                                             <li>
                                                 <a href="{% url 'index' %}">Home</a>
                                             </li>
-                                            {% comment %} <li>
-                                                <a href="#">Pages</a>
-                                            </li> {% endcomment %}
+                                            <li>
+                                                <a href="{% url 'submit_application' %}">Careers</a>
+                                            </li>
                                             <li>
                                                 <a href="{% url 'portfolio' %}">Portfolio</a>
                                             </li>
@@ -1965,7 +2215,7 @@
                                 </div>
                                 <div class="col-lg-2 col-md-6 col-sm-6">
                                     <div class="tp-footer-wd-social tp-footer-ai-social d-flex justify-content-lg-end mb-40">
-                                        <div class="tp_fade_anim" data-delay=".3" data-fade-from="top" data-ease="bounce">
+                                        {% comment %} <div class="tp_fade_anim" data-delay=".3" data-fade-from="top" data-ease="bounce">
                                             <a href="#">
                                                 <i class="fa-brands fa-dribbble"></i>
                                             </a>
@@ -1974,23 +2224,24 @@
                                             <a href="#">
                                                 <i class="fa-brands fa-behance"></i>
                                             </a>
-                                        </div>
-                                        <div class="tp_fade_anim" data-delay=".7" data-fade-from="top" data-ease="bounce">
-                                            <a href="#">
-                                                <i class="fa-brands fa-pinterest"></i>
-                                            </a>
-                                        </div>
+                                        </div>{% endcomment %}
                                         <div class="tp_fade_anim" data-delay=".9" data-fade-from="top" data-ease="bounce">
-                                            <a href="#">
+                                            <a href="https://www.linkedin.com/company/vynzora/posts/?feedView=all">
                                                 <i class="fa-brands fa-linkedin"></i>
                                             </a>
                                         </div>
+                                        <div class="tp_fade_anim" data-delay=".7" data-fade-from="top" data-ease="bounce">
+                                            <a href="https://www.instagram.com/vynzora/?hl=en">
+                                                <i class="fa-brands fa-instagram"></i>
+                                            </a>
+                                        </div> 
+                                        
                                     </div>
                                 </div>
                                 <div class="col-lg-12">
                                     <div class="tp-footer-ai-title-wrap text-center pt-35 pb-80 tp_fade_anim" data-fade-from="top" data-delay=".7" data-ease="bounce">
                                         <h2 class="tp-footer-ai-bigtitle tp-ff-jakarta fw-800 text-uppercase tp-text-common-black-5">
-                                                            <a href="contact-us-light.html" class="text-scale-anim">Vynzora</a>
+                                                            <a href="#" class="text-scale-anim">Vynzora</a>
                                                         </h2>
                                     </div>
                                 </div>

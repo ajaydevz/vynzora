@@ -128,6 +128,7 @@ urlpatterns = [
     path('delete-jobdetails/<int:id>/', views.delete_job_details, name='delete_job_details'),
 
     # Catch-all website details
+    # path('<slug:category_slug>/<slug:website_slug>/', views.category_website_detail, name='website_detail'),
     path('<slug:category_slug>/<slug:website_slug>/', views.category_website_detail, name='website_detail'),
 
 

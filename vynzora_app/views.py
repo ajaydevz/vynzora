@@ -1310,10 +1310,35 @@ def delete_certificates(request,id):
     return redirect('view_certificates')
 
 
+# def category_website_detail(request, category_slug, website_slug):
+#     category = get_object_or_404(Category, slug=category_slug)
+#     service = Services.objects.all()
+
+#     # Ensure the category slug is correct
+#     correct_slug = slugify(category.name)
+#     if category.slug != correct_slug:
+#         return redirect('website_detail', category_slug=correct_slug, website_slug=website_slug)
+
+#     # Fetch website correctly
+#     website = get_object_or_404(Website, slug=website_slug, category=category)
+#     services = Services.objects.all()
+
+#     # Retrieve related services
+#     faqs = website.faqs.all()
+#     technologies = Technologies.objects.all()
+#     blogs = Blog.objects.all()
+#     testimonials = ClientReview.objects.all()
+
+#     return render(
+#         request,
+#         'home/website_detail.html',
+#         {'category': category, 'website': website, 'faqs':faqs, 'services': services, 'technologies': technologies,'blogs':blogs,'testimonials':testimonials}
+#     )
+   
+
 def category_website_detail(request, category_slug, website_slug):
     category = get_object_or_404(Category, slug=category_slug)
-    service = Services.objects.all()
-
+    
     # Ensure the category slug is correct
     correct_slug = slugify(category.name)
     if category.slug != correct_slug:
@@ -1321,9 +1346,9 @@ def category_website_detail(request, category_slug, website_slug):
 
     # Fetch website correctly
     website = get_object_or_404(Website, slug=website_slug, category=category)
+    
+    # Retrieve all required data
     services = Services.objects.all()
-
-    # Retrieve related services
     faqs = website.faqs.all()
     technologies = Technologies.objects.all()
     blogs = Blog.objects.all()
@@ -1332,11 +1357,17 @@ def category_website_detail(request, category_slug, website_slug):
     return render(
         request,
         'home/website_detail.html',
-        {'category': category, 'website': website, 'faqs':faqs, 'services': services, 'technologies': technologies,'blogs':blogs,'testimonials':testimonials}
+        {
+            'category': category, 
+            'website': website, 
+            'faqs': faqs, 
+            'services': services, 
+            'service': services,  # Added for navbar dropdown
+            'technologies': technologies,
+            'blogs': blogs,
+            'testimonials': testimonials
+        }
     )
-   
-
-
 
 
 
