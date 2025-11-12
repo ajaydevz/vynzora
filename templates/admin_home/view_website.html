@@ -1,0 +1,1752 @@
+
+
+{% extends "admin_home/base.html" %}
+{% load static %}
+
+{% block content %}
+<style>
+/* FAQ Section Container */
+.faq-section {
+  margin-top: 25px;
+  background: #f9fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 20px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Header with Add Button */
+.faq-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 15px;
+  width: 100%;
+}
+
+.faq-header h4 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #2c3e50;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+}
+
+.btn-add-faq {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: #fff;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-add-faq:hover {
+  background: linear-gradient(135deg, #6b8cff, #8f63d8);
+  transform: translateY(-1px);
+  text-decoration: none;
+  color: #fff;
+}
+
+/* FAQ Items */
+.faq-item {
+  position: relative;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 12px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.faq-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.form-group label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #374151;
+  margin-bottom: 4px;
+}
+
+.required {
+  color: #e11d48;
+  margin-left: 4px;
+}
+
+.form-control {
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  padding: 8px 10px;
+  font-size: 14px;
+  transition: border-color 0.2s ease;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.form-control:focus {
+  border-color: #667eea;
+  outline: none;
+}
+
+/* Remove FAQ Button */
+.btn-remove-faq {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: transparent;
+  color: #dc2626;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  padding: 4px;
+  line-height: 1;
+}
+
+.btn-remove-faq:hover {
+  transform: scale(1.1);
+}
+
+/* Scroll for long FAQ lists */
+.faq-formset {
+  max-height: 300px;
+  overflow-y: auto;
+  padding-right: 6px;
+  width: 100%;
+}
+
+.faq-formset::-webkit-scrollbar {
+  width: 6px;
+}
+
+.faq-formset::-webkit-scrollbar-thumb {
+  background-color: rgba(102, 126, 234, 0.5);
+  border-radius: 6px;
+}
+
+/* Services Section Styling for FAQs */
+.services-section {
+  margin-top: 25px;
+  width: 100%;
+}
+
+.section-divider {
+  height: 1px;
+  background: #e2e8f0;
+  margin: 25px 0;
+  width: 100%;
+}
+
+.services-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+.services-header h5 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #2c3e50;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+}
+
+.btn-add-formset {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: #fff;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-add-formset:hover {
+  background: linear-gradient(135deg, #6b8cff, #8f63d8);
+  transform: translateY(-1px);
+  text-decoration: none;
+  color: #fff;
+}
+
+/* Formset Items */
+.formset-item {
+  background: white;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 15px;
+  border: 2px solid #e9ecef;
+  width: 100%;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.formset-item.marked-for-deletion {
+  opacity: 0.5;
+  background: #ffe6e6;
+}
+
+.formset-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  width: 100%;
+}
+
+.formset-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #2c3e50;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.formset-number {
+  background: #667eea;
+  color: white;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.btn-remove-formset {
+  background: #e74c3c;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.btn-remove-formset:hover {
+  background: #c0392b;
+  text-decoration: none;
+  color: white;
+}
+
+/* Alert Messages */
+.alert-message {
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  font-size: 14px;
+  font-weight: 500;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.alert-error {
+  background: #fee2e2;
+  color: #dc2626;
+  border: 1px solid #fecaca;
+}
+
+.alert-success {
+  background: #d1fae5;
+  color: #065f46;
+  border: 1px solid #a7f3d0;
+}
+
+/* Meta Badge */
+.meta-badge {
+  background: #e0e7ff;
+  color: #3730a3;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Ensure proper spacing in modal */
+.modal-body .form-group:last-child {
+  margin-bottom: 0;
+}
+
+/* Responsive FAQ Section */
+@media (max-width: 768px) {
+  .faq-section {
+    margin-top: 20px;
+    padding: 15px;
+  }
+  
+  .faq-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  
+  .faq-header h4 {
+    font-size: 16px;
+  }
+  
+  .services-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  
+  .formset-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  
+  .btn-remove-formset {
+    align-self: flex-end;
+  }
+  
+  .faq-item {
+    padding: 12px;
+  }
+  
+  .btn-remove-faq {
+    position: relative;
+    top: auto;
+    right: auto;
+    margin-top: 10px;
+    align-self: flex-end;
+  }
+}
+</style>
+
+<style>
+  .websites-list-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    animation: fadeIn 0.5s ease;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+
+  .header-left h2 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 8px;
+  }
+
+  .header-left p {
+    color: #6c757d;
+    font-size: 14px;
+    margin: 0;
+  }
+
+  .header-right {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+  }
+
+  .search-box {
+    position: relative;
+    width: 300px;
+  }
+
+  .search-box input {
+    width: 100%;
+    padding: 12px 45px 12px 45px;
+    border: 2px solid #e9ecef;
+    border-radius: 10px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    background: #f8f9fa;
+  }
+
+  .search-box input:focus {
+    outline: none;
+    border-color: #3498db;
+    background: #fff;
+    box-shadow: 0 0 0 4px rgba(52, 152, 219, 0.1);
+  }
+
+  .search-box i {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #6c757d;
+    font-size: 18px;
+  }
+
+  .clear-search {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #6c757d;
+    cursor: pointer;
+    font-size: 18px;
+    display: none;
+    transition: color 0.3s ease;
+  }
+
+  .clear-search:hover {
+    color: #e74c3c;
+  }
+
+  .clear-search.show {
+    display: block;
+  }
+
+  .btn-add {
+    padding: 12px 24px;
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+  }
+
+  .btn-add:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(52, 152, 219, 0.3);
+  }
+
+  .websites-card {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+  }
+
+  .websites-card-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 25px 30px;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .websites-card-header h3 {
+    font-size: 20px;
+    font-weight: 700;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .websites-count {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .table-wrapper {
+    overflow-x: auto;
+    max-height: 600px;
+    overflow-y: auto;
+  }
+
+  .websites-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 1200px;
+  }
+
+  .websites-table thead {
+    background: #f8f9fa;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+
+  .websites-table thead th {
+    padding: 18px 15px;
+    text-align: left;
+    font-size: 12px;
+    font-weight: 700;
+    color: #2c3e50;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 2px solid #e9ecef;
+    white-space: nowrap;
+  }
+
+  .websites-table tbody tr {
+    border-bottom: 1px solid #f1f3f5;
+    transition: all 0.3s ease;
+  }
+
+  .websites-table tbody tr:hover {
+    background: #f8f9fa;
+  }
+
+  .websites-table tbody td {
+    padding: 15px;
+    font-size: 13px;
+    color: #495057;
+    vertical-align: top;
+  }
+
+  .website-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 200px;
+  }
+
+  .website-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 16px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .website-details h4 {
+    font-size: 14px;
+    font-weight: 600;
+    color: #2c3e50;
+    margin: 0 0 4px 0;
+    line-height: 1.3;
+  }
+
+  .website-details p {
+    font-size: 12px;
+    color: #6c757d;
+    margin: 0;
+    line-height: 1.3;
+  }
+
+  .action-buttons {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .btn-action {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .btn-update {
+    background: #3498db;
+    color: white;
+  }
+
+  .btn-update:hover {
+    background: #2980b9;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+  }
+
+  .btn-delete {
+    background: #e74c3c;
+    color: white;
+  }
+
+  .btn-delete:hover {
+    background: #c0392b;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(231, 76, 60, 0.3);
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 80px 20px;
+  }
+
+  .empty-state i {
+    font-size: 64px;
+    color: #cbd5e0;
+    margin-bottom: 20px;
+  }
+
+  .empty-state h3 {
+    font-size: 20px;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 10px;
+  }
+
+  .empty-state p {
+    font-size: 14px;
+    color: #6c757d;
+    margin-bottom: 25px;
+  }
+
+  .no-results {
+    text-align: center;
+    padding: 60px 20px;
+  }
+
+  .no-results i {
+    font-size: 48px;
+    color: #cbd5e0;
+    margin-bottom: 15px;
+  }
+
+  .no-results p {
+    font-size: 14px;
+    color: #6c757d;
+  }
+
+  .highlight {
+    background: #fff3cd;
+    padding: 2px 4px;
+    border-radius: 3px;
+    font-weight: 600;
+  }
+
+  .description-cell {
+    max-width: 200px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
+    line-height: 1.4;
+  }
+
+  .services-list {
+    margin: 0;
+    padding-left: 16px;
+    max-height: 80px;
+    overflow-y: auto;
+  }
+
+  .services-list li {
+    margin-bottom: 4px;
+    font-size: 12px;
+    line-height: 1.3;
+  }
+
+  .services-list strong {
+    font-size: 11px;
+  }
+
+  .image-preview {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 6px;
+    border: 1px solid #e9ecef;
+  }
+
+  .meta-title-cell {
+    max-width: 150px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
+    line-height: 1.4;
+  }
+
+  .category-cell {
+    white-space: nowrap;
+  }
+
+  .slug-cell {
+    font-family: monospace;
+    font-size: 11px;
+    color: #6c757d;
+  }
+
+  /* Modal Styles */
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    animation: fadeIn 0.3s ease;
+  }
+
+  .modal.show {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .modal-content {
+    background: #fff;
+    border-radius: 16px;
+    max-width: 900px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    animation: slideUp 0.3s ease;
+  }
+
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(50px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .modal-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 25px 30px;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .modal-header h3 {
+    font-size: 20px;
+    font-weight: 700;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .modal-close {
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+  }
+
+  .modal-close:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: rotate(90deg);
+  }
+
+  .modal-body {
+    padding: 30px;
+  }
+
+  .form-group {
+    margin-bottom: 20px;
+  }
+
+  .form-label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 8px;
+  }
+
+  .form-label .required {
+    color: #e74c3c;
+    margin-left: 4px;
+  }
+
+  .form-control {
+    width: 100%;
+    padding: 10px 14px;
+    font-size: 14px;
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    background: #f8f9fa;
+    box-sizing: border-box;
+  }
+
+  .form-control:focus {
+    outline: none;
+    border-color: #3498db;
+    background: #fff;
+    box-shadow: 0 0 0 4px rgba(52, 152, 219, 0.1);
+  }
+
+  .form-textarea {
+    min-height: 100px;
+    resize: vertical;
+  }
+
+  .character-count {
+    font-size: 12px;
+    color: #6c757d;
+    margin-top: 6px;
+    text-align: right;
+  }
+
+  .character-count.warning {
+    color: #e67e22;
+  }
+
+  .character-count.error {
+    color: #e74c3c;
+    font-weight: 600;
+  }
+
+  .current-image-wrapper {
+    text-align: center;
+    margin-bottom: 20px;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 12px;
+    border: 2px dashed #e9ecef;
+  }
+
+  .current-image-wrapper h4 {
+    font-size: 14px;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 15px;
+  }
+
+  .current-image-preview {
+    max-width: 200px;
+    max-height: 150px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #e9ecef;
+  }
+
+  .current-image-info {
+    font-size: 12px;
+    color: #6c757d;
+  }
+
+  /* File input styling */
+  .file-input-wrapper {
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+    width: 100%;
+  }
+
+  .file-input-wrapper input[type=file] {
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+  }
+
+  .file-input-custom {
+    padding: 12px 16px;
+    border: 2px dashed #e9ecef;
+    border-radius: 10px;
+    background: #f8f9fa;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: #6c757d;
+  }
+
+  .file-input-custom:hover {
+    border-color: #3498db;
+    background: #e3f2fd;
+  }
+
+  .file-input-custom.has-file {
+    border-color: #27ae60;
+    background: #e8f5e8;
+    color: #27ae60;
+  }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  .modal-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 30px;
+  }
+
+  .btn-modal {
+    flex: 1;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .btn-cancel {
+    background: #e9ecef;
+    color: #495057;
+  }
+
+  .btn-cancel:hover {
+    background: #dee2e6;
+  }
+
+  .btn-submit {
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    color: white;
+  }
+
+  .btn-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(52, 152, 219, 0.3);
+  }
+
+  .btn-confirm-delete {
+    background: linear-gradient(135deg, #e74c3c, #c0392b);
+    color: white;
+  }
+
+  .btn-confirm-delete:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(231, 76, 60, 0.3);
+  }
+
+  .delete-warning {
+    text-align: center;
+    padding: 20px;
+  }
+
+  .delete-warning i {
+    font-size: 64px;
+    color: #e74c3c;
+  
+  }
+
+  .delete-warning h4 {
+    font-size: 20px;
+    font-weight: 700;
+    color: #2c3e50;
+  
+  }
+
+  .delete-warning p {
+    font-size: 14px;
+    color: #6c757d;
+    margin-bottom: 10px;
+  }
+
+  .delete-website-name {
+    font-weight: 700;
+    color: #e74c3c;
+  }
+
+  .service-group {
+    border: 1px solid #e9ecef;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 15px;
+    background: #f8f9fa;
+  }
+
+  .service-group-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+
+  .service-group-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #2c3e50;
+  }
+
+  .btn-remove-service {
+    background: #e74c3c;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 4px 8px;
+    font-size: 11px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .btn-remove-service:hover {
+    background: #c0392b;
+  }
+
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .page-header {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .header-right {
+      flex-direction: column;
+    }
+
+    .search-box {
+      width: 100%;
+    }
+
+    .websites-table thead th,
+    .websites-table tbody td {
+      padding: 12px 8px;
+      font-size: 11px;
+    }
+
+    .website-info {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 8px;
+    }
+
+    .action-buttons {
+      flex-direction: column;
+      width: 100%;
+    }
+
+    .btn-action {
+      width: 100%;
+      justify-content: center;
+    }
+
+    .modal-content {
+      width: 95%;
+      margin: 10px;
+    }
+
+    .modal-body {
+      padding: 20px;
+    }
+
+    .form-row {
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+  }
+
+  /* Scrollbar Styling */
+  .table-wrapper::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  .table-wrapper::-webkit-scrollbar-track {
+    background: #f1f3f5;
+    border-radius: 10px;
+  }
+
+  .table-wrapper::-webkit-scrollbar-thumb {
+    background: #cbd5e0;
+    border-radius: 10px;
+  }
+
+  .table-wrapper::-webkit-scrollbar-thumb:hover {
+    background: #a0aec0;
+  }
+
+  .services-list::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  .services-list::-webkit-scrollbar-track {
+    background: #f1f3f5;
+    border-radius: 10px;
+  }
+
+  .services-list::-webkit-scrollbar-thumb {
+    background: #cbd5e0;
+    border-radius: 10px;
+  }
+</style>
+<style>
+  /* Keep all your existing styles */
+  .websites-list-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    animation: fadeIn 0.5s ease;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Copy all other styles from your original template */
+  /* I'm only showing the essential modal and form styles */
+
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 10000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+  }
+
+  .modal.show {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .modal-content {
+    background: #fff;
+    border-radius: 16px;
+    max-width: 900px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  }
+
+  .formset-item {
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 15px;
+    border: 2px solid #e9ecef;
+  }
+
+  .formset-item.marked-for-deletion {
+    opacity: 0.5;
+    background: #ffe6e6;
+  }
+
+  /* Add all your other styles here */
+</style>
+
+<div class="websites-list-container">
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="header-left">
+      <h2>Websites</h2>
+      <p>Manage and view all websites</p>
+    </div>
+    <div class="header-right">
+      <div class="search-box">
+        <i class="mdi mdi-magnify"></i>
+        <input type="text" id="searchInput" placeholder="Search websites..." autocomplete="off">
+        <button type="button" class="clear-search" id="clearSearch">
+          <i class="mdi mdi-close"></i>
+        </button>
+      </div>
+      <a href="{% url 'add_website' %}" class="btn-add">
+        <i class="mdi mdi-plus"></i>
+        Add Website
+      </a>
+    </div>
+  </div>
+
+  <!-- Websites Card -->
+  <div class="websites-card">
+    <div class="websites-card-header">
+      <h3>
+        <i class="mdi mdi-web"></i>
+        All Websites
+      </h3>
+      <span class="websites-count">{{ websites|length }} Websites</span>
+    </div>
+
+    <div class="table-wrapper">
+      {% if websites %}
+      <table class="websites-table">
+        <thead>
+          <tr>
+            <th>Website</th>
+            <th>Category</th>
+            <th>Slug</th>
+            <th>Image</th>
+            <th>FAQs</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="websitesTableBody">
+          {% for website in websites %}
+          <tr data-id="{{ website.id }}">
+            <td>
+              <div class="website-info">
+                <div class="website-avatar">{{ website.name|first|upper }}</div>
+                <div class="website-details">
+                  <h4>{{ website.name }}</h4>
+                  <p>{{ website.meta_title|truncatewords:5 }}</p>
+                </div>
+              </div>
+            </td>
+            <td>{{ website.category.name }}</td>
+            <td class="slug-cell">{{ website.slug }}</td>
+            <td>
+              {% if website.image %}
+                <img src="{{ website.image.url }}" alt="{{ website.name }}" class="image-preview">
+              {% else %}
+                <span style="color: #6c757d;">No image</span>
+              {% endif %}
+            </td>
+            <td>
+              <span class="meta-badge">
+                <i class="mdi mdi-help-circle"></i>
+                {{ website.faqs.count }} FAQs
+              </span>
+            </td>
+            <td>
+              <div class="action-buttons">
+                <button type="button" class="btn-action btn-update" onclick="openUpdateModal({{ website.id }})">
+                  <i class="mdi mdi-pencil"></i>
+                  Update
+                </button>
+                <button type="button" class="btn-action btn-delete" onclick="openDeleteModal({{ website.id }}, '{{ website.name|escapejs }}')">
+                  <i class="mdi mdi-delete"></i>
+                  Delete
+                </button>
+              </div>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+      <div class="empty-state">
+        <i class="mdi mdi-web"></i>
+        <h3>No Websites Yet</h3>
+        <p>Start by adding your first website</p>
+        <a href="{% url 'add_website' %}" class="btn-add">
+          <i class="mdi mdi-plus"></i>
+          Add First Website
+        </a>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<!-- Update Modal -->
+<div id="updateModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>
+        <i class="mdi mdi-pencil"></i>
+        Update Website
+      </h3>
+      <button type="button" class="modal-close" onclick="closeUpdateModal()">
+        <i class="mdi mdi-close"></i>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form method="POST" enctype="multipart/form-data" id="updateForm">
+        {% csrf_token %}
+        
+        <div id="formErrors" class="alert-message alert-error" style="display: none;"></div>
+
+        <div class="form-group">
+          <label class="form-label">Category<span class="required">*</span></label>
+          <select class="form-control" id="updateCategory" name="category" required>
+            {% for category in categories %}
+              <option value="{{ category.id }}">{{ category.name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Website Name<span class="required">*</span></label>
+          <input type="text" class="form-control" name="name" id="updateName" required maxlength="200">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Slug<span class="required">*</span></label>
+          <input type="text" class="form-control" name="slug" id="updateSlug" required maxlength="255">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Main Title</label>
+          <input type="text" class="form-control" name="main_title" id="updateMainTitle" maxlength="200">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Meta Title</label>
+          <input type="text" class="form-control" name="meta_title" id="updateMetaTitle" maxlength="200">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Meta Description</label>
+          <textarea class="form-control" name="meta_description" id="updateMetaDescription" rows="3"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Description</label>
+          <textarea class="form-control" name="description" id="updateDescription" rows="4"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Additional Title</label>
+          <input type="text" class="form-control" name="add_title" id="updateAddTitle" maxlength="200">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Additional Description</label>
+          <textarea class="form-control" name="add_description" id="updateAddDescription" rows="4"></textarea>
+        </div>
+
+        <div class="current-image-wrapper" id="currentImageWrapper" style="display: none;">
+          <h4>Current Image</h4>
+          <img src="" alt="Current" class="current-image-preview" id="currentImage">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Upload New Image (Optional)</label>
+          <input type="file" class="form-control" name="image" id="imageInput" accept="image/*">
+          <small style="color: #6c757d; font-size: 12px; margin-top: 6px; display: block;">
+            Leave empty to keep current image
+          </small>
+        </div>
+
+        <!-- FAQs Section -->
+        <div class="section-divider"></div>
+        <div class="services-section">
+          <div class="services-header">
+            <h5>
+              <i class="mdi mdi-comment-question-outline"></i>
+              FAQs (Optional, Max 6)
+            </h5>
+            <button type="button" class="btn-add-formset" id="addFaqBtn" onclick="addFaq()">
+              <i class="mdi mdi-plus"></i>
+              Add FAQ
+            </button>
+          </div>
+          <div id="faqFormset"></div>
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="btn-modal btn-cancel" onclick="closeUpdateModal()">
+            <i class="mdi mdi-close"></i>
+            Cancel
+          </button>
+          <button type="submit" class="btn-modal btn-submit">
+            <i class="mdi mdi-check"></i>
+            Update Website
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Modal -->
+<div id="deleteModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header" style="background: linear-gradient(135deg, #e74c3c, #c0392b);">
+      <h3>
+        <i class="mdi mdi-alert"></i>
+        Delete Website
+      </h3>
+      <button type="button" class="modal-close" onclick="closeDeleteModal()">
+        <i class="mdi mdi-close"></i>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="delete-warning">
+        <i class="mdi mdi-alert-circle-outline"></i>
+        <h4>Are you sure?</h4>
+        <p>You are about to delete the website</p>
+        <p class="delete-website-name" id="deleteWebsiteName"></p>
+        <p style="margin-top: 15px;">This action cannot be undone.</p>
+      </div>
+
+      <form method="POST" id="deleteForm">
+        {% csrf_token %}
+        <div class="modal-actions">
+          <button type="button" class="btn-modal btn-cancel" onclick="closeDeleteModal()">
+            <i class="mdi mdi-close"></i>
+            Cancel
+          </button>
+          <button type="submit" class="btn-modal btn-confirm-delete">
+            <i class="mdi mdi-delete"></i>
+            Yes, Delete
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* === Delete Modal Fix === */
+#deleteModal .modal-content {
+  max-width: 500px;
+  margin: 8% auto;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+  animation: fadeInUp 0.3s ease;
+}
+
+/* Header Styling */
+#deleteModal .modal-header {
+  background: linear-gradient(135deg, #e74c3c, #c0392b);
+  color: #fff;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#deleteModal .modal-header h3 {
+  font-size: 18px;
+  margin: 0;
+  font-weight: 600;
+}
+
+#deleteModal .modal-close {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 22px;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+#deleteModal .modal-close:hover {
+  transform: scale(1.1);
+  color: #ffdddd;
+}
+
+/* Body */
+#deleteModal .modal-body {
+  text-align: center;
+}
+
+#deleteModal .modal-body h4 {
+  font-size: 16px;
+  color: #2c3e50;
+  margin-bottom: 10px;
+}
+
+#deleteModal .modal-body p {
+  font-size: 13px;
+  color: #666;
+  margin-bottom: 0;
+}
+
+/* Buttons */
+#deleteModal .modal-actions {
+  display: flex;
+  justify-content: space-evenly;
+
+  gap: 10px;
+}
+
+#deleteModal .btn-modal {
+
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: all 0.3s ease;
+}
+
+#deleteModal .btn-cancel {
+  background: #ecf0f1;
+  color: #2c3e50;
+}
+
+#deleteModal .btn-cancel:hover {
+  background: #dcdde1;
+}
+
+#deleteModal .btn-confirm-delete {
+  background: linear-gradient(135deg, #e74c3c, #c0392b);
+  color: #fff;
+}
+
+#deleteModal .btn-confirm-delete:hover {
+  background: linear-gradient(135deg, #ff6b6b, #d32f2f);
+  transform: translateY(-2px);
+}
+
+/* Animation */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+</style>
+
+<script>
+let currentWebsiteId = null;
+let faqCounter = 0;
+
+// Escape HTML
+function escapeHtml(text) {
+  const div = document.createElement('div');
+  div.textContent = text || '';
+  return div.innerHTML;
+}
+
+// Show Alert
+function showAlert(message, type = 'success') {
+  alert(message);
+}
+
+// Add FAQ
+function addFaq(data = {}) {
+  const currentFaqs = document.querySelectorAll('#faqFormset .formset-item:not(.marked-for-deletion)').length;
+  if (currentFaqs >= 6) {
+    showAlert('Maximum 6 FAQs allowed', 'error');
+    return;
+  }
+  
+  faqCounter++;
+  const html = `
+    <div class="formset-item" id="faq-${faqCounter}">
+      <div class="formset-header">
+        <div class="formset-title">
+          <span class="formset-number">${faqCounter}</span>
+          FAQ ${faqCounter}
+        </div>
+        <button type="button" class="btn-remove-formset" onclick="removeFaq(${faqCounter})">
+          <i class="mdi mdi-delete"></i> Remove
+        </button>
+      </div>
+      <input type="hidden" name="faqs-${faqCounter}-id" value="${data.id || ''}">
+      <input type="hidden" name="faqs-${faqCounter}-DELETE" value="">
+      <div class="form-group">
+        <label class="form-label">Question</label>
+        <input type="text" class="form-control" name="faqs-${faqCounter}-question" value="${escapeHtml(data.question || '')}" maxlength="200">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Answer</label>
+        <textarea class="form-control" name="faqs-${faqCounter}-answer" rows="3">${escapeHtml(data.answer || '')}</textarea>
+      </div>
+    </div>
+  `;
+  document.getElementById('faqFormset').insertAdjacentHTML('beforeend', html);
+  
+  const addBtn = document.getElementById('addFaqBtn');
+  if (currentFaqs + 1 >= 6) {
+    addBtn.style.display = 'none';
+  }
+}
+
+// Remove FAQ
+function removeFaq(id) {
+  const item = document.getElementById(`faq-${id}`);
+  const deleteInput = item.querySelector('input[name$="-DELETE"]');
+  deleteInput.value = 'on';
+  item.classList.add('marked-for-deletion');
+  item.style.display = 'none';
+  
+  const currentFaqs = document.querySelectorAll('#faqFormset .formset-item:not(.marked-for-deletion)').length;
+  const addBtn = document.getElementById('addFaqBtn');
+  if (currentFaqs < 6) {
+    addBtn.style.display = 'inline-flex';
+  }
+}
+
+// Open Update Modal
+function openUpdateModal(websiteId) {
+  currentWebsiteId = websiteId;
+  
+  // Reset
+  faqCounter = 0;
+  document.getElementById('faqFormset').innerHTML = '';
+  document.getElementById('formErrors').style.display = 'none';
+  
+  // Load data
+  fetch(`/api/website/${websiteId}/`)
+    .then(res => res.json())
+    .then(data => {
+      // Basic fields
+      document.getElementById('updateCategory').value = data.category_id;
+      document.getElementById('updateName').value = data.name;
+      document.getElementById('updateSlug').value = data.slug;
+      document.getElementById('updateMainTitle').value = data.main_title || '';
+      document.getElementById('updateMetaTitle').value = data.meta_title || '';
+      document.getElementById('updateMetaDescription').value = data.meta_description || '';
+      document.getElementById('updateDescription').value = data.description || '';
+      document.getElementById('updateAddTitle').value = data.add_title || '';
+      document.getElementById('updateAddDescription').value = data.add_description || '';
+      
+      // Image
+      const imageWrapper = document.getElementById('currentImageWrapper');
+      const imageEl = document.getElementById('currentImage');
+      if (data.image) {
+        imageEl.src = data.image;
+        imageWrapper.style.display = 'block';
+      } else {
+        imageWrapper.style.display = 'none';
+      }
+      
+      // FAQs
+      data.faqs.forEach(faq => addFaq(faq));
+      
+      // Update FAQ button visibility
+      const addBtn = document.getElementById('addFaqBtn');
+      if (data.faqs.length >= 6) {
+        addBtn.style.display = 'none';
+      } else {
+        addBtn.style.display = 'inline-flex';
+      }
+      
+      document.getElementById('updateModal').classList.add('show');
+      document.body.style.overflow = 'hidden';
+    })
+    .catch(err => {
+      console.error(err);
+      // removed show alert here
+    });
+}
+
+// Close Update Modal
+function closeUpdateModal() {
+  document.getElementById('updateModal').classList.remove('show');
+  document.body.style.overflow = 'auto';
+  document.getElementById('imageInput').value = '';
+}
+
+// Submit Form
+document.getElementById('updateForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  
+  const formData = new FormData(this);
+  formData.set('faqs-TOTAL_FORMS', faqCounter.toString());
+  
+  fetch(`/update-website/${currentWebsiteId}/`, {
+    method: 'POST',
+    body: formData,
+    headers: {'X-Requested-With': 'XMLHttpRequest'}
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.success) {
+      // removed show alert here
+      closeUpdateModal();
+      location.reload();
+    } else {
+      document.getElementById('formErrors').textContent = data.message;
+      document.getElementById('formErrors').style.display = 'block';
+    }
+  })
+  .catch(err => {
+    console.error(err);
+   
+  });
+});
+
+// Delete Modal
+function openDeleteModal(id, name) {
+  document.getElementById('deleteForm').action = `/delete-website/${id}/`;
+  document.getElementById('deleteWebsiteName').textContent = name;
+  document.getElementById('deleteModal').classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeDeleteModal() {
+  document.getElementById('deleteModal').classList.remove('show');
+  document.body.style.overflow = 'auto';
+}
+
+// Close modals on outside click
+window.addEventListener('click', (e) => {
+  if (e.target.classList.contains('modal')) {
+    e.target.classList.remove('show');
+    document.body.style.overflow = 'auto';
+  }
+});
+</script>
+
+{% endblock %}
