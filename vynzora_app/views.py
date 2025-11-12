@@ -621,7 +621,7 @@ def index(request):
         end_date__gte=timezone.now()
     ).first()
     
-    print(technologies)
+  
     
     
 
