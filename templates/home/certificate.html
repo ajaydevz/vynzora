@@ -1,0 +1,557 @@
+{% extends 'home/base.html' %}
+{% load static %}
+
+{% block title %}Certificate Verification - Vynzoraa{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Certificate Page Styles */
+    .certificate-page {
+        min-height: 100vh;
+        background: white;
+        padding: 120px 0 80px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .certificate-page::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: 
+            radial-gradient(circle at 20% 30%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
+            radial-gradient(circle at 80% 70%, rgba(59, 130, 246, 0.08) 0%, transparent 50%);
+        pointer-events: none;
+    }
+
+    .certificate-container {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 0 20px;
+        position: relative;
+        z-index: 1;
+    }
+
+    .certificate-card {
+        background: rgba(17, 24, 39, 0.95);
+        border-radius: 24px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 50px;
+        box-shadow: 
+            0 20px 60px rgba(0, 0, 0, 0.5),
+            0 0 80px rgba(59, 130, 246, 0.1);
+        backdrop-filter: blur(20px);
+        position: relative;
+        overflow: hidden;
+        animation: fadeInUp 0.8s ease;
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .certificate-card::before {
+        content: '';
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        right: -2px;
+        bottom: -2px;
+        background: linear-gradient(45deg, #3b82f6, #1e3a8a, #3b82f6);
+        border-radius: 24px;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        z-index: -1;
+    }
+
+    .certificate-card:hover::before {
+        opacity: 0.5;
+        animation: borderGlow 2s ease infinite;
+    }
+
+    @keyframes borderGlow {
+        0%, 100% { opacity: 0.3; }
+        50% { opacity: 0.6; }
+    }
+
+    .certificate-header {
+        text-align: center;
+        margin-bottom: 40px;
+        position: relative;
+    }
+
+    .certificate-icon {
+        width: 80px;
+        height: 80px;
+        margin: 0 auto 20px;
+        background: linear-gradient(135deg, #3b82f6 0%, #1e3a8a 100%);
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 10px 30px rgba(59, 130, 246, 0.3);
+        animation: pulse 2s ease infinite;
+    }
+
+    @keyframes pulse {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+    }
+
+    .certificate-icon svg {
+        width: 40px;
+        height: 40px;
+        stroke: #fff;
+    }
+
+    .certificate-title {
+        font-size: 36px;
+        font-weight: 700;
+        color: #fff;
+        margin-bottom: 10px;
+        background: linear-gradient(135deg, #fff 0%, #3b82f6 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .certificate-subtitle {
+        font-size: 16px;
+        color: rgba(255, 255, 255, 0.6);
+        margin-bottom: 0;
+    }
+
+    .certificate-body {
+        background: rgba(255, 255, 255, 0.03);
+        border-radius: 16px;
+        padding: 40px;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        margin-bottom: 30px;
+    }
+
+    .certificate-info {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 25px;
+        margin-bottom: 30px;
+    }
+
+    .info-item {
+        background: rgba(255, 255, 255, 0.05);
+        padding: 20px;
+        border-radius: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        transition: all 0.3s ease;
+    }
+
+    .info-item:hover {
+        background: rgba(255, 255, 255, 0.08);
+        transform: translateY(-2px);
+        box-shadow: 0 5px 20px rgba(59, 130, 246, 0.2);
+    }
+
+    .info-label {
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.5);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .info-label svg {
+        width: 14px;
+        height: 14px;
+    }
+
+    .info-value {
+        font-size: 18px;
+        color: #fff;
+        font-weight: 600;
+    }
+
+    .certificate-id-display {
+        text-align: center;
+        padding: 20px;
+        background: rgba(59, 130, 246, 0.1);
+        border: 2px dashed rgba(59, 130, 246, 0.3);
+        border-radius: 12px;
+        margin-bottom: 30px;
+    }
+
+    .certificate-id-display .label {
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.6);
+        margin-bottom: 5px;
+    }
+
+    .certificate-id-display .value {
+        font-size: 24px;
+        font-weight: 700;
+        color: #3b82f6;
+        font-family: 'Courier New', monospace;
+        letter-spacing: 2px;
+    }
+
+    .download-section {
+        text-align: center;
+    }
+
+    .download-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        padding: 18px 40px;
+        background: linear-gradient(135deg, #3b82f6 0%, #1e3a8a 100%);
+        color: #fff;
+        font-size: 16px;
+        font-weight: 600;
+        border: none;
+        border-radius: 12px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .download-btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: left 0.5s ease;
+    }
+
+    .download-btn:hover::before {
+        left: 100%;
+    }
+
+    .download-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 30px rgba(59, 130, 246, 0.4);
+    }
+
+    .download-btn:active {
+        transform: translateY(0);
+    }
+
+    .download-btn svg {
+        width: 20px;
+        height: 20px;
+        transition: transform 0.3s ease;
+    }
+
+    .download-btn:hover svg {
+        transform: translateY(2px);
+    }
+
+    .back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: rgba(255, 255, 255, 0.6);
+        text-decoration: none;
+        font-size: 14px;
+        margin-top: 20px;
+        transition: all 0.3s ease;
+    }
+
+    .back-link:hover {
+        color: #3b82f6;
+        gap: 12px;
+    }
+
+    .back-link svg {
+        width: 16px;
+        height: 16px;
+    }
+
+    .certificate-badge {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        color: #fff;
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+    }
+
+    .certificate-badge svg {
+        width: 14px;
+        height: 14px;
+    }
+
+    /* Decorative Elements */
+    .decoration-circle {
+        position: absolute;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, transparent 70%);
+    }
+
+    .decoration-circle:nth-child(1) {
+        width: 300px;
+        height: 300px;
+        top: -150px;
+        right: -150px;
+    }
+
+    .decoration-circle:nth-child(2) {
+        width: 200px;
+        height: 200px;
+        bottom: -100px;
+        left: -100px;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .certificate-page {
+            padding: 100px 0 60px;
+        }
+
+        .certificate-card {
+            padding: 30px 20px;
+            border-radius: 16px;
+        }
+
+        .certificate-title {
+            font-size: 28px;
+        }
+
+        .certificate-body {
+            padding: 25px 15px;
+        }
+
+        .certificate-info {
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+
+        .info-item {
+            padding: 15px;
+        }
+
+        .certificate-id-display .value {
+            font-size: 18px;
+        }
+
+        .download-btn {
+            padding: 15px 30px;
+            font-size: 14px;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .certificate-badge {
+            top: 10px;
+            right: 10px;
+            font-size: 11px;
+            padding: 6px 12px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .certificate-icon {
+            width: 60px;
+            height: 60px;
+        }
+
+        .certificate-icon svg {
+            width: 30px;
+            height: 30px;
+        }
+
+        .certificate-title {
+            font-size: 24px;
+        }
+
+        .info-value {
+            font-size: 16px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="certificate-page">
+    <div class="decoration-circle"></div>
+    <div class="decoration-circle"></div>
+    
+    <div class="certificate-container">
+        <div class="certificate-card">
+            <div class="certificate-badge">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Verified
+            </div>
+
+            <div class="certificate-header">
+                <div class="certificate-icon">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 15C15.866 15 19 11.866 19 8C19 4.13401 15.866 1 12 1C8.13401 1 5 4.13401 5 8C5 11.866 8.13401 15 12 15Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M8.21 13.89L7 23L12 20L17 23L15.79 13.88" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <h1 class="certificate-title">Certificate Verified</h1>
+                <p class="certificate-subtitle">Your certificate has been successfully authenticated</p>
+            </div>
+
+            <div class="certificate-body">
+                <div class="certificate-info">
+                    <div class="info-item">
+                        <div class="info-label">
+                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M20 21V19C20 17.9391 19.5786 16.9217 18.8284 16.1716C18.0783 15.4214 17.0609 15 16 15H8C6.93913 15 5.92172 15.4214 5.17157 16.1716C4.42143 16.9217 4 17.9391 4 19V21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M12 11C14.2091 11 16 9.20914 16 7C16 4.79086 14.2091 3 12 3C9.79086 3 8 4.79086 8 7C8 9.20914 9.79086 11 12 11Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            Recipient Name
+                        </div>
+                        <div class="info-value">{{ certificate.name|default:"Not Available" }}</div>
+                    </div>
+
+                    <div class="info-item">
+                        <div class="info-label">
+                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M4 4H20C21.1 4 22 4.9 22 6V18C22 19.1 21.1 20 20 20H4C2.9 20 2 19.1 2 18V6C2 4.9 2.9 4 4 4Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M22 6L12 13L2 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            Email Address
+                        </div>
+                        <div class="info-value">{{ certificate.email|default:"Not Available" }}</div>
+                    </div>
+
+                    <div class="info-item">
+                        <div class="info-label">
+                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M19 4H5C3.89543 4 3 4.89543 3 6V20C3 21.1046 3.89543 22 5 22H19C20.1046 22 21 21.1046 21 20V6C21 4.89543 20.1046 4 19 4Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M16 2V6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M8 2V6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M3 10H21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            Issue Date
+                        </div>
+                        <div class="info-value">{{ certificate.join_date|date:"F d, Y"|default:"Not Available" }}</div>
+                    </div>
+
+                    <div class="info-item">
+                        <div class="info-label">
+                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M21 16V8C20.9996 7.64927 20.9071 7.30481 20.7315 7.00116C20.556 6.69751 20.3037 6.44536 20 6.27L13 2.27C12.696 2.09446 12.3511 2.00205 12 2.00205C11.6489 2.00205 11.304 2.09446 11 2.27L4 6.27C3.69626 6.44536 3.44398 6.69751 3.26846 7.00116C3.09294 7.30481 3.00036 7.64927 3 8V16C3.00036 16.3507 3.09294 16.6952 3.26846 16.9988C3.44398 17.3025 3.69626 17.5546 4 17.73L11 21.73C11.304 21.9055 11.6489 21.998 12 21.998C12.3511 21.998 12.696 21.9055 13 21.73L20 17.73C20.3037 17.5546 20.556 17.3025 20.7315 16.9988C20.9071 16.6952 20.9996 16.3507 21 16Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M3.27002 6.96L12 12.01L20.73 6.96" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M12 22.08V12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            Designation
+                        </div>
+                        <div class="info-value">{{ certificate.designation|default:"Not Available" }}</div>
+                    </div>
+                </div>
+
+                <div class="certificate-id-display">
+                    <div class="label">Certificate ID</div>
+                    <div class="value">{{ certificate.id1 }}</div>
+                </div>
+
+                <div class="download-section">
+                    <a href="{{ pdf_url }}" class="download-btn" download>
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M21 15V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M7 10L12 15L17 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M12 15V3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        Download Certificate
+                    </a>
+                    
+                    <div>
+                        <a href="{% url 'index' %}" class="back-link">
+                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            Back to Home
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Add smooth scroll animation
+document.addEventListener('DOMContentLoaded', function() {
+    // Animate elements on load
+    const card = document.querySelector('.certificate-card');
+    if (card) {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(30px)';
+        
+        setTimeout(() => {
+            card.style.transition = 'all 0.8s ease';
+            card.style.opacity = '1';
+            card.style.transform = 'translateY(0)';
+        }, 100);
+    }
+    
+    // Add ripple effect to download button
+    const downloadBtn = document.querySelector('.download-btn');
+    if (downloadBtn) {
+        downloadBtn.addEventListener('click', function(e) {
+            const ripple = document.createElement('span');
+            ripple.style.position = 'absolute';
+            ripple.style.borderRadius = '50%';
+            ripple.style.background = 'rgba(255, 255, 255, 0.5)';
+            ripple.style.width = '100px';
+            ripple.style.height = '100px';
+            ripple.style.marginLeft = '-50px';
+            ripple.style.marginTop = '-50px';
+            ripple.style.left = e.clientX - this.offsetLeft + 'px';
+            ripple.style.top = e.clientY - this.offsetTop + 'px';
+            ripple.style.animation = 'ripple 0.6s ease-out';
+            
+            this.appendChild(ripple);
+            
+            setTimeout(() => ripple.remove(), 600);
+        });
+    }
+});
+
+// Add ripple animation
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes ripple {
+        from {
+            transform: scale(0);
+            opacity: 1;
+        }
+        to {
+            transform: scale(4);
+            opacity: 0;
+        }
+    }
+`;
+document.head.appendChild(style);
+</script>
+{% endblock %}

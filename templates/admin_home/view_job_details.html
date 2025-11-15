@@ -811,10 +811,10 @@
         <i class="mdi mdi-briefcase-outline"></i>
         <h3>No Jobs Posted Yet</h3>
         <p>Start by adding your first job posting</p>
-        <a href="{% url 'add_job_details' %}" class="btn-add">
+        {% comment %} <a href="{% url 'add_job_details' %}" class="btn-add">
           <i class="mdi mdi-plus"></i>
           Add First Job
-        </a>
+        </a> {% endcomment %}
       </div>
       {% endif %}
     </div>

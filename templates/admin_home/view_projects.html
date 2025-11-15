@@ -809,10 +809,10 @@
         <i class="mdi mdi-briefcase-outline"></i>
         <h3>No Projects Yet</h3>
         <p>Start showcasing your work by adding your first project</p>
-        <a href="{% url 'add_projects' %}" class="btn-add">
+        {% comment %} <a href="{% url 'add_project' %}" class="btn-add">
           <i class="mdi mdi-plus"></i>
           Add First Project
-        </a>
+        </a> {% endcomment %}
       </div>
       {% endif %}
     </div>

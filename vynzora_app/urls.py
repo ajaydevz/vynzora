@@ -12,7 +12,11 @@ urlpatterns = [
     path('portfolio/', views.portfolio, name='portfolio'),
     path('contact/', views.contact, name='contact'),
     
-    path('services/<int:id>/', views.service_detail, name='service_detail'),
+    path('verify-certificate/', views.verify_certificate, name='verify_certificate'),
+    # path('services/<int:id>/', views.service_detail, name='service_detail'),
+    
+    path('services/<slug:slug>/', views.service_detail, name='service_detail'),
+
     
     # path('api/service/<int:pk>/', views.service_api_detail, name='service_api_detail'),
     # path('edit/<int:pk>/', views.service_update, name='service_update'),

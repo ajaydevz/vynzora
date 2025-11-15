@@ -67,10 +67,17 @@ class Website(models.Model):
     
 class Services(models.Model):
     name = models.CharField(max_length=200)
+    slug = models.SlugField(unique=True)
     description = models.TextField()
     image = models.ImageField(upload_to="services/")
     created_at = models.DateTimeField(auto_now_add=True)
 
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)  # Auto-generate slug from title
+        super().save(*args, **kwargs)
+        
+        
     def __str__(self):
         return self.name
 
@@ -238,12 +245,14 @@ class Career_Model(models.Model):
     post_end_date = models.DateTimeField(null=True, blank=True)
 
 
-    
     def is_active(self):
         return self.post_end_date >= timezone.now()
 
-
-
+    @property
+    def active(self):
+        return self.post_end_date and self.post_end_date >= timezone.now()
+    
+    
 # Candidate
 class Candidate(models.Model):
     EXPERIENCE_CHOICES = [
@@ -273,6 +282,8 @@ class Candidate(models.Model):
 
     def __str__(self):
         return self.name
+    
+    
 
 
 

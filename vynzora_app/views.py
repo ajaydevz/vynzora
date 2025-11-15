@@ -68,19 +68,23 @@ import json
 #     }
 #     return render(request, 'home/service.html',context)
 
-def service_detail(request, id):
-    service = get_object_or_404(Services, id=id)
+def service_detail(request,  slug):
+    service = get_object_or_404(Services, slug=slug)
     services = Services.objects.all()   
     offers = getattr(service, 'offers', None)  # if offers is a related_name
     other_services = Services.objects.exclude(id=service.id)[:7]
     process_steps = service.process_steps.all().order_by('id')
+    footer_services = Services.objects.all()[:5]
+    active_jobs = Career_Model.objects.filter(post_end_date__gte=timezone.now()).count()
     
     context = {
         'service': service,
         'offers': offers,
         'other_services': other_services,
         'process_steps': process_steps,
-        'services':services
+        'services':services,
+        'footer_services':footer_services,
+        'career_job_count': active_jobs,
     }
     return render(request, 'home/service.html', context)
 
@@ -620,37 +624,59 @@ def index(request):
         status='active',
         end_date__gte=timezone.now()
     ).first()
-    
-  
-    
-    
+   
 
-    # if request.method == 'POST':
-    #     id1 = request.POST.get('id1')
-    #     pdf_url = generate_certificate_url(id1)
-    #     if pdf_url:
-    #         messages.success(request, "Your certificate has been successfully generated!")
-    #         return render(request, 'certificate.html', {'pdf_url': pdf_url})
-    #     else:
-    #         messages.error(request, "Oops! No certificate found for the provided ID. Please try again.")
-    #         return redirect('index')
+    if request.method == 'POST':
+        id1 = request.POST.get('id1')
+        pdf_url = verify_certificate(id1)
+        if pdf_url:
+            messages.success(request, "Your certificate has been successfully generated!")
+            return render(request, 'home/certificate.html', {'pdf_url': pdf_url})
+        else:
+            messages.error(request, "Oops! No certificate found for the provided ID. Please try again.")
+            return redirect('index')
+        
+        
     # return render(request, 'index.html',{ 'client_logos' : client_logos, 'reviews':reviews,'projects': projects})
     return render(request, 'home/index.html',{'active_banner': active_banner,'cat':cat,'technologies':technologies,'projects':projects,'reviews':reviews,'blogs':blogs,'services':services})
 
 def index_redirect(request):
     return redirect('index')
 
-def generate_certificate_url(id):
-    try:
-        certificate = Certificates.objects.get(id1=id)
-        return f'{settings.MEDIA_URL}{certificate.pdf_file}'
-    except Certificates.DoesNotExist:
-        return None
+# def generate_certificate_url(id):
+#     try:
+#         certificate = Certificates.objects.get(id1=id)
+#         return f'{settings.MEDIA_URL}{certificate.pdf_file}'
+#     except Certificates.DoesNotExist:
+#         return None
+
+def verify_certificate(request):
+    footer_services = Services.objects.all()[:5]
+    services = Services.objects.all()  
+    
+    if request.method == 'POST':
+        id1 = request.POST.get('id1')
+        try:
+            certificate = Certificates.objects.get(id1=id1)
+            pdf_url = f'{settings.MEDIA_URL}{certificate.pdf_file}'
+            return render(request, 'home/certificate.html', {
+                'pdf_url': pdf_url,
+                'certificate': certificate,
+                'services':services,
+                'footer_services':footer_services,
+            })
+        except Certificates.DoesNotExist:
+            messages.error(request, "Certificate not found!")
+            return redirect('index')
+    
+    return redirect('index')
 
 def about(request):
     # technologies = Technologies.objects.all()
     client_logos = Client_Logo.objects.all()
     services = Services.objects.all()   
+    footer_services = Services.objects.all()[:5]
+    active_jobs = Career_Model.objects.filter(post_end_date__gte=timezone.now()).count()
     # team_members = Team.objects.all()
     # if request.method == 'POST':
     #     id1 = request.POST.get('id1')
@@ -661,7 +687,7 @@ def about(request):
     #         messages.error(request, ("Certificate not found for the provided ID!!!"))
     #         return redirect('about')
     # return render(request, 'about.html',{'technologies': technologies, 'client_logos' : client_logos, 'team_members':team_members})
-    return render(request,'home/about.html',{'client_logos': client_logos,'services':services})
+    return render(request,'home/about.html',{'client_logos': client_logos,'services':services,'footer_services':footer_services,'career_job_count': active_jobs})
 
 # def contact(request):
 #     if request.method == 'POST':
@@ -678,7 +704,8 @@ def about(request):
 #     return render(request, 'home/contact.html', {'form': form})
 
 def contact(request):
-    services = Services.objects.all()   
+    services = Services.objects.all() 
+    footer_services = Services.objects.all()[:5]  
     if request.method == 'POST' and request.headers.get('x-requested-with') == 'XMLHttpRequest':
         form = ContactModelForm(request.POST)
         if form.is_valid():
@@ -688,13 +715,15 @@ def contact(request):
             return JsonResponse({'success': False, 'errors': form.errors}, status=400)
     else:
         form = ContactModelForm()
-    return render(request, 'home/contact.html', {'form': form,'services':services})
+    return render(request, 'home/contact.html', {'form': form,'services':services,  'footer_services':footer_services})
 
 def portfolio(request):
     projects = ProjectModel.objects.all()
     services = Services.objects.all()   
+    footer_services = Services.objects.all()[:5]
+    active_jobs = Career_Model.objects.filter(post_end_date__gte=timezone.now()).count()
     # return render(request,'portfolio.html', {'projects':projects})
-    return render(request,'home/works.html',{'projects':projects,'services':services})
+    return render(request,'home/works.html',{'projects':projects,'services':services,'footer_services':footer_services,'career_job_count': active_jobs})
 
 
 def advertising(request):
@@ -728,7 +757,9 @@ def career_submit_application(request):
     # Get active job positions
     job_positions = Career_Model.objects.filter(post_end_date__gte=timezone.now())
     careers = Career_Model.objects.filter(post_end_date__gte=timezone.now())
-    services = Services.objects.all()   
+    services = Services.objects.all()  
+    footer_services = Services.objects.all()[:5] 
+    active_jobs = Career_Model.objects.filter(post_end_date__gte=timezone.now()).count()
     
     if request.method == 'POST':
         form = CandidateForm(request.POST, request.FILES)
@@ -745,7 +776,9 @@ def career_submit_application(request):
         'form': form,
         'job_positions': job_positions,
         'careers': careers,
-        'services':services
+        'services':services,
+        'footer_services':footer_services,
+        'career_job_count': active_jobs
     }
     return render(request, 'home/careers.html', context)
 
@@ -816,16 +849,21 @@ def blog(request):
     blogs = Blog.objects.all().order_by('-created_date')
     services = Services.objects.all() 
     paginator = Paginator(blogs, 6)  # Show 6 blogs per page
+    footer_services = Services.objects.all()[:5]
+    active_jobs = Career_Model.objects.filter(post_end_date__gte=timezone.now()).count()
 
     page_number = request.GET.get('page')
     blogs = paginator.get_page(page_number)
-    return render(request,'home/blog.html',{'blogs':blogs,'services':services})
+    return render(request,'home/blog.html',{'blogs':blogs,'services':services, 'footer_services':footer_services,'career_job_count': active_jobs})
 
 
 def blog_details(request, slug):  
     blog = get_object_or_404(Blog, slug=slug)  # Get blog by slug
     recent_posts = Blog.objects.exclude(id=blog.id).order_by('-created_date')[:4]  # Use blog.id instead of blog_id
-    return render(request, 'home/blog_details.html', {'blog': blog,'recent_posts':recent_posts})
+    footer_services = Services.objects.all()[:5]
+    active_jobs = Career_Model.objects.filter(post_end_date__gte=timezone.now()).count()
+    
+    return render(request, 'home/blog_details.html', {'blog': blog,'recent_posts':recent_posts, 'footer_services':footer_services,'career_job_count': active_jobs})
 
 
 # Admin Side
@@ -1210,7 +1248,10 @@ def delete_team(request,id):
 def index_team(request):
     team_members = Team.objects.all()
     services = Services.objects.all()   
-    return render(request, 'home/team.html', {'team_members': team_members,'services':services})
+    footer_services = Services.objects.all()[:5]
+    active_jobs = Career_Model.objects.filter(post_end_date__gte=timezone.now()).count()
+    
+    return render(request, 'home/team.html', {'team_members': team_members,'services':services,'footer_services':footer_services,'career_job_count': active_jobs})
     
 
 

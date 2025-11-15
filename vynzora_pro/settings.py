@@ -31,10 +31,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY =  config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['vynzora-4.onrender.com', 'localhost', '127.0.0.1']
-
+ALLOWED_HOSTS = ['*']
 
 
 
@@ -50,8 +49,6 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'django.contrib.sitemaps',
     'vynzora_app',
-    'cloudinary',
-    'cloudinary_storage',
 ]
 
 
@@ -60,14 +57,9 @@ SITE_ID = 1
 SITE_DOMAIN = "https://vynzora.com"
 
 
-# Optional: compress static files
-STATICFILES_STORAGE = "whitenoise.storage.CompressedStaticFilesStorage"
-
-
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware', 
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -102,16 +94,13 @@ WSGI_APPLICATION = 'vynzora_pro.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-
 DATABASES = {
-    'default': dj_database_url.parse(config('DATABASE_URL'))
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
 }
+
 
 
 # postgresql://vynzora_db_user:HE4qjg0l2hOqTlKph7rux862vXLRUHWG@dpg-d4abajshg0os73fv1g00-a.oregon-postgres.render.com/vynzora_db
@@ -179,21 +168,3 @@ MESSAGE_TAGS = {
     messages.ERROR: 'danger',
 }
 
-
-SECURE_SSL_REDIRECT = True
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
-
-CLOUDINARY_URL = os.getenv('CLOUDINARY_URL')
-
-
-
-cloudinary.config(
-    cloud_name = os.getenv('CLOUDINARY_CLOUD_NAME'),
-    api_key = os.getenv('CLOUDINARY_API_KEY'),
-    api_secret = os.getenv('CLOUDINARY_API_SECRET'),
-    secure = True
-)
-
-# Media files storage
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'

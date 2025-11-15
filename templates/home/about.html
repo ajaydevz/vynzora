@@ -61,7 +61,7 @@
                 bold ideas into real growth opportunities.</p>
                                     <p class="fs-18 tp-ff-dm lh-140-per mb-40"> Our expertise spans custom web and mobile apps, AI automation, UI/UX, and result-oriented digital
                 campaigns that help brands lead the market with confidence and measurable impact.</p>
-                                    <a href="about-modern-light.html" class="tp-btn-cst d-inline-block mr-5 lh-0 tp-round-26 fs-16 tp-bg-common-green-2 ls-0 tp-btn-switch-2-animation tp-text-common-black-1 fw-700 tp-ff-dm">
+                                    {% comment %} <a href="about-modern-light.html" class="tp-btn-cst d-inline-block mr-5 lh-0 tp-round-26 fs-16 tp-bg-common-green-2 ls-0 tp-btn-switch-2-animation tp-text-common-black-1 fw-700 tp-ff-dm">
                                        <span class="d-flex align-items-center justify-content-center">
                                           <span class="btn-text">About Us</span>
                                           <span class="btn-icon">
@@ -75,7 +75,7 @@
                                              </svg>
                                           </span>
                                        </span> 
-                                    </a>
+                                    </a> {% endcomment %}
                                  </div>
                               </div>
                               <div class="tab-pane" id="market" role="tabpanel">
@@ -85,7 +85,7 @@
                 and revenue growth with precision and insight.</p>
                                     <p class="fs-18 tp-ff-dm lh-140-per mb-40"> From intelligent websites to seamless customer experiences and advanced analytics, we equip
                 businesses with future-ready systems that enhance performance and ensure consistent market advantage.</p>
-                                    <a href="#" class="tp-btn-cst d-inline-block mr-5 lh-0 tp-round-26 fs-16 tp-bg-common-green-2 ls-0 tp-btn-switch-2-animation tp-text-common-black-1 fw-700 tp-ff-dm">
+                                    {% comment %} <a href="#" class="tp-btn-cst d-inline-block mr-5 lh-0 tp-round-26 fs-16 tp-bg-common-green-2 ls-0 tp-btn-switch-2-animation tp-text-common-black-1 fw-700 tp-ff-dm">
                                        <span class="d-flex align-items-center justify-content-center">
                                           <span class="btn-text">About Us</span>
                                           <span class="btn-icon">
@@ -99,7 +99,7 @@
                                              </svg>
                                           </span>
                                        </span> 
-                                    </a>
+                                    </a> {% endcomment %}
                                  </div>
                               </div>
                            </div>
@@ -331,9 +331,9 @@
                            <h4 class="tp-ff-dm fs-28 lh-130-per tp-text-common-black-5 mb-15">  Empowering start-ups from idea to IPO.</h4>
                            <p class="tp-ff-dm fs-18 lh-150-per mb-25">Building lasting partnerships through strategic insight,<br>
                               innovation, and trust.</p>
-                           <a href="#" class="tp-btn-cst d-inline-block lh-0 tp-round-26 fs-16 tp-bg-common-green-2 ls-0 tp-btn-switch-2-animation tp-text-common-black-1 fw-700 tp-ff-dm">
+                           <a href="{% url 'contact' %}" class="tp-btn-cst d-inline-block lh-0 tp-round-26 fs-16 tp-bg-common-green-2 ls-0 tp-btn-switch-2-animation tp-text-common-black-1 fw-700 tp-ff-dm">
                               <span class="d-flex align-items-center justify-content-center">
-                                 <span class="btn-text">See All Services</span>
+                                 <span class="btn-text">Contact Us</span>
                                  <span class="btn-icon">
                                     <svg width="20" height="12" viewBox="0 0 20 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                                        <path d="M20 6.00071C16.4166 4.67142 11.9705 2.40252 9.21414 0L11.1357 5.31243H0.688756C0.552576 5.31246 0.419232 5.35209 0.305998 5.42773C0.192725 5.50341 0.104852 5.61172 0.0527125 5.73756C0.00064999 5.86334 -0.0134432 6.0016 0.0130924 6.13511C0.0396547 6.26871 0.105682 6.39175 0.201995 6.48809C0.330914 6.61703 0.505697 6.68939 0.688048 6.6897H11.135L9.21414 12C11.9701 9.59697 16.4165 7.32913 20 6.00071Z" fill="currentColor" />
@@ -410,7 +410,7 @@
                                        <div class="tp-service-cst-content tp-bg-common-white">
                                           <h5 class="fw-600 fs-28 tp-ff-dm tp-text-common-black-1 mb-15"><a class="underline-black" href="service-details-2-light.html">Business consulting</a></h5>
                                           <p class="tp-service-cst-item-border tp-ff-dm fs-18 lh-140-per tp-text-common-black-1">Finance consulting involves providing expert advice<br> to businesses, individuals, or organizations</p>
-                                          <a href="service-details-2-light.html" class="tp-left-right fw-700 tp-ff-dm fs-16 text-uppercase tp-text-common-black-1">
+                                          {% comment %} <a href="service-details-2-light.html" class="tp-left-right fw-700 tp-ff-dm fs-16 text-uppercase tp-text-common-black-1">
                                              <span class="mr10 td-text d-inline-block mr-5">View Details</span>
                                              <span class="tp-arrow-angle">
                                                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -418,7 +418,7 @@
                                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M2.41379 3.30208C5.97452 3.05821 10.6092 1.55558 14 0C12.4438 3.39014 10.9406 8.02425 10.6973 11.585L8.35765 6.59331L1.14783 13.8037C1.02165 13.9295 0.850656 14.0001 0.672431 14C0.539461 14 0.409486 13.9605 0.298934 13.8866C0.188382 13.8128 0.102217 13.7077 0.0513353 13.5849C0.000453949 13.462 -0.0128613 13.3269 0.013072 13.1965C0.0390053 13.066 0.103024 12.9462 0.197034 12.8522L7.40683 5.64241L2.41379 3.30208Z" fill="currentColor" />
                                                 </svg>
                                              </span>
-                                          </a>
+                                          </a> {% endcomment %}
                                        </div>
                                     </div>
                                  </div>
@@ -498,7 +498,7 @@
                                  streamline operations, boost efficiency.</p>
                            </div>
                            <div class="tp_fade_anim" data-delay=".8" data-fade-from="right">
-                              <a href="#" class="tp-btn-cst d-inline-block mr-5 lh-0 tp-round-26 fs-16 tp-bg-common-green-2 ls-0 tp-btn-switch-2-animation tp-text-common-black-1 fw-700 tp-ff-dm">
+                              {% comment %} <a href="#" class="tp-btn-cst d-inline-block mr-5 lh-0 tp-round-26 fs-16 tp-bg-common-green-2 ls-0 tp-btn-switch-2-animation tp-text-common-black-1 fw-700 tp-ff-dm">
                                  <span class="d-flex align-items-center justify-content-center">
                                     <span class="btn-text">View More</span>
                                     <span class="btn-icon">
@@ -512,7 +512,7 @@
                                        </svg>
                                     </span>
                                  </span> 
-                              </a>
+                              </a> {% endcomment %}
                            </div>
                         </div>
                      </div>
@@ -619,10 +619,10 @@
                                     <div class="tp-banner-cst-logo">
                                        <a href="{% url 'index' %}"><img data-width="125" src="{% static 'assets/img/logo/logo-white-2.png' %}" alt=""></a>
                                     </div>
-                                    <p class="tp-ff-dm fw-500 fs-18 tp-text-grey-5 ls-m-2 lh-1 mb-10">Supper Services <br> award</p>
-                                    <a href="service-details-2-light.html" class="tp-banner-cst-logo-btn tp-left-right">
+                                    <p class="tp-ff-dm fw-500 fs-18 tp-text-grey-5 ls-m-2 lh-1 mb-10">Explore what we <br> provides</p>
+                                    <a href="#" class="tp-banner-cst-logo-btn tp-left-right">
                                        <span class="tp-arrow-angle">
-                                          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" style="color: white;">
                                              <path fill-rule="evenodd" clip-rule="evenodd" d="M2.41379 3.30208C5.97452 3.05821 10.6092 1.55558 14 0C12.4438 3.39014 10.9406 8.02425 10.6973 11.585L8.35765 6.59331L1.14783 13.8037C1.02165 13.9295 0.850656 14.0001 0.672431 14C0.539461 14 0.409486 13.9605 0.298934 13.8866C0.188382 13.8128 0.102217 13.7077 0.0513353 13.5849C0.000453949 13.462 -0.0128613 13.3269 0.013072 13.1965C0.0390053 13.066 0.103024 12.9462 0.197034 12.8522L7.40683 5.64241L2.41379 3.30208Z" fill="currentColor" />
                                              <path fill-rule="evenodd" clip-rule="evenodd" d="M2.41379 3.30208C5.97452 3.05821 10.6092 1.55558 14 0C12.4438 3.39014 10.9406 8.02425 10.6973 11.585L8.35765 6.59331L1.14783 13.8037C1.02165 13.9295 0.850656 14.0001 0.672431 14C0.539461 14 0.409486 13.9605 0.298934 13.8866C0.188382 13.8128 0.102217 13.7077 0.0513353 13.5849C0.000453949 13.462 -0.0128613 13.3269 0.013072 13.1965C0.0390053 13.066 0.103024 12.9462 0.197034 12.8522L7.40683 5.64241L2.41379 3.30208Z" fill="currentColor" />
                                           </svg>
@@ -641,7 +641,7 @@
                                  <div class="col-lg-6">
                                     <div class="tp-hero-cst-btn-inner text-lg-end mb-5">
                                        <div class="tp_fade_anim d-inline-block" data-delay=".3" data-fade-from="top" data-ease="bounce">
-                                          <a href="service-details-2-light.html" class="tp-btn-cst mb-15 d-inline-block mr-5 lh-0 tp-round-26 fs-15 tp-bg-common-green-2 ls-0 tp-btn-switch-2-animation tp-text-common-black-1 fw-700 tp-ff-dm">
+                                          <a href="{% url 'contact' %}" class="tp-btn-cst mb-15 d-inline-block mr-5 lh-0 tp-round-26 fs-15 tp-bg-common-green-2 ls-0 tp-btn-switch-2-animation tp-text-common-black-1 fw-700 tp-ff-dm">
                                              <span class="d-flex align-items-center justify-content-center">
                                                 <span class="btn-text">Free Consulting</span>
                                                 <span class="btn-icon">
@@ -658,7 +658,7 @@
                                           </a>
                                        </div>
                                        <div class="tp_fade_anim d-inline-block" data-delay=".5" data-fade-from="top" data-ease="bounce">
-                                          <a href="service-details-2-light.html" class="tp-btn-cst mb-15 tp-btn-gradian d-inline-block lh-0 tp-round-26 fs-15 ls-0 tp-btn-switch-2-animation tp-text-common-white hover-text-white fw-700 tp-ff-dm">
+                                          <a href="{% url 'contact' %}" class="tp-btn-cst mb-15 tp-btn-gradian d-inline-block lh-0 tp-round-26 fs-15 ls-0 tp-btn-switch-2-animation tp-text-common-white hover-text-white fw-700 tp-ff-dm">
                                              <span class="d-flex align-items-center justify-content-center">
                                                 <span class="btn-text">Schedule a Consultation</span>
                                                 <span class="btn-icon">
