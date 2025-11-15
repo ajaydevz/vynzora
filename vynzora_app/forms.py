@@ -36,7 +36,7 @@ FAQFormSet = inlineformset_factory(
 class ContactModelForm(forms.ModelForm):
     class Meta:
         model = ContactModel
-        fields = '__all__'
+        fields = ['name','phone','email', 'message']
 
 # Clien Review
 class ClientReviewForm(forms.ModelForm):

@@ -87,8 +87,8 @@
                                     </div>
                                  </div>
                               </form> {% endcomment %}
-                             <form method="post" id="contact-form" action="{% url 'contact' %}">
-    {% csrf_token %}
+                             <form method="POST" id="contact-form" action="{% url 'contact' %}">
+     {% csrf_token %}
     <div class="row">
         <!-- Name -->
         <div class="col-lg-6">
@@ -148,7 +148,9 @@
                <div class="container">
                   <div class="row justify-content-center">
                      <div class="col-xl-10">
-                        <div class="cn-contactform-support-bg d-flex align-items-center justify-content-center" data-background="assets/img/contact/contact-us-shape.png">
+                       <div class="cn-contactform-support-bg d-flex align-items-center justify-content-center" 
+     data-background="{% static 'assets/img/contact/contact-us-shape.png' %}">
+
                            <div class="cn-contactform-support-text text-center">
                                  <span>Or, you can contact one of our studios
                                     directly below. We aim to respond
@@ -407,48 +409,4 @@
             </div> {% endcomment %}
             <!-- tp-text-slider-area-end -->
 
-
-<script>
-function showToast(message, success=true) {
-    var $toast = $('#toast');
-    $toast.css('background-color', success ? '#28a745' : '#dc3545');
-    $toast.text(message).fadeIn(400).delay(3000).fadeOut(400);
-}
-
-$(document).ready(function() {
-    $('#contact-form').on('submit', function(e) {
-        e.preventDefault();
-
-        var $form = $(this);
-        var $button = $form.find('button[type="submit"]');
-        $button.prop('disabled', true).text('Sending...');
-
-        $.ajax({
-            type: $form.attr('method'),
-            url: $form.attr('action'),
-            data: $form.serialize(),
-            dataType: 'json',
-            success: function(data) {
-                if (data.success) {
-                    showToast('Your message has been successfully sent!', true);
-                    $form[0].reset();
-                } else {
-                    showToast('Please fix the errors in the form.', false);
-                }
-            },
-            error: function(xhr) {
-                let errors = xhr.responseJSON?.errors || {};
-                let errorMessages = [];
-                for (let field in errors) {
-                    errorMessages.push(errors[field].join(', '));
-                }
-                showToast(errorMessages.join(' | ') || 'Something went wrong. Try again.', false);
-            },
-            complete: function() {
-                $button.prop('disabled', false).text('Send Message');
-            }
-        });
-    });
-});
-</script>
 {% endblock %}

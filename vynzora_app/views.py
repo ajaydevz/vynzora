@@ -659,6 +659,7 @@ def verify_certificate(request):
         try:
             certificate = Certificates.objects.get(id1=id1)
             pdf_url = f'{settings.MEDIA_URL}{certificate.pdf_file}'
+            messages.success(request, f"Certificate verified successfully for ID: {id1}")
             return render(request, 'home/certificate.html', {
                 'pdf_url': pdf_url,
                 'certificate': certificate,
@@ -666,7 +667,7 @@ def verify_certificate(request):
                 'footer_services':footer_services,
             })
         except Certificates.DoesNotExist:
-            messages.error(request, "Certificate not found!")
+            messages.error(request, f"No certificate found with ID: {id1}. Please check and try again.")
             return redirect('index')
     
     return redirect('index')
@@ -689,33 +690,33 @@ def about(request):
     # return render(request, 'about.html',{'technologies': technologies, 'client_logos' : client_logos, 'team_members':team_members})
     return render(request,'home/about.html',{'client_logos': client_logos,'services':services,'footer_services':footer_services,'career_job_count': active_jobs})
 
+def contact(request):
+    if request.method == 'POST':
+        form = ContactModelForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Your message has been successfully submitted.')
+            return redirect('contact')
+        else:
+            messages.error(request, "Oops! Please try again.")
+            return redirect('contact')
+    else:
+        form = ContactModelForm()
+    return render(request, 'home/contact.html', {'form': form})
+
 # def contact(request):
+#     services = Services.objects.all() 
+#     footer_services = Services.objects.all()[:5]  
 #     if request.method == 'POST':
 #         form = ContactModelForm(request.POST)
 #         if form.is_valid():
 #             form.save()
-#             messages.success(request, 'Your message has been successfully submitted.')
-#             return redirect('contact')
+#             return JsonResponse({'success': True})
 #         else:
-#             messages.error(request, "Oops! Please try again.")
-#             return redirect('contact')
+#             return JsonResponse({'success': False, 'errors': form.errors}, status=400)
 #     else:
 #         form = ContactModelForm()
-#     return render(request, 'home/contact.html', {'form': form})
-
-def contact(request):
-    services = Services.objects.all() 
-    footer_services = Services.objects.all()[:5]  
-    if request.method == 'POST' and request.headers.get('x-requested-with') == 'XMLHttpRequest':
-        form = ContactModelForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return JsonResponse({'success': True})
-        else:
-            return JsonResponse({'success': False, 'errors': form.errors}, status=400)
-    else:
-        form = ContactModelForm()
-    return render(request, 'home/contact.html', {'form': form,'services':services,  'footer_services':footer_services})
+#     return render(request, 'home/contact.html', {'form': form,'services':services,  'footer_services':footer_services})
 
 def portfolio(request):
     projects = ProjectModel.objects.all()

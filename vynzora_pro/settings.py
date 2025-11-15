@@ -27,6 +27,8 @@ SECRET_KEY = os.environ.get("SECRET_KEY", "local-dev-key")
 
 DEBUG = os.getenv("DEBUG", "False") == "True"
 
+
+
 ALLOWED_HOSTS = ["vynzora-5.onrender.com", "localhost", "127.0.0.1"]
 
 
@@ -159,6 +161,10 @@ X_FRAME_OPTIONS = 'SAMEORIGIN'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
+
+# Message framework (should already be there, but verify)
+MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
+
 from django.contrib.messages import constants as messages
 
 MESSAGE_TAGS = {
@@ -166,5 +172,5 @@ MESSAGE_TAGS = {
     messages.INFO: 'info',
     messages.SUCCESS: 'success',
     messages.WARNING: 'warning',
-    messages.ERROR: 'danger',
+    messages.ERROR: 'error',
 }
