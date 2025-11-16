@@ -409,4 +409,88 @@
             </div> {% endcomment %}
             <!-- tp-text-slider-area-end -->
 
+   
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+(function() {
+    'use strict';
+    
+    let isSubmitting = false;
+    
+    document.addEventListener('DOMContentLoaded', function() {
+        const contactForm = document.getElementById('contact-form');
+        
+        if (!contactForm) return;
+        
+        const newForm = contactForm.cloneNode(true);
+        contactForm.parentNode.replaceChild(newForm, contactForm);
+        
+        newForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            e.stopImmediatePropagation();
+            
+            if (isSubmitting) {
+                console.log('Already submitting, ignoring duplicate request');
+                return false;
+            }
+            
+            isSubmitting = true;
+            
+            const submitBtn = this.querySelector('button[type="submit"]');
+            const btnText = submitBtn.querySelector('.btn-text');
+            const originalText = btnText.textContent;
+            
+            submitBtn.disabled = true;
+            btnText.textContent = 'Sending...';
+            submitBtn.style.opacity = '0.6';
+            submitBtn.style.cursor = 'not-allowed';
+            
+            const formData = new FormData(this);
+            
+            fetch(this.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                }
+            })
+            .then(response => {
+                if (!response.ok) throw new Error('Network response was not ok');
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    showToast(data.message || 'Your message has been successfully submitted!', 'success');
+                    newForm.reset();
+                    setTimeout(() => {
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }, 1000);
+                } else {
+                    showToast(data.message || 'Oops! Please try again.', 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showToast('An error occurred. Please try again.', 'error');
+            })
+            .finally(() => {
+                submitBtn.disabled = false;
+                btnText.textContent = originalText;
+                submitBtn.style.opacity = '1';
+                submitBtn.style.cursor = 'pointer';
+                
+                setTimeout(() => {
+                    isSubmitting = false;
+                }, 1000);
+            });
+            
+            return false;
+        }, false);
+    });
+})();
+</script>
 {% endblock %}

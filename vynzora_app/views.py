@@ -654,6 +654,8 @@ def verify_certificate(request):
     footer_services = Services.objects.all()[:5]
     services = Services.objects.all()  
     
+    previous_url = request.META.get('HTTP_REFERER') or '/'
+    
     if request.method == 'POST':
         id1 = request.POST.get('id1')
         try:
@@ -668,9 +670,9 @@ def verify_certificate(request):
             })
         except Certificates.DoesNotExist:
             messages.error(request, f"No certificate found with ID: {id1}. Please check and try again.")
-            return redirect('index')
+            return redirect(previous_url)
     
-    return redirect('index')
+    return redirect(previous_url)
 
 def about(request):
     # technologies = Technologies.objects.all()
@@ -690,19 +692,58 @@ def about(request):
     # return render(request, 'about.html',{'technologies': technologies, 'client_logos' : client_logos, 'team_members':team_members})
     return render(request,'home/about.html',{'client_logos': client_logos,'services':services,'footer_services':footer_services,'career_job_count': active_jobs})
 
+# def contact(request):
+#     if request.method == 'POST':
+#         form = ContactModelForm(request.POST)
+#         if form.is_valid():
+#             form.save()
+#             messages.success(request, 'Your message has been successfully submitted.')
+#             return redirect('contact')
+#         else:
+#             messages.error(request, "Oops! Please try again.")
+#             return redirect('contact')
+#     else:
+#         form = ContactModelForm()
+#     return render(request, 'home/contact.html', {'form': form})
+
 def contact(request):
+    
+    services = Services.objects.all()   
+    footer_services = Services.objects.all()[:5]
+    active_jobs = Career_Model.objects.filter(post_end_date__gte=timezone.now()).count()
+    
     if request.method == 'POST':
         form = ContactModelForm(request.POST)
+        
+        
+        # Check if it's an AJAX request
+        is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
+        
         if form.is_valid():
             form.save()
-            messages.success(request, 'Your message has been successfully submitted.')
-            return redirect('contact')
+            
+            if is_ajax:
+                return JsonResponse({
+                    'success': True,
+                    'message': 'Your message has been successfully submitted.'
+                })
+            else:
+                messages.success(request, 'Your message has been successfully submitted.')
+                return redirect('contact')
         else:
-            messages.error(request, "Oops! Please try again.")
-            return redirect('contact')
+            if is_ajax:
+                return JsonResponse({
+                    'success': False,
+                    'message': 'Oops! Please check your form and try again.',
+                    'errors': form.errors
+                }, status=400)
+            else:
+                messages.error(request, "Oops! Please try again.")
+                return redirect('contact')
     else:
         form = ContactModelForm()
-    return render(request, 'home/contact.html', {'form': form})
+    
+    return render(request, 'home/contact.html', {'form': form,'services':services,'footer_services':footer_services,'career_job_count': active_jobs})
 
 # def contact(request):
 #     services = Services.objects.all() 

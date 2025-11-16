@@ -2031,6 +2031,7 @@ document.addEventListener('DOMContentLoaded', function() {
 </div>
 
                     <!-- tp-portfolio-area-end -->
+                     
                     <!-- tp-pricing-area-start -->
 
                     <div class="tp-testimonial-area pt-155 tp-bg-common-white pb-120 p-relative z-index-1">
@@ -2591,6 +2592,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         </div>
                     </div>  {% endcomment %}
                     <!-- tp-testimonial-area-end -->
+                     
                     <!-- tp-faq-area-start -->
                     <div class="tp-faq-area tp-bg-common-black-5 pt-155 pb-100 p-relative z-index-1">
                         <img class="tp-faq-ai-noise" src="{% static 'assets/img/body/noise.webp' %}" alt="">
@@ -2695,7 +2697,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     </div>
                     <!-- tp-faq-area-end -->
                     <!-- tp-cta-area-start -->
-                    <div class="tp-cta-area tp-bg-common-black-5 section-m-spacing p-relative z-index-1">
+                    {% comment %} <div class="tp-cta-area tp-bg-common-black-5 section-m-spacing p-relative z-index-1">
                         <img class="tp-faq-ai-noise" src="{% static 'assets/img/body/noise.webp' %}" alt="">
                         <div class="container-fluid container-1824">
                             <div class="tp-cta-ai-bg bg-position tp-image-distortion z-index-1" data-background="{% static 'assets/img/cta/ai/bg.webp' %}">
@@ -2727,7 +2729,267 @@ document.addEventListener('DOMContentLoaded', function() {
                                 </div>
                             </div>
                         </div>
+                    </div>  {% endcomment %}
+                    <!-- tp-certificate-verify-area-start -->
+<div class="tp-certificate-verify-area pt-155 pb-155 tp-bg-common-white p-relative z-index-1">
+    <img class="tp-certificate-verify-shape p-absolute" src="{% static 'assets/img/pricing/shape.webp' %}" alt="">
+    <div class="container-fluid container-1524">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="tp-certificate-verify-wrap text-center">
+                    <!-- Section Title -->
+                    <div class="tp-certificate-verify-title-wrap mb-50 tp_fade_anim" data-delay=".3">
+                        <span class="tp-ff-inter fw-500 fs-18 ls-m-4 tp-text-common-black-5 mb-15 d-inline-block">/ Certificate Verification /</span>
+                        <h2 class="tp-section-ai-title fs-72 fs-xl-65 fs-lg-55 fs-sm-45 fs-xs-40 fw-600 ls-m-4 tp-ff-jakarta tp-text-common-black-6 mb-30">
+                            Verify Your <span class="title-slide-gradient">Certificate</span>
+                        </h2>
+                        <p class="tp-section-ai-para tp-ff-dm fw-400 fs-22 ls-m-2 lh-150-per tp-text-common-black-6 opacity-8">
+                            Enter your unique certificate ID to instantly verify<br>its authenticity and view certification details
+                        </p>
                     </div>
+
+                    <!-- Verification Form -->
+                    <div class="tp-certificate-verify-form-wrap mb-40 tp_fade_anim" data-delay=".5" data-fade-from="bottom" data-ease="bounce">
+                        <form method="post" action="{% url 'verify_certificate' %}" class="tp-certificate-verify-form">
+                            {% csrf_token %}
+                            <div class="tp-certificate-verify-input-wrapper d-flex align-items-center justify-content-center gap-3">
+                                <div class="tp-certificate-verify-input-box position-relative">
+                                    <span class="input-icon position-absolute">
+                                        {% comment %} <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M9 12L11 14L15 10M12 3L13.09 6.26L16.36 7.35L13.09 8.44L12 11.7L10.91 8.44L7.64 7.35L10.91 6.26L12 3Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg> {% endcomment %}
+                                    </span>
+                                    <input 
+                                        type="text" 
+                                        name="id1" 
+                                        placeholder="Enter Certificate ID" 
+                                        class="tp-certificate-verify-input tp-ff-dm fw-500 fs-18 ls-m-2 tp-text-common-black-6"
+                                        autocomplete="off"
+                                        required
+                                    >
+                                </div>
+                                <button type="submit" class="tp-btn-ai tp-btn-ai-xl tp-btn-switch-2-animation p-relative hover-text-white d-inline-block text-uppercase tp-text-common-black-6 lh-1 fs-16 fw-700 tp-ff-dm">
+                                    <span class="d-flex align-items-center justify-content-center">
+                                        <span class="btn-text">Verify Now</span>
+                                        <span class="btn-icon">
+                                            <svg width="20" height="12" viewBox="0 0 20 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M20 6.00071C16.4166 4.67142 11.9705 2.40252 9.21414 0L11.1357 5.31243H0.688756C0.552576 5.31246 0.419232 5.35209 0.305998 5.42773C0.192725 5.50341 0.104852 5.61172 0.0527125 5.73756C0.00064999 5.86334 -0.0134432 6.0016 0.0130924 6.13511C0.0396547 6.26871 0.105682 6.39175 0.201995 6.48809C0.330914 6.61703 0.505697 6.68939 0.688048 6.6897H11.135L9.21414 12C11.9701 9.59697 16.4165 7.32913 20 6.00071Z" fill="currentColor"/>
+                                            </svg>
+                                        </span>
+                                        <span class="btn-icon">
+                                            <svg width="20" height="12" viewBox="0 0 20 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M20 6.00071C16.4166 4.67142 11.9705 2.40252 9.21414 0L11.1357 5.31243H0.688756C0.552576 5.31246 0.419232 5.35209 0.305998 5.42773C0.192725 5.50341 0.104852 5.61172 0.0527125 5.73756C0.00064999 5.86334 -0.0134432 6.0016 0.0130924 6.13511C0.0396547 6.26871 0.105682 6.39175 0.201995 6.48809C0.330914 6.61703 0.505697 6.68939 0.688048 6.6897H11.135L9.21414 12C11.9701 9.59697 16.4165 7.32913 20 6.00071Z" fill="currentColor"/>
+                                            </svg>
+                                        </span>
+                                    </span>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Verification Note -->
+                    <div class="tp-certificate-verify-note tp_fade_anim" data-delay=".7">
+                        <p class="tp-ff-dm fw-500 fs-16 ls-m-2 tp-text-common-black-6 opacity-7 mb-0 d-flex align-items-center justify-content-center gap-2">
+                            {% comment %} <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                                <path d="M12 16V12M12 8H12.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            </svg> {% endcomment %}
+                            All certificates issued by Vynzora are cryptographically secured and instantly verifiable
+                        </p>
+                    </div>
+
+                    <!-- Trust Badges -->
+                    <div class="tp-certificate-verify-badges mt-60 tp_fade_anim" data-delay=".9">
+                        <div class="row gx-4 justify-content-center">
+                            <div class="col-lg-4 col-md-6 col-sm-6">
+                                <div class="tp-certificate-badge-item tp-round-24 tp-bg-common-white p-4 mb-3">
+                                    <div class="d-flex align-items-center justify-content-center gap-3">
+                                        <span class="badge-icon">
+                                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+                                                <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="#FFD700" stroke="#FFD700" stroke-width="2"/>
+                                            </svg>
+                                        </span>
+                                        <div class="text-start">
+                                            <h5 class="tp-ff-jakarta fw-600 fs-18 tp-text-common-black-5 mb-0">Verified</h5>
+                                            <span class="tp-ff-dm fw-400 fs-14 tp-text-common-black-5 opacity-7">Instant Validation</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-6 col-sm-6">
+                                <div class="tp-certificate-badge-item tp-round-24 tp-bg-common-white p-4 mb-3">
+                                    <div class="d-flex align-items-center justify-content-center gap-3">
+                                        <span class="badge-icon">
+                                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+                                                <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="#10b981" stroke-width="2"/>
+                                                <path d="M12 6V12L16 14" stroke="#10b981" stroke-width="2" stroke-linecap="round"/>
+                                            </svg>
+                                        </span>
+                                        <div class="text-start">
+                                            <h5 class="tp-ff-jakarta fw-600 fs-18 tp-text-common-black-5 mb-0">Secure</h5>
+                                            <span class="tp-ff-dm fw-400 fs-14 tp-text-common-black-5 opacity-7">Blockchain Protected</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-6 col-sm-6">
+                                <div class="tp-certificate-badge-item tp-round-24 tp-bg-common-white p-4 mb-3">
+                                    <div class="d-flex align-items-center justify-content-center gap-3">
+                                        <span class="badge-icon">
+                                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+                                                <path d="M9 12L11 14L15 10" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                                <path d="M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#3b82f6" stroke-width="2"/>
+                                            </svg>
+                                        </span>
+                                        <div class="text-start">
+                                            <h5 class="tp-ff-jakarta fw-600 fs-18 tp-text-common-black-5 mb-0">Authentic</h5>
+                                            <span class="tp-ff-dm fw-400 fs-14 tp-text-common-black-5 opacity-7">Tamper-Proof</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- tp-certificate-verify-area-end -->
+
+<style>
+/* Certificate Verification Section Styles */
+.tp-certificate-verify-area {
+    position: relative;
+    overflow: hidden;
+}
+
+.tp-certificate-verify-shape {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0.03;
+    max-width: 800px;
+    width: 100%;
+    z-index: -1;
+}
+
+/* Form Styles */
+.tp-certificate-verify-form {
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.tp-certificate-verify-input-wrapper {
+    flex-wrap: wrap;
+}
+
+.tp-certificate-verify-input-box {
+    flex: 1;
+    min-width: 300px;
+}
+
+.tp-certificate-verify-input-box .input-icon {
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0.5;
+    pointer-events: none;
+    z-index: 1;
+
+}
+
+.tp-certificate-verify-input {
+    width: 100%;
+    padding: 18px 20px 18px 50px;
+    border: 2px solid #e5e5e5;
+    border-radius: 12px;
+    background: #ffffff;
+    transition: all 0.3s ease;
+    border: 2px solid #ccc !important; 
+  
+}
+
+.tp-certificate-verify-input:focus {
+    outline: none;
+    border-color: #111112;
+    box-shadow: 0 4px 20px rgba(17, 17, 18, 0.1);
+}
+
+.tp-certificate-verify-input::placeholder {
+    color: #999;
+}
+
+/* Badge Items */
+.tp-certificate-badge-item {
+    border: 1px solid #f0f0f0;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.tp-certificate-badge-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    border-color: #e0e0e0;
+}
+
+.tp-certificate-badge-item .badge-icon {
+    flex-shrink: 0;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .tp-certificate-verify-input-wrapper {
+        flex-direction: column;
+        gap: 15px !important;
+    }
+    
+    .tp-certificate-verify-input-box {
+        min-width: 100%;
+    }
+    
+    .tp-certificate-verify-form .tp-btn-ai {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .tp-certificate-verify-badges .row {
+        gap: 0;
+    }
+    
+    .tp-certificate-badge-item {
+        margin-bottom: 15px;
+    }
+}
+
+@media (max-width: 576px) {
+    .tp-certificate-verify-area {
+        padding-top: 80px;
+        padding-bottom: 80px;
+    }
+    
+    .tp-certificate-verify-title-wrap {
+        margin-bottom: 30px;
+    }
+    
+    .tp-section-ai-title {
+        margin-bottom: 20px !important;
+    }
+    
+    .tp-certificate-verify-badges {
+        margin-top: 40px;
+    }
+    
+    .tp-certificate-badge-item .d-flex {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .tp-certificate-badge-item .text-start {
+        text-align: center !important;
+    }
+}
+</style>
                     <!-- tp-cta-area-end -->
                     <!-- tp-blog-area-start -->
                      <div class="tp-blog-area pt-155 tp-bg-common-black-5 section-m-spacing p-relative z-index-1 pb-130">
@@ -2788,7 +3050,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         {{ blog.created_date|date:"M d, Y" }}
                     </span>
                     <h4 class="tp-blog-ai-title tp-ff-jakarta fs-24 fs-md-22 lh-140-per ls-m-4 tp-text-grey-5">
-                        <a href="#" class="underline-white">{{ blog.name }}</a>
+                        <a href="{% url 'blog_details' blog.slug %}" class="underline-white">{{ blog.name }}</a>
                     </h4>
                     {% comment %} <p class="tp-text-grey-5 mt-2" style="min-height: 60px;">{{ blog.description|truncatewords:25 }}</p> {% endcomment %}
                 </div>
@@ -3002,6 +3264,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     </div>
 </div> {% endcomment %}
+
+                
+                
 
                 
                 <footer>

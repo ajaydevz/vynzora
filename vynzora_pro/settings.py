@@ -28,7 +28,6 @@ SECRET_KEY = os.environ.get("SECRET_KEY", "local-dev-key")
 DEBUG = os.getenv("DEBUG", "False") == "True"
 
 
-
 ALLOWED_HOSTS = ["vynzora-5.onrender.com", "localhost", "127.0.0.1"]
 
 
@@ -61,6 +60,7 @@ CLOUDINARY_STORAGE = {
 }
 
 DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
+
 
 
 MIDDLEWARE = [
