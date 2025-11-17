@@ -1,0 +1,427 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vynzora - AI & Digital Solutions</title>
+     <link rel="shortcut icon" href="{% static 'favicon.ico' %}">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #0a0a0a;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        .error-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Animated background grid */
+        .grid-bg {
+            position: absolute;
+            inset: 0;
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: gridMove 20s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% {
+                transform: translate(0, 0);
+            }
+            100% {
+                transform: translate(50px, 50px);
+            }
+        }
+
+        /* Floating particles */
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            animation: float 15s infinite;
+        }
+
+        .particle:nth-child(1) { left: 10%; animation-delay: 0s; }
+        .particle:nth-child(2) { left: 20%; animation-delay: 2s; }
+        .particle:nth-child(3) { left: 30%; animation-delay: 4s; }
+        .particle:nth-child(4) { left: 40%; animation-delay: 1s; }
+        .particle:nth-child(5) { left: 50%; animation-delay: 3s; }
+        .particle:nth-child(6) { left: 60%; animation-delay: 5s; }
+        .particle:nth-child(7) { left: 70%; animation-delay: 2s; }
+        .particle:nth-child(8) { left: 80%; animation-delay: 4s; }
+        .particle:nth-child(9) { left: 90%; animation-delay: 1s; }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(100vh) scale(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) scale(1);
+            }
+        }
+
+        .error-content {
+            text-align: center;
+            position: relative;
+            z-index: 10;
+            padding: 2rem;
+        }
+
+        /* 404 Number Animation */
+        .error-number {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .digit {
+            font-size: 10rem;
+            font-weight: 900;
+            line-height: 1;
+            background: linear-gradient(135deg, #fff 0%, #666 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            position: relative;
+            animation: digitFloat 3s ease-in-out infinite;
+        }
+
+        .digit:nth-child(1) {
+            animation-delay: 0s;
+        }
+
+        .digit:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .digit:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes digitFloat {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+            }
+            25% {
+                transform: translateY(-20px) rotate(2deg);
+            }
+            75% {
+                transform: translateY(-10px) rotate(-2deg);
+            }
+        }
+
+        /* Glitch effect on hover */
+        .digit:hover {
+            animation: glitch 0.3s infinite;
+        }
+
+        @keyframes glitch {
+            0% {
+                transform: translate(0);
+            }
+            20% {
+                transform: translate(-2px, 2px);
+            }
+            40% {
+                transform: translate(-2px, -2px);
+            }
+            60% {
+                transform: translate(2px, 2px);
+            }
+            80% {
+                transform: translate(2px, -2px);
+            }
+            100% {
+                transform: translate(0);
+            }
+        }
+
+        /* Orbiting circles around 404 */
+        .orbit-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 500px;
+            height: 500px;
+            pointer-events: none;
+        }
+
+        .orbit {
+            position: absolute;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: rotate 20s linear infinite;
+        }
+
+        .orbit-1 {
+            width: 300px;
+            height: 300px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .orbit-2 {
+            width: 400px;
+            height: 400px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation-duration: 30s;
+            animation-direction: reverse;
+        }
+
+        .orbit-dot {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: #fff;
+            border-radius: 50%;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+        }
+
+        @keyframes rotate {
+            from {
+                transform: translate(-50%, -50%) rotate(0deg);
+            }
+            to {
+                transform: translate(-50%, -50%) rotate(360deg);
+            }
+        }
+
+        .error-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease-out 0.5s forwards;
+        }
+
+        .error-description {
+            font-size: 1.1rem;
+            color: #999;
+            margin-bottom: 2rem;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease-out 0.7s forwards;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .btn-home {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            background: #fff;
+            color: #0a0a0a;
+            text-decoration: none;
+            font-weight: 600;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease-out 0.9s forwards;
+        }
+
+        .btn-home::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.1);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn-home:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .btn-home:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-home span {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Scanline effect */
+        .scanline {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(255, 255, 255, 0.3), 
+                transparent
+            );
+            animation: scan 3s linear infinite;
+        }
+
+        @keyframes scan {
+            0% {
+                transform: translateY(0);
+            }
+            100% {
+                transform: translateY(100vh);
+            }
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .digit {
+                font-size: 6rem;
+            }
+
+            .error-title {
+                font-size: 1.5rem;
+            }
+
+            .error-description {
+                font-size: 1rem;
+            }
+
+            .orbit-container {
+                width: 300px;
+                height: 300px;
+            }
+
+            .orbit-1 {
+                width: 200px;
+                height: 200px;
+            }
+
+            .orbit-2 {
+                width: 250px;
+                height: 250px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="error-container">
+        <!-- Background effects -->
+        <div class="grid-bg"></div>
+        <div class="scanline"></div>
+        
+        <!-- Floating particles -->
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+
+        <!-- Orbiting circles -->
+        <div class="orbit-container">
+            <div class="orbit orbit-1">
+                <div class="orbit-dot"></div>
+            </div>
+            <div class="orbit orbit-2">
+                <div class="orbit-dot"></div>
+            </div>
+        </div>
+
+        <!-- Main content -->
+        <div class="error-content">
+            <div class="error-number">
+                <div class="digit">4</div>
+                <div class="digit">0</div>
+                <div class="digit">4</div>
+            </div>
+            
+            <h1 class="error-title">Oops! Something went wrong...</h1>
+            <p class="error-description">Sorry, we couldn't find the page you're looking for.</p>
+            
+            <a href="{% url 'index' %}" class="btn-home">
+                <span>Back to Home</span>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Add cursor interaction
+        document.addEventListener('mousemove', (e) => {
+            const particles = document.querySelectorAll('.particle');
+            const mouseX = e.clientX;
+            const mouseY = e.clientY;
+            
+            particles.forEach((particle, index) => {
+                const rect = particle.getBoundingClientRect();
+                const particleX = rect.left + rect.width / 2;
+                const particleY = rect.top + rect.height / 2;
+                
+                const deltaX = mouseX - particleX;
+                const deltaY = mouseY - particleY;
+                const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+                
+                if (distance < 200) {
+                    const force = (200 - distance) / 200;
+                    particle.style.transform = `translate(${-deltaX * force * 0.3}px, ${-deltaY * force * 0.3}px)`;
+                } else {
+                    particle.style.transform = 'translate(0, 0)';
+                }
+            });
+        });
+
+        // Random glitch effect on digits
+        setInterval(() => {
+            const digits = document.querySelectorAll('.digit');
+            const randomDigit = digits[Math.floor(Math.random() * digits.length)];
+            randomDigit.style.animation = 'none';
+            setTimeout(() => {
+                randomDigit.style.animation = '';
+            }, 50);
+        }, 3000);
+    </script>
+</body>
+</html>

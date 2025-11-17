@@ -52,4 +52,5 @@ if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 handler404 = 'vynzora_app.views.page_404'
+handler500 = 'vynzora_app.views.page_500'
 

@@ -422,13 +422,127 @@ Kochi, Kerala 683104, India</a>
                                                
                                             </li>
                                             
-                                            <li class="has-dropdown">
+                                            {% comment %} <li class="has-dropdown">
                                                 <a href="{% url 'submit_application' %}">
                                                     Career
                                     
                                                 </a>
                                                
-                                            </li>
+                                            </li> {% endcomment %}
+                                            
+<li class="has-dropdown">
+    <a href="{% url 'submit_application' %}" class="career-nav-link">
+        Career
+        {% if career_job_count > 0 %}
+        <span class="hiring-badge">Hiring</span>
+        {% endif %}
+    </a>
+</li>
+
+<!-- Add this CSS in your <style> section or in your main.css file -->
+<style>
+/* Career Navigation with Hiring Badge */
+.career-nav-link {
+    position: relative;
+    display: inline-flex !important;
+    align-items: center;
+    gap: 8px;
+}
+
+.hiring-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 3px 8px;
+    border-radius: 12px;
+    line-height: 1;
+    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+    animation: hiring-pulse 2s ease-in-out infinite;
+    position: relative;
+    top: -10px; 
+    left: -7px;    
+    
+}
+
+/* Pulse animation for attention */
+@keyframes hiring-pulse {
+    0%, 100% {
+        box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+        transform: scale(1);
+    }
+    50% {
+        box-shadow: 0 2px 12px rgba(16, 185, 129, 0.5);
+        transform: scale(1.05);
+    }
+}
+
+/* Add subtle glow effect */
+.hiring-badge::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(16, 185, 129, 0.4) 0%, transparent 70%);
+    border-radius: 12px;
+    animation: glow-pulse 2s ease-in-out infinite;
+    z-index: -1;
+}
+
+@keyframes glow-pulse {
+    0%, 100% {
+        opacity: 0.5;
+        transform: translate(-50%, -50%) scale(1);
+    }
+    50% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1.2);
+    }
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 1199px) {
+    .hiring-badge {
+        font-size: 10px;
+        padding: 2px 6px;
+    }
+}
+
+@media (max-width: 768px) {
+    .career-nav-link {
+        gap: 6px;
+    }
+    
+    .hiring-badge {
+        font-size: 9px;
+        padding: 2px 5px;
+    }
+}
+
+/* For mobile menu specifically */
+.tp-mobile-menu-active .career-nav-link {
+    display: flex !important;
+    align-items: center;
+}
+
+.tp-mobile-menu-active .hiring-badge {
+    margin-left: auto;
+}
+
+/* Hover effect */
+.career-nav-link:hover .hiring-badge {
+    background: linear-gradient(135deg, #059669 0%, #047857 100%);
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+}
+</style>
                                                    <li class="has-dropdown">
     <a href="#">
         Services
@@ -851,8 +965,8 @@ document.head.appendChild(style);
                             </svg>
                             </button>
                         </form>
-                        <div class="tp-footer-wd-social">
-                            {% comment %} <div class="tp_fade_anim d-inline-block" data-delay=".3" data-fade-from="top" data-ease="bounce">
+                        {% comment %} <div class="tp-footer-wd-social">
+                            <div class="tp_fade_anim d-inline-block" data-delay=".3" data-fade-from="top" data-ease="bounce">
                             <a href="#" aria-label="Dribbble"><i class="fa-brands fa-dribbble"></i></a>
                             </div>
                             <div class="tp_fade_anim d-inline-block" data-delay=".5" data-fade-from="top" data-ease="bounce">
@@ -860,7 +974,7 @@ document.head.appendChild(style);
                             </div>
                             <div class="tp_fade_anim d-inline-block" data-delay=".7" data-fade-from="top" data-ease="bounce">
                             <a href="#" aria-label="Pinterest"><i class="fa-brands fa-pinterest"></i></a>
-                            </div> {% endcomment %}
+                            </div> 
                                 <a href="https://www.instagram.com/vynzora/?hl=en" target="_blank" aria-label="Instagram">
         <i class="fa-brands fa-instagram"></i>
     </a>
@@ -868,7 +982,32 @@ document.head.appendChild(style);
                             <div class="tp_fade_anim d-inline-block" data-delay=".9" data-fade-from="top" data-ease="bounce">
                             <a href="https://www.linkedin.com/company/vynzora/posts/?feedView=all" aria-label="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
                             </div>
-                        </div>
+                        </div> {% endcomment %}
+                        <div class="tp-footer-wd-social">
+    <div class="tp_fade_anim d-inline-block" data-delay=".3" data-fade-from="top" data-ease="bounce">
+        <a href="https://www.linkedin.com/company/vynzora/posts/?feedView=all" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+            <i class="fa-brands fa-linkedin"></i>
+        </a>
+    </div>
+    
+    <div class="tp_fade_anim d-inline-block" data-delay=".5" data-fade-from="top" data-ease="bounce">
+        <a href="https://www.instagram.com/vynzora/?hl=en" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+            <i class="fa-brands fa-instagram"></i>
+        </a>
+    </div>
+    
+    <div class="tp_fade_anim d-inline-block" data-delay=".7" data-fade-from="top" data-ease="bounce">
+        <a href="https://www.facebook.com/profile.php?id=61566425547531" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+            <i class="fa-brands fa-facebook"></i>
+        </a>
+    </div>
+    
+    <div class="tp_fade_anim d-inline-block" data-delay=".9" data-fade-from="top" data-ease="bounce">
+        <a href="https://wa.me/918590627934" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
+            <i class="fa-brands fa-whatsapp"></i>
+        </a>
+    </div>
+</div>
                     </div>
                 </div>
                 </div>
@@ -917,7 +1056,7 @@ document.head.appendChild(style);
                                 <path d="M0.875 7C0.875 8.62445 1.52031 10.1824 2.66897 11.331C3.81763 12.4797 5.37555 13.125 7 13.125C8.62445 13.125 10.1824 12.4797 11.331 11.331C12.4797 10.1824 13.125 8.62445 13.125 7C13.125 5.37555 12.4797 3.81763 11.331 2.66897C10.1824 1.52031 8.62445 0.875 7 0.875C5.37555 0.875 3.81763 1.52031 2.66897 2.66897C1.52031 3.81763 0.875 5.37555 0.875 7ZM14 7C14 8.85652 13.2625 10.637 11.9497 11.9497C10.637 13.2625 8.85652 14 7 14C5.14348 14 3.36301 13.2625 2.05025 11.9497C0.737498 10.637 0 8.85652 0 7C0 5.14348 0.737498 3.36301 2.05025 2.05025C3.36301 0.737498 5.14348 0 7 0C8.85652 0 10.637 0.737498 11.9497 2.05025C13.2625 3.36301 14 5.14348 14 7ZM7.12775 4.368C6.06725 4.368 5.44162 5.173 5.44162 6.55725V7.48475C5.44162 8.85938 6.05675 9.639 7.12775 9.639C7.98438 9.639 8.56363 9.12625 8.64062 8.39825H9.77375V8.47962C9.68625 9.74662 8.589 10.6383 7.1225 10.6383C5.29288 10.6383 4.26213 9.46925 4.26213 7.48563V6.54675C4.26213 4.53588 5.30138 3.348 7.1425 3.348C8.66488 3.348 9.5335 4.0315 9.5335 5.1685V5.334H8.39888V5.26113C8.39888 4.61188 8.10225 4.368 7.12775 4.368Z" fill="#F3F1F2"/>
                             </svg>
                             </span>
-                            2025 Vynzoraa. All Rights Reserved
+                            2025 Vynzora. All Rights Reserved
                         </p>
                     </div>
                 </div>

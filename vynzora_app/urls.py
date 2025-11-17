@@ -146,3 +146,4 @@ urlpatterns = [
 ]
 
 handler404 = 'vynzora_app.views.page_404'
+handler500 = 'vynzora_app.views.page_500'

@@ -39,7 +39,7 @@
                         <div class="col-12">
                            <div class="tp-breadcrumb-list">
                               <ul>
-                                 <li><a href="index.html">Home</a></li>
+                                 <li><a href="#">Home</a></li>
                                  <li><span></span></li>
                                  <li>Service Details</li>
                               </ul>
@@ -99,7 +99,7 @@
                                          <img class="w-100"  src="{% static 'assets/img/service/ai/three.jpg' %}" alt="">
                                        </div>
                                        <div class="tp-service-cst-content tp-bg-common-white">
-                                          <h5 class="fw-600 fs-28 tp-ff-dm tp-text-common-black-1 mb-15"><a class="underline-black" href="service-details-2-light.html">{{ offer.title }}</a></h5>
+                                          <h5 class="fw-600 fs-28 tp-ff-dm tp-text-common-black-1 mb-15"><a class="underline-black" href="#">{{ offer.title }}</a></h5>
                                           <p class="tp-service-cst-item-border tp-ff-dm fs-18 lh-140-per tp-text-common-black-1"> {{ offer.description|truncatechars:150}}</p>
                                           {% comment %} <a href="service-details-2-light.html" class="tp-left-right fw-700 tp-ff-dm fs-16 text-uppercase tp-text-common-black-1">
                                              <span class="mr10 td-text d-inline-block mr-5">View Details</span>
@@ -217,7 +217,7 @@
                   <div class="tp-sidebar-rc-post mb-15">
                      <a href="#" class="tp-sidebar-rc-post-tag mb-15">Service</a>
                      <h4 class="tp-sidebar-rc-post-title">
-                        <a class="underline-black" href="{% url 'service_detail' other.id  %}">{{ other.name }}</a>
+                        <a class="underline-black" href="{% url 'service_detail' other.slug  %}">{{ other.name }}</a>
                      </h4>
                      <span class="tp-sidebar-rc-post-dates">{{ other.created_at|date }}</span>
                      {% if not forloop.last %}

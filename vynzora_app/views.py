@@ -620,6 +620,7 @@ def index(request):
     projects = ProjectModel.objects.all()
     blogs = Blog.objects.all()
     services = Services.objects.all()   
+    active_jobs = Career_Model.objects.filter(post_end_date__gte=timezone.now()).count()
     active_banner = PromotionalBanner.objects.filter(
         status='active',
         end_date__gte=timezone.now()
@@ -638,7 +639,7 @@ def index(request):
         
         
     # return render(request, 'index.html',{ 'client_logos' : client_logos, 'reviews':reviews,'projects': projects})
-    return render(request, 'home/index.html',{'active_banner': active_banner,'cat':cat,'technologies':technologies,'projects':projects,'reviews':reviews,'blogs':blogs,'services':services})
+    return render(request, 'home/index.html',{'active_banner': active_banner,'cat':cat,'technologies':technologies,'projects':projects,'reviews':reviews,'blogs':blogs,'services':services,'career_job_count': active_jobs})
 
 def index_redirect(request):
     return redirect('index')
@@ -901,11 +902,12 @@ def blog(request):
 
 def blog_details(request, slug):  
     blog = get_object_or_404(Blog, slug=slug)  # Get blog by slug
+    services = Services.objects.all() 
     recent_posts = Blog.objects.exclude(id=blog.id).order_by('-created_date')[:4]  # Use blog.id instead of blog_id
     footer_services = Services.objects.all()[:5]
     active_jobs = Career_Model.objects.filter(post_end_date__gte=timezone.now()).count()
     
-    return render(request, 'home/blog_details.html', {'blog': blog,'recent_posts':recent_posts, 'footer_services':footer_services,'career_job_count': active_jobs})
+    return render(request, 'home/blog_details.html', {'blog': blog,'recent_posts':recent_posts, 'services':services,'footer_services':footer_services,'career_job_count': active_jobs})
 
 
 # Admin Side
@@ -1306,6 +1308,8 @@ def index_team(request):
 def page_404(request, exception):
     return render(request, '404.html', status=404)
 
+def page_500(request):
+    return render(request, '500.html', status=500)
 
 
 
