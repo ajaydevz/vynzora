@@ -185,7 +185,7 @@ Kochi, Kerala 683104, India</a>
 
          </style>
     
-        <header>
+         <header>
             <!-- tp-header-area-start -->
             <div id="header-sticky" class="tp-header-area pre-header sticky-white-bg tp-header-ai-wrap header-transparent">
                 
@@ -197,7 +197,7 @@ Kochi, Kerala 683104, India</a>
                             
                             <div class="col-xxl-3 col-xl-2 col-lg-4 col-md-4 col-sm-4 col-6">
                                 <div class="tp-header-logo">
-                                    <a href="index.html" class="logo">
+                                    <a href="{% url 'index' %}" class="logo">
                                         <img data-width="150" src="{% static 'assets/img/logo/logo22.png' %}" alt="logo">
                                     </a>
                                 </div>
@@ -625,244 +625,17 @@ Kochi, Kerala 683104, India</a>
                                                 </a>
                                                 <ul class="tp-submenu submenu">
                                                     <li>
-                                                        <a href="{% url "about" %}">Our Story</a>
+                                                        <a href="{% url 'about' %}">Our Story</a>
                                                     </li>
                                                     <li>
-                                                        <a href="{% url "team" %}">Team</a>
+                                                        <a href="{% url 'team' %}">Team</a>
                                                     </li>
-                                                   
+                                                
                                                    
                                                 </ul>
                                             </li>
-                                            <li class="has-dropdown p-inherit">
-                                                <a href="{% url "portfolio" %}">
-                                                    Works
-                                    
-                                                    <!-- <span>
-                                                        <svg width="7" height="6" viewBox="0 0 7 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                            <path d="M2.7 4.93333L0.2 1.6C-0.294427 0.940764 0.175955 0 1 0H6C6.82405 0 7.29443 0.940764 6.8 1.6L4.3 4.93333C3.9 5.46667 3.1 5.46667 2.7 4.93333Z" fill="currentColor"/>
-                                                        </svg>
-                                                    </span> -->
-                                                </a>
-                                                <!-- <div class="tp-megamenu-wrapper mega-menu megamenu-white-bg">
-                                                    <div class="row gx-0">
-                                                        <div class="col-xl-2">
-                                                            <div class="tp-megamenu-list">
-                                                                <h4 class="tp-megamenu-title">Special Pages light</h4>
-                                                                <ul>
-                                                                    <li>
-                                                                        <a href="about-me-light.html">About Me</a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="about-creative-light.html">About Creative</a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="about-modern-light.html">Modern About</a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="team-light.html">Team</a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="team-details-light.html">Team Details</a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="faq-light.html">Faq</a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="faq-2-light.html">Faq Two</a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="pricing-light.html">Pricing</a>
-                                                                    </li>
-                                                                </ul>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-xl-2">
-                                                            <div class="tp-megamenu-list">
-                                                                <h4 class="tp-megamenu-title">Special Pages Dark</h4>
-                                                                <ul>
-                                                                    <li>
-                                                                        <a href="about-me-dark.html">About Me</a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="about-creative-dark.html">About Creative</a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="about-modern-dark.html">Modern About</a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="team-dark.html">Team</a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="team-details-dark.html">Team Details</a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="faq-dark.html">Faq</a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="faq-2-dark.html">Faq Two</a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="pricing-dark.html">Pricing</a>
-                                                                    </li>
-                                                                </ul>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-xl-2">
-                                                            <div class="tp-megamenu-list">
-                                                                <h4 class="tp-megamenu-title">Special Pages Light</h4>
-                                                                <ul>
-                                                                    <li>
-                                                                        <a href="shop-light.html">Shop</a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="shop-details-light.html">Shop Details</a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="cart-light.html">Cart</a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="checkout-light.html">Checkout</a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="wishlist-light.html">Wishlist</a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="forgot-light.html">Forgot</a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="register-light.html">Register</a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="login-light.html">Login</a>
-                                                                    </li>
-                                                                </ul>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-xl-2">
-                                                            <div class="tp-megamenu-list">
-                                                                <h4 class="tp-megamenu-title">Special Pages Dark</h4>
-                                                                <ul>
-                                                                    <li>
-                                                                        <a href="shop-dark.html">Shop</a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="shop-details-dark.html">Shop Details</a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="cart-dark.html">Cart</a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="checkout-dark.html">Checkout</a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="wishlist-dark.html">Wishlist</a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="forgot-dark.html">Forgot</a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="register-dark.html">Register</a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="login-dark.html">Login</a>
-                                                                    </li>
-                                                                </ul>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-xl-2">
-                                                            <div class="tp-megamenu-list">
-                                                                <h4 class="tp-megamenu-title">Special Pages Light</h4>
-                                                                <ul>
-                                                                    <li>
-                                                                        <a href="service-1-light.html">Service One</a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="service-2-light.html">Service Two</a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="service-3-light.html">Service Three</a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="service-4-light.html">Service Four</a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="service-details-light.html">Service Details</a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="service-details-2-light.html">Service Details Two</a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="awwwards-light.html">Awwwards</a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="error-light.html">404 Page</a>
-                                                                    </li>
-                                                                </ul>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-xl-2">
-                                                            <div class="tp-megamenu-list">
-                                                                <h4 class="tp-megamenu-title">Special Pages Dark</h4>
-                                                                <ul>
-                                                                    <li>
-                                                                        <a href="service-1-dark.html">Service One</a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="service-2-dark.html">Service Two</a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="service-3-dark.html">Service Three</a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="service-4-dark.html">Service Four</a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="service-details-dark.html">Service Details</a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="service-details-2-dark.html">Service Details Two</a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="awwwards-dark.html">Awwwards</a>
-                                                                    </li>
-                                                                    <li>
-                                                                        <a href="error-dark.html">404 Page</a>
-                                                                    </li>
-                                                                </ul>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div> -->
-                                            </li>
-                                          
 
-                                            <li class="has-dropdown">
-                                                <a href="{% url "submit_application" %}">
-                                                    Career
-                                    
-                                                    <!-- <span>
-                                                        <svg width="7" height="6" viewBox="0 0 7 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                            <path d="M2.7 4.93333L0.2 1.6C-0.294427 0.940764 0.175955 0 1 0H6C6.82405 0 7.29443 0.940764 6.8 1.6L4.3 4.93333C3.9 5.46667 3.1 5.46667 2.7 4.93333Z" fill="currentColor"/>
-                                                        </svg>
-                                                    </span> -->
-                                                </a>
-                                                <!-- <ul class="tp-submenu submenu">
-                                                    <li>
-                                                        <a href="contact-light.html">Contact</a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="contact-dark.html">Contact Dark</a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="contact-us-light.html">Contact Us</a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="contact-us-dark.html">Contact Us Dark</a>
-                                                    </li>
-                                                </ul> -->
-                                            </li>
-                                              <li class="has-dropdown">
+                                                 <li class="has-dropdown">
     <a href="#">
         Services
         <span>
@@ -872,8 +645,8 @@ Kochi, Kerala 683104, India</a>
         </span>
     </a>
 
-     <ul class="tp-submenu submenu">
-        {% for s in service %}
+    <ul class="tp-submenu submenu">
+        {% for s in services %}
         <li>
              <a href="{% url 'service_detail' s.slug %}">{{ s.name }}</a>
         </li>
@@ -882,6 +655,138 @@ Kochi, Kerala 683104, India</a>
         {% endfor %}
     </ul>
 </li>
+
+
+                                            <li class="has-dropdown p-inherit">
+                                                <a href="{% url 'portfolio' %}">
+                                                    Works
+                                    
+                                                    <!-- <span>
+                                                        <svg width="7" height="6" viewBox="0 0 7 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path d="M2.7 4.93333L0.2 1.6C-0.294427 0.940764 0.175955 0 1 0H6C6.82405 0 7.29443 0.940764 6.8 1.6L4.3 4.93333C3.9 5.46667 3.1 5.46667 2.7 4.93333Z" fill="currentColor"/>
+                                                        </svg>
+                                                    </span> -->
+                                                </a>
+                                                                                            </li>
+                                             <li class="has-dropdown">
+                                                <a href="{% url 'blog' %}">
+                                                    Blogs
+                                    
+                                        
+                                                </a>
+                                                
+                                            </li>
+
+
+                                              <!-- Replace the existing Career menu item (around line 398-404) with this code -->
+
+<li class="has-dropdown">
+     {% if career_job_count > 0 %}
+        <span class="hiring-badges">HIRE</span>
+        {% endif %}
+    <a href="{% url 'submit_application' %}" class="career-nav-link">
+        Career
+       
+    </a>
+</li>
+
+<!-- Add this CSS in your <style> section or in your main.css file -->
+<style>
+
+/* Make parent control absolute children */
+.has-dropdown {
+    position: relative;
+}
+
+/* Career Navigation with Hiring Badge */
+.career-nav-link {
+    position: relative;
+    display: inline-flex !important;
+    align-items: center;
+    gap: 8px;
+}
+
+.hiring-badges {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 3px 8px;
+    border-radius: 12px;
+    line-height: 1;
+    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+    animation: hiring-pulse 2s ease-in-out infinite;
+
+    position: absolute;
+    top: 15px;
+    right: -15px;
+
+    z-index: 9999; /* FIX — stays above hover */
+}
+
+/* Pulse animation */
+@keyframes hiring-pulse {
+    0%, 100% {
+        box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+        transform: scale(1);
+    }
+    50% {
+        box-shadow: 0 2px 12px rgba(16, 185, 129, 0.5);
+        transform: scale(1.05);
+    }
+}
+
+/* Glow effect */
+.hiring-badges::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(16, 185, 129, 0.4) 0%, transparent 70%);
+    border-radius: 12px;
+    animation: glow-pulse 2s ease-in-out infinite;
+    z-index: -1;
+}
+
+@keyframes glow-pulse {
+    0%, 100% {
+        opacity: 0.5;
+        transform: translate(-50%, -50%) scale(1);
+    }
+    50% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1.2);
+    }
+}
+
+/* Hover effect */
+.has-dropdown:hover .hiring-badges {
+    background: linear-gradient(135deg, #059669 0%, #047857 100%);
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+}
+
+/* Mobile fixes */
+.tp-mobile-menu-active .career-nav-link {
+    display: flex !important;
+    align-items: center;
+}
+
+.tp-mobile-menu-active .hiring-badges {
+    margin-left: auto;
+}
+
+</style>
+                                             
+                                       
+                                          
                                         </ul>
                                     </nav>
                                 </div>
@@ -907,18 +812,37 @@ Kochi, Kerala 683104, India</a>
                         </div>
                     </div>
 
-                   
+                                           {% comment %} <div class="promo-top-strip" >
+        <span><strong>{{ active_banner.title }}</strong>: {{ active_banner.offer_description }}</span>
+        
+        {% if active_banner.show_timer %}
+        <span class="strip-timer">
+            <span class="strip-timer-unit">
+                <span class="strip-timer-value" id="strip-days-{{ active_banner.id }}">00</span>D
+            </span>
+            <span class="strip-timer-unit">
+                <span class="strip-timer-value" id="strip-hours-{{ active_banner.id }}">00</span>H
+            </span>
+            <span class="strip-timer-unit">
+                <span class="strip-timer-value" id="strip-minutes-{{ active_banner.id }}">00</span>M
+            </span>
+            <span class="strip-timer-unit">
+                <span class="strip-timer-value" id="strip-seconds-{{ active_banner.id }}">00</span>S
+            </span>
+        </span>
+        {% endif %}
         
         <!-- SINGLE Close Button -->
-        
-    </div>
+         <button class="strip-close-btn" onclick="closeBanner()" title="Close banner" aria-label="Close banner">×</button> 
+    </div> {% endcomment %}
                 </div>
             </div>
             <!-- tp-header-area-end -->
              
           
         </header>
-       
+        
+
         
 
 
@@ -2013,7 +1937,7 @@ Kochi, Kerala 683104, India</a>
                     <h4 class="tp-blog-ai-title tp-ff-jakarta fs-24 fs-md-22 lh-140-per ls-m-4 tp-text-grey-5">
                         <a href="{% url 'blog_details' blog.slug %}" class="underline-white">{{ blog.name }}</a>
                     </h4>
-                    {% comment %} <p class="tp-text-grey-5 mt-2" style="min-height: 60px;">{{ blog.description|truncatewords:25 }}</p> {% endcomment %}
+                    <p class="tp-text-grey-5 mt-2" style="min-height: 60px;">{{ blog.description|truncatewords:15 }}</p>
                 </div>
 
                 <div class="tp-blog-ai-btn d-flex justify-content-between mt-auto pt-3">
@@ -2169,103 +2093,251 @@ Kochi, Kerala 683104, India</a>
                     </div> {% endcomment %}
                     <!-- tp-blog-area-end -->
                 </main>
-                 <footer>
-                    <!-- tp-footer-area-start -->
-                    <div class="tp-footer-area pt-155 bg-position" data-background="{% static 'assets/img/footer/ai/bg.webp' %}">
-                        <div class="container-fluid container-1524">
-                            <div class="row">
-                                <div class="col-lg-3 col-md-6 col-sm-6">
-                                    <div class="tp-footer-ai-widget mb-40 tp_fade_anim" data-delay=".3">
-                                        <h5 class="tp-ff-jakarta fw-600 fs-18 lh-140-per ls-m-2 text-uppercase tp-text-common-black-5 mb-15">location</h5>
-                                        <a href="#" class="tp-ff-dm fs-18 lh-140-per ls-m-2 tp-text-common-black-5 opacity-8 underline-black">
-                                            5/257A8, FACT Kalamassery <br> Kochi, Kerala 683104, India
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="col-lg-3 col-md-6 col-sm-6">
-                                    <div class="tp-footer-ai-widget widget-2 mb-40 tp_fade_anim" data-delay=".5">
-                                        <h5 class="tp-ff-jakarta fw-600 fs-18 lh-140-per ls-m-2 text-uppercase tp-text-common-black-5 mb-15">Contract</h5>
-                                        <div class="mb-10">
-                                            <a href="tel:+025(256)956965" class="tp-ff-dm fs-18 lh-140-per ls-m-2 tp-text-common-black-5 opacity-8 underline-black">+91 8590627934 </a>
-                                        </div>
-                                        <div>
-                                            <a href="mailto:hello@vynzora.com" class="tp-ff-dm fs-18 lh-140-per ls-m-2 tp-text-common-black-5 opacity-8 underline-black">support@vynzora.com</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-4 col-md-6 col-sm-6">
-                                    <div class="tp-footer-ai-menu d-flex justify-content-lg-end mb-40 tp_fade_anim" data-delay=".7">
-                                        <ul>
-                                            <li>
-                                                <a href="{% url 'index' %}">Home</a>
-                                            </li>
-                                            <li>
-                                                <a href="{% url 'submit_application' %}">Careers</a>
-                                            </li>
-                                            <li>
-                                                <a href="{% url 'portfolio' %}">Portfolio</a>
-                                            </li>
-                                            <li>
-                                                <a href="{% url 'contact' %}">Contact</a>
-                                            </li>
-                                           
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="col-lg-2 col-md-6 col-sm-6">
-    <div class="tp-footer-wd-social tp-footer-ai-social d-flex justify-content-lg-end mb-40">
-        <div class="tp_fade_anim" data-delay=".9" data-fade-from="top" data-ease="bounce">
-            <a href="https://www.linkedin.com/company/vynzora/posts/?feedView=all" target="_blank" rel="noopener noreferrer">
-                <i class="fa-brands fa-linkedin"></i>
-            </a>
-        </div>
-        <div class="tp_fade_anim" data-delay=".7" data-fade-from="top" data-ease="bounce">
-            <a href="https://www.instagram.com/vynzora/?hl=en" target="_blank" rel="noopener noreferrer">
-                <i class="fa-brands fa-instagram"></i>
-            </a>
-        </div>
-        <div class="tp_fade_anim" data-delay=".5" data-fade-from="top" data-ease="bounce">
-            <a href="https://www.facebook.com/profile.php?id=61566425547531" target="_blank" rel="noopener noreferrer">
-                <i class="fa-brands fa-facebook"></i>
-            </a>
-        </div>
-        <div class="tp_fade_anim" data-delay=".3" data-fade-from="top" data-ease="bounce">
-           <a href="https://wa.me/918590627934" target="_blank" rel="noopener noreferrer">
-                <i class="fa-brands fa-whatsapp"></i>
-            </a>
-        </div>
-    </div>
-</div>
-                                                                <div class="col-lg-12">
-                                    <div class="tp-footer-ai-title-wrap text-center pt-35 pb-80 tp_fade_anim" data-fade-from="top" data-delay=".7" data-ease="bounce">
-                                        <h2 class="tp-footer-ai-bigtitle tp-ff-jakarta fw-800 text-uppercase tp-text-common-black-5">
-                                                            <a href="#" class="text-scale-anim">Vynzora</a>
-                                                        </h2>
-                                    </div>
-                                </div>
+                
+<footer>
+    <!-- tp-footer-area-start -->
+    <div class="tp-footer-area pt-155 bg-position" data-background="{% static 'assets/img/footer/ai/bg.webp' %}">
+        <div class="container-fluid container-1524">
+            <div class="row">
+                <!-- Certificate Verification Section - Left Side -->
+                <div class="col-lg-3 col-md-6 col-sm-6">
+                    <div class="tp-footer-ai-widget mb-40 tp_fade_anim" data-delay=".3">
+                        <h5 class="tp-ff-jakarta fw-600 fs-18 lh-140-per ls-m-2 text-uppercase tp-text-common-black-5 mb-15">Verify Certificate</h5>
+                        <p class="tp-ff-dm fs-15 lh-140-per ls-m-2 tp-text-common-black-5 opacity-8 mb-20">
+                            Enter your certificate ID to verify authenticity
+                        </p>
+                        
+                        <!-- Verification Form -->
+                        <form method="post" action="{% url 'verify_certificate' %}" class="tp-footer-verify-form mb-20">
+                            {% csrf_token %}
+                            <div class="tp-footer-verify-input-wrap mb-15">
+                                <input 
+                                    type="text" 
+                                    name="id1" 
+                                    placeholder="Certificate ID" 
+                                    class="tp-footer-verify-input w-100 tp-ff-dm fw-400 fs-15 ls-m-2 tp-text-common-black-5"
+                                    style="padding: 12px 15px; border: 1px solid #e5e5e5; border-radius: 8px; background: #fff;"
+                                    autocomplete="off"
+                                    required
+                                >
                             </div>
+                            <button type="submit" class="tp-footer-verify-btn w-100 tp-ff-dm fw-600 fs-15 text-uppercase tp-text-common-white" 
+                                    style="padding: 12px; background: #111112; border: none; border-radius: 8px; cursor: pointer; transition: all 0.3s ease;">
+                                <span class="d-flex align-items-center justify-content-center gap-2">
+                                    <span>Verify Now</span>
+                                    <svg width="16" height="10" viewBox="0 0 20 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M20 6.00071C16.4166 4.67142 11.9705 2.40252 9.21414 0L11.1357 5.31243H0.688756C0.552576 5.31246 0.419232 5.35209 0.305998 5.42773C0.192725 5.50341 0.104852 5.61172 0.0527125 5.73756C0.00064999 5.86334 -0.0134432 6.0016 0.0130924 6.13511C0.0396547 6.26871 0.105682 6.39175 0.201995 6.48809C0.330914 6.61703 0.505697 6.68939 0.688048 6.6897H11.135L9.21414 12C11.9701 9.59697 16.4165 7.32913 20 6.00071Z" fill="currentColor"/>
+                                    </svg>
+                                </span>
+                            </button>
+                        </form>
+                        
+                        <p class="tp-ff-dm fs-13 ls-m-1 tp-text-common-black-5 opacity-6 d-flex align-items-start gap-1">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="min-width: 14px; margin-top: 2px;">
+                                <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                                <path d="M12 16V12M12 8H12.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                            <span>All certificates are cryptographically secured</span>
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Location & Details -->
+                <div class="col-lg-3 col-md-6 col-sm-6">
+                    <div class="tp-footer-ai-widget mb-40 tp_fade_anim" data-delay=".5">
+                        <h5 class="tp-ff-jakarta fw-600 fs-18 lh-140-per ls-m-2 text-uppercase tp-text-common-black-5 mb-15">Location</h5>
+                        <a href="#" class="tp-ff-dm fs-18 lh-140-per ls-m-2 tp-text-common-black-5 opacity-8 underline-black">
+                            5/257A8, FACT Kalamassery <br> Kochi, Kerala 683104, India
+                        </a>
+                        {% comment %} <div class="mt-20">
+                            <h5 class="tp-ff-jakarta fw-600 fs-18 lh-140-per ls-m-2 text-uppercase tp-text-common-black-5 mb-15">Contact</h5>
+                            <div class="mb-10">
+                                <a href="tel:+918590627934" class="tp-ff-dm fs-18 lh-140-per ls-m-2 tp-text-common-black-5 opacity-8 underline-black">+91 8590627934</a>
+                            </div>
+                            <div>
+                                <a href="mailto:support@vynzora.com" class="tp-ff-dm fs-18 lh-140-per ls-m-2 tp-text-common-black-5 opacity-8 underline-black">support@vynzora.com</a>
+                            </div>
+                        </div> {% endcomment %}
+                    </div>
+                </div>
+
+                <!-- Quick Links -->
+                <div class="col-lg-3 col-md-6 col-sm-6">
+                    <div class="tp-footer-ai-menu mb-40 tp_fade_anim" data-delay=".7">
+                        <ul>
+                            <li>
+                                <a href="{% url 'index' %}">Home</a>
+                            </li>
+                            <li class="has-dropdown">
+                                <a href="{% url 'submit_application' %}" class="career-nav-link">
+                                    Career
+                                    {% if career_job_count > 0 %}
+                                    <span class="hiring-badge">Hiring</span>
+                                    {% endif %}
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{% url 'portfolio' %}">Portfolio</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'contact' %}">Contact</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Contact & Social Media -->
+                <div class="col-lg-3 col-md-6 col-sm-6">
+                    <div class="tp-footer-ai-widget mb-40 tp_fade_anim" data-delay=".9">
+                        <h5 class="tp-ff-jakarta fw-600 fs-18 lh-140-per ls-m-2 text-uppercase tp-text-common-black-5 mb-15">Contact</h5>
+                        <div class="mb-10">
+                            <a href="tel:+918590627934" class="tp-ff-dm fs-18 lh-140-per ls-m-2 tp-text-common-black-5 opacity-8 underline-black">+91 8590627934</a>
                         </div>
-                        <div class="tp-footer-ai-copyright-border">
-                            <div class="container">
-                                <div class="row">
-                                    <div class="col-12">
-                                        <div class="tp-footer-ai-copyright text-center">
-                                            <p class="tp-ff-dm fw-500 tp-text-common-black-5">
-                                                <span>
-                                                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                        <path d="M0.875 7C0.875 8.62445 1.52031 10.1824 2.66897 11.331C3.81763 12.4797 5.37555 13.125 7 13.125C8.62445 13.125 10.1824 12.4797 11.331 11.331C12.4797 10.1824 13.125 8.62445 13.125 7C13.125 5.37555 12.4797 3.81763 11.331 2.66897C10.1824 1.52031 8.62445 0.875 7 0.875C5.37555 0.875 3.81763 1.52031 2.66897 2.66897C1.52031 3.81763 0.875 5.37555 0.875 7ZM14 7C14 8.85652 13.2625 10.637 11.9497 11.9497C10.637 13.2625 8.85652 14 7 14C5.14348 14 3.36301 13.2625 2.05025 11.9497C0.737498 10.637 0 8.85652 0 7C0 5.14348 0.737498 3.36301 2.05025 2.05025C3.36301 0.737498 5.14348 0 7 0C8.85652 0 10.637 0.737498 11.9497 2.05025C13.2625 3.36301 14 5.14348 14 7ZM7.12775 4.368C6.06725 4.368 5.44162 5.173 5.44162 6.55725V7.48475C5.44162 8.85938 6.05675 9.639 7.12775 9.639C7.98438 9.639 8.56363 9.12625 8.64062 8.39825H9.77375V8.47962C9.68625 9.74662 8.589 10.6383 7.1225 10.6383C5.29288 10.6383 4.26213 9.46925 4.26213 7.48563V6.54675C4.26213 4.56838 5.313 3.3635 7.12337 3.3635C8.59425 3.3635 9.6915 4.28575 9.77375 5.614V5.691H8.64062C8.56363 4.92188 7.96863 4.368 7.12775 4.368Z" fill="#111112"/>
-                                                    </svg>
-                                                </span>
-                                                © 2025 Vynzora. All Rights Reserved.
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
+                        <div class="mb-25">
+                            <a href="mailto:support@vynzora.com" class="tp-ff-dm fs-18 lh-140-per ls-m-2 tp-text-common-black-5 opacity-8 underline-black">support@vynzora.com</a>
+                        </div>
+                        
+                        <!-- Social Media Links -->
+                        <h5 class="tp-ff-jakarta fw-600 fs-18 lh-140-per ls-m-2 text-uppercase tp-text-common-black-5 mb-15 mt-30">Follow Us</h5>
+                        <div class="tp-footer-wd-social tp-footer-ai-social d-flex">
+                            <div class="tp_fade_anim" data-delay=".9" data-fade-from="top" data-ease="bounce">
+                                <a href="https://www.linkedin.com/company/vynzora/posts/?feedView=all" target="_blank" rel="noopener noreferrer">
+                                    <i class="fa-brands fa-linkedin"></i>
+                                </a>
+                            </div>
+                            <div class="tp_fade_anim" data-delay=".7" data-fade-from="top" data-ease="bounce">
+                                <a href="https://www.instagram.com/vynzora/?hl=en" target="_blank" rel="noopener noreferrer">
+                                    <i class="fa-brands fa-instagram"></i>
+                                </a>
+                            </div>
+                            <div class="tp_fade_anim" data-delay=".5" data-fade-from="top" data-ease="bounce">
+                                <a href="https://www.facebook.com/profile.php?id=61566425547531" target="_blank" rel="noopener noreferrer">
+                                    <i class="fa-brands fa-facebook"></i>
+                                </a>
+                            </div>
+                            <div class="tp_fade_anim" data-delay=".3" data-fade-from="top" data-ease="bounce">
+                                <a href="https://wa.me/918590627934" target="_blank" rel="noopener noreferrer">
+                                    <i class="fa-brands fa-whatsapp"></i>
+                                </a>
                             </div>
                         </div>
                     </div>
-                    <!-- tp-footer-area-end -->
-                </footer>
+                </div>
+
+                <!-- Large Brand Title -->
+                <div class="col-lg-12">
+                    <div class="tp-footer-ai-title-wrap text-center pt-35 pb-80 tp_fade_anim" data-fade-from="top" data-delay=".7" data-ease="bounce">
+                        <h2 class="tp-footer-ai-bigtitle tp-ff-jakarta fw-800 text-uppercase tp-text-common-black-5">
+                            <a href="#" class="text-scale-anim">Vynzora</a>
+                        </h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Copyright Section -->
+        <div class="tp-footer-ai-copyright-border">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="tp-footer-ai-copyright text-center">
+                            <p class="tp-ff-dm fw-500 tp-text-common-black-5">
+                                <span>
+                                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M0.875 7C0.875 8.62445 1.52031 10.1824 2.66897 11.331C3.81763 12.4797 5.37555 13.125 7 13.125C8.62445 13.125 10.1824 12.4797 11.331 11.331C12.4797 10.1824 13.125 8.62445 13.125 7C13.125 5.37555 12.4797 3.81763 11.331 2.66897C10.1824 1.52031 8.62445 0.875 7 0.875C5.37555 0.875 3.81763 1.52031 2.66897 2.66897C1.52031 3.81763 0.875 5.37555 0.875 7ZM14 7C14 8.85652 13.2625 10.637 11.9497 11.9497C10.637 13.2625 8.85652 14 7 14C5.14348 14 3.36301 13.2625 2.05025 11.9497C0.737498 10.637 0 8.85652 0 7C0 5.14348 0.737498 3.36301 2.05025 2.05025C3.36301 0.737498 5.14348 0 7 0C8.85652 0 10.637 0.737498 11.9497 2.05025C13.2625 3.36301 14 5.14348 14 7ZM7.12775 4.368C6.06725 4.368 5.44162 5.173 5.44162 6.55725V7.48475C5.44162 8.85938 6.05675 9.639 7.12775 9.639C7.98438 9.639 8.56363 9.12625 8.64062 8.39825H9.77375V8.47962C9.68625 9.74662 8.589 10.6383 7.1225 10.6383C5.29288 10.6383 4.26213 9.46925 4.26213 7.48563V6.54675C4.26213 4.56838 5.313 3.3635 7.12337 3.3635C8.59425 3.3635 9.6915 4.28575 9.77375 5.614V5.691H8.64062C8.56363 4.92188 7.96863 4.368 7.12775 4.368Z" fill="#111112"/>
+                                    </svg>
+                                </span>
+                                © 2025 Vynzora. All Rights Reserved.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- tp-footer-area-end -->
+</footer>
+
+<style>
+/* Footer Verification Form Styles */
+.tp-footer-verify-input {
+    transition: all 0.3s ease;
+}
+
+.tp-footer-verify-input:focus {
+    outline: none;
+    border-color: #111112 !important;
+    box-shadow: 0 2px 8px rgba(17, 17, 18, 0.1);
+}
+
+.tp-footer-verify-btn:hover {
+    background: #000 !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(17, 17, 18, 0.2);
+}
+
+/* Hiring Badge Styles */
+.has-dropdown {
+    position: relative;
+}
+
+.hiring-badge {
+    position: absolute;
+    top: -8px;
+    right: -12px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 12px;
+    line-height: 1;
+    white-space: nowrap;
+    z-index: 20;
+    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+}
+
+/* Responsive Design */
+@media (max-width: 991px) {
+    .tp-footer-ai-widget {
+        margin-bottom: 40px;
+    }
+}
+
+@media (max-width: 767px) {
+    .tp-footer-area {
+        padding-top: 80px;
+    }
+    
+    .tp-footer-verify-form {
+        max-width: 100%;
+    }
+    
+    .tp-footer-ai-menu ul {
+        padding-left: 0;
+    }
+}
+
+@media (max-width: 575px) {
+    .tp-footer-ai-widget h5 {
+        font-size: 16px;
+    }
+    
+    .tp-footer-ai-widget a,
+    .tp-footer-ai-widget p {
+        font-size: 15px;
+    }
+    
+    .tp-footer-verify-btn {
+        font-size: 14px;
+        padding: 10px;
+    }
+}
+</style>
             </div>
         </div>
         <script>

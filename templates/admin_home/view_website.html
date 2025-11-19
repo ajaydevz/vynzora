@@ -1278,6 +1278,11 @@
             </td>
             <td>
               <div class="action-buttons">
+                <button type="button" class="btn-action btn-view"
+        onclick="window.open('{{ website.public_url }}', '_blank')">
+    View
+</button>
+
                 <button type="button" class="btn-action btn-update" onclick="openUpdateModal({{ website.id }})">
                   <i class="mdi mdi-pencil"></i>
                   Update

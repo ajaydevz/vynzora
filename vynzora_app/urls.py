@@ -4,6 +4,8 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
+    
+    path('partners/', views.partners, name='partners'),
 
     # User Side
     path('', views.index, name='index'),

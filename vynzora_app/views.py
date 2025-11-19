@@ -17,6 +17,35 @@ from django.shortcuts import get_object_or_404
 from django.views.decorators.http import require_http_methods
 import json
 
+
+def partners(request):
+    """Partners page view"""
+    # Get all client logos for partners section
+    client_logos = Client_Logo.objects.all()
+    
+    # Get testimonials
+    reviews = ClientReview.objects.all()
+    
+    # Get services for footer
+    footer_services = Services.objects.all()[:5]
+    
+    # Get career job count for hiring badge
+    career_job_count = Career_Model.objects.all()
+    
+    # Get projects for offcanvas
+    projects = ProjectModel.objects.all()
+    
+    context = {
+        'client_logos': client_logos,
+        'reviews': reviews,
+        'footer_services': footer_services,
+        'career_job_count': career_job_count,
+        'projects': projects,
+    }
+    
+    return render(request, 'home/partners.html', context)
+
+
 # @require_http_methods(["GET"])
 # def service_api_detail(request, pk):
 #     """API endpoint to fetch service details with related data"""
@@ -1440,6 +1469,7 @@ def category_website_detail(request, category_slug, website_slug):
     technologies = Technologies.objects.all()
     blogs = Blog.objects.all()
     testimonials = ClientReview.objects.all()
+    
 
     return render(
         request,
@@ -1566,6 +1596,10 @@ def add_website(request):
 @login_required(login_url='user_login')
 def view_websites(request):
     websites = Website.objects.prefetch_related('faqs').select_related('category').all().order_by('-id')
+    
+    for w in websites:
+        w.public_url = w.get_public_url(request)
+        
     categories = Category.objects.all()
     return render(request, 'admin_home/view_website.html', {
         'websites': websites,
@@ -1591,6 +1625,7 @@ def website_api_detail(request, pk):
             'add_title': website.add_title or '',
             'add_description': website.add_description or '',
             'image': website.image.url if website.image else None,
+            'public_url': website.get_public_url(request), 
             'faqs': [
                 {
                     'id': faq.id,

@@ -398,9 +398,32 @@ Kochi, Kerala 683104, India</a>
                                                     <li>
                                                         <a href="{% url 'team' %}">Team</a>
                                                     </li>
+                                                    <li>
+                                                        <a href="{% url 'partners' %}">Partners</a>
+                                                    </li>
                                                     
                                                 </ul>
                                             </li>
+                                            <li class="has-dropdown">
+    <a href="#">
+        Services
+        <span>
+            <svg width="7" height="6" viewBox="0 0 7 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M2.7 4.93333L0.2 1.6C-0.294427 0.940764 0.175955 0 1 0H6C6.82405 0 7.29443 0.940764 6.8 1.6L4.3 4.93333C3.9 5.46667 3.1 5.46667 2.7 4.93333Z" fill="currentColor"/>
+            </svg>
+        </span>
+    </a>
+
+    <ul class="tp-submenu submenu">
+        {% for s in services %}
+        <li>
+             <a href="{% url 'service_detail' s.slug %}">{{ s.name }}</a>
+        </li>
+        {% empty %}
+        <li><a href="#">No Services available</a></li>
+        {% endfor %}
+    </ul>
+</li>
                                             <li class="has-dropdown p-inherit">
                                                 <a href="{% url 'portfolio' %}">
                                                     Works
@@ -430,17 +453,27 @@ Kochi, Kerala 683104, India</a>
                                                
                                             </li> {% endcomment %}
                                             
+
+
+
 <li class="has-dropdown">
+     {% if career_job_count > 0 %}
+        <span class="hiring-badges">HIRE</span>
+        {% endif %}
     <a href="{% url 'submit_application' %}" class="career-nav-link">
         Career
-        {% if career_job_count > 0 %}
-        <span class="hiring-badge">Hiring</span>
-        {% endif %}
+       
     </a>
 </li>
 
 <!-- Add this CSS in your <style> section or in your main.css file -->
 <style>
+
+/* Make parent control absolute children */
+.has-dropdown {
+    position: relative;
+}
+
 /* Career Navigation with Hiring Badge */
 .career-nav-link {
     position: relative;
@@ -449,7 +482,7 @@ Kochi, Kerala 683104, India</a>
     gap: 8px;
 }
 
-.hiring-badge {
+.hiring-badges {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -464,13 +497,15 @@ Kochi, Kerala 683104, India</a>
     line-height: 1;
     box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
     animation: hiring-pulse 2s ease-in-out infinite;
-    position: relative;
-    top: -10px; 
-    left: -7px;    
-    
+
+    position: absolute;
+    top: 15px;
+    right: -15px;
+
+    z-index: 9999; /* FIX — stays above hover */
 }
 
-/* Pulse animation for attention */
+/* Pulse animation */
 @keyframes hiring-pulse {
     0%, 100% {
         box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
@@ -482,8 +517,8 @@ Kochi, Kerala 683104, India</a>
     }
 }
 
-/* Add subtle glow effect */
-.hiring-badge::before {
+/* Glow effect */
+.hiring-badges::before {
     content: '';
     position: absolute;
     top: 50%;
@@ -508,61 +543,26 @@ Kochi, Kerala 683104, India</a>
     }
 }
 
-/* Mobile responsive adjustments */
-@media (max-width: 1199px) {
-    .hiring-badge {
-        font-size: 10px;
-        padding: 2px 6px;
-    }
+/* Hover effect */
+.has-dropdown:hover .hiring-badges {
+    background: linear-gradient(135deg, #059669 0%, #047857 100%);
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
 }
 
-@media (max-width: 768px) {
-    .career-nav-link {
-        gap: 6px;
-    }
-    
-    .hiring-badge {
-        font-size: 9px;
-        padding: 2px 5px;
-    }
-}
-
-/* For mobile menu specifically */
+/* Mobile fixes */
 .tp-mobile-menu-active .career-nav-link {
     display: flex !important;
     align-items: center;
 }
 
-.tp-mobile-menu-active .hiring-badge {
+.tp-mobile-menu-active .hiring-badges {
     margin-left: auto;
 }
 
-/* Hover effect */
-.career-nav-link:hover .hiring-badge {
-    background: linear-gradient(135deg, #059669 0%, #047857 100%);
-    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
-}
 </style>
-                                                   <li class="has-dropdown">
-    <a href="#">
-        Services
-        <span>
-            <svg width="7" height="6" viewBox="0 0 7 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M2.7 4.93333L0.2 1.6C-0.294427 0.940764 0.175955 0 1 0H6C6.82405 0 7.29443 0.940764 6.8 1.6L4.3 4.93333C3.9 5.46667 3.1 5.46667 2.7 4.93333Z" fill="currentColor"/>
-            </svg>
-        </span>
-    </a>
 
-    <ul class="tp-submenu submenu">
-        {% for s in services %}
-        <li>
-             <a href="{% url 'service_detail' s.slug %}">{{ s.name }}</a>
-        </li>
-        {% empty %}
-        <li><a href="#">No Services available</a></li>
-        {% endfor %}
-    </ul>
-</li>
+
+
 
                                         </ul>
                                     </nav>

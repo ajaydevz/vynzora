@@ -59,9 +59,16 @@ class Website(models.Model):
             self.slug = slug  # Assign the unique slug
 
         super().save(*args, **kwargs)
+        
+    
 
     def __str__(self):
         return self.name
+    
+    def get_public_url(self, request):
+        host = request.get_host()  # Real host + port
+        protocol = "https://" if request.is_secure() else "http://"
+        return f"{protocol}{host}/{self.category.slug}/{self.slug}/"
     
     
     
