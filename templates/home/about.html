@@ -22,7 +22,7 @@
                               team of visionary designers, strategists, & storytellers<br>
                               dedicated to building brands that captivate and connect.</h2> {% endcomment %}
                               <h2 class="tp-about-2-title fs-md-40 fs-xs-30 tp_text_invert invert-black-3 tp-ff-dm fw-600 tp-text-common-black-1">
-  We don’t just create—we transform. We are a <br>
+  We don’t just create we transform. We are a <br>
   team of visionary designers, developers, strategists, & data scientists<br>
   dedicated to building brands that captivate and connect.<br>
   {% comment %} <span style="display:inline-block; margin-top:10px;">Vynzora – Innovate, streamline, & elevate your digital experience with cutting-edge solutions.</span> {% endcomment %}
@@ -331,7 +331,7 @@
                            <h4 class="tp-ff-dm fs-28 lh-130-per tp-text-common-black-5 mb-15">  Empowering start-ups from idea to IPO.</h4>
                            <p class="tp-ff-dm fs-18 lh-150-per mb-25">Building lasting partnerships through strategic insight,<br>
                               innovation, and trust.</p>
-                           <a href="{% url 'contact' %}" class="tp-btn-cst d-inline-block lh-0 tp-round-26 fs-16 tp-bg-common-green-2 ls-0 tp-btn-switch-2-animation tp-text-common-black-1 fw-700 tp-ff-dm">
+                           <a href="{% url 'contact' %}" class="tp-btn-cst mb-15 tp-btn-gradian d-inline-block lh-0 tp-round-26 fs-15 ls-0 tp-btn-switch-2-animation tp-text-common-white hover-text-white fw-700 tp-ff-dm">
                               <span class="d-flex align-items-center justify-content-center">
                                  <span class="btn-text">Contact Us</span>
                                  <span class="btn-icon">
@@ -641,9 +641,9 @@
                                  <div class="col-lg-6">
                                     <div class="tp-hero-cst-btn-inner text-lg-end mb-5">
                                        <div class="tp_fade_anim d-inline-block" data-delay=".3" data-fade-from="top" data-ease="bounce">
-                                          <a href="{% url 'contact' %}" class="tp-btn-cst mb-15 d-inline-block mr-5 lh-0 tp-round-26 fs-15 tp-bg-common-green-2 ls-0 tp-btn-switch-2-animation tp-text-common-black-1 fw-700 tp-ff-dm">
+                                          <a href="{% url 'contact' %}" class="tp-btn-cst mb-15 tp-btn-gradian d-inline-block lh-0 tp-round-26 fs-15 ls-0 tp-btn-switch-2-animation tp-text-common-white hover-text-white fw-700 tp-ff-dm">
                                              <span class="d-flex align-items-center justify-content-center">
-                                                <span class="btn-text">Free Consulting</span>
+                                                <span class="btn-text">whatsapp</span>
                                                 <span class="btn-icon">
                                                    <svg width="20" height="12" viewBox="0 0 20 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                       <path d="M20 6.00071C16.4166 4.67142 11.9705 2.40252 9.21414 0L11.1357 5.31243H0.688756C0.552576 5.31246 0.419232 5.35209 0.305998 5.42773C0.192725 5.50341 0.104852 5.61172 0.0527125 5.73756C0.00064999 5.86334 -0.0134432 6.0016 0.0130924 6.13511C0.0396547 6.26871 0.105682 6.39175 0.201995 6.48809C0.330914 6.61703 0.505697 6.68939 0.688048 6.6897H11.135L9.21414 12C11.9701 9.59697 16.4165 7.32913 20 6.00071Z" fill="currentColor" />
@@ -673,6 +673,21 @@
                                                 </span>
                                              </span> 
                                           </a>
+                                          <style>
+                                             /* Default: Dark Royal Blue */
+.tp-btn-cst.tp-btn-gradian {
+    background: #001448ff !important;   /* Dark royal blue */
+    color: #fff !important;
+    transition: all 0.3s ease;
+}
+
+/* Hover: Gradient Blue */
+.tp-btn-cst.tp-btn-gradian:hover {
+    background: linear-gradient(90deg, #07378bff, #051c74ff) !important;
+    color: #fff !important;
+}
+
+                                          </style>
                                        </div>
                                     </div>
                                  </div>
@@ -704,7 +719,7 @@
                               <div class="swiper-slide">
                                  <div class="tp-brand-item">
                                     <a href="#">
-                                       <p>{{ client.name }}</p>
+                                      
                                        <img src="{{ client.logo.url }}" alt="">
                                     </a>
                                  </div>

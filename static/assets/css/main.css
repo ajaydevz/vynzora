@@ -4118,11 +4118,11 @@ input[type=color] {
   right: -2px;
   z-index: -2;
   border-radius: 101px;
-  background-image: -webkit-linear-gradient(90deg, #201b17 0%, #f96501 50%, #201b17 100%);
-  background-image: -moz-linear-gradient(90deg, #201b17 0%, #f96501 50%, #201b17 100%);
-  background-image: -ms-linear-gradient(90deg, #201b17 0%, #f96501 50%, #201b17 100%);
-  background-image: -o-linear-gradient(90deg, #201b17 0%, #f96501 50%, #201b17 100%);
-  background-image: linear-gradient(90deg, #201b17 0%, #f96501 50%, #201b17 100%);
+  background-image: -webkit-linear-gradient(90deg, #201b17 0%, #052f83 50%, #201b17 100%);
+  background-image: -moz-linear-gradient(90deg, #201b17 0%, #052f83 50%, #201b17 100%);
+  background-image: -ms-linear-gradient(90deg, #201b17 0%, #052f83 50%, #201b17 100%);
+  background-image: -o-linear-gradient(90deg, #201b17 0%, #052f83 50%, #201b17 100%);
+  background-image: linear-gradient(90deg, #201b17 0%, #052f83 50%, #201b17 100%);
   -moz-animation: sliderTitle3 2s ease-in-out 1s forwards infinite alternate;
   -webkit-animation: sliderTitle3 2s ease-in-out 1s forwards infinite alternate;
   animation: sliderTitle3 2s ease-in-out 1s forwards infinite alternate;
@@ -4135,7 +4135,7 @@ input[type=color] {
   left: 0;
   width: 100%;
   height: 100%;
-  background: var(--tp-common-white);
+  background: var(--tp-common-blue);
   z-index: -1;
   border-radius: 100px;
   transition: all 0.4s ease;

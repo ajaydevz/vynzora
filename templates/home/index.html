@@ -904,7 +904,11 @@ Kochi, Kerala 683104, India</a>
                             <div class="col-xxl-3 col-xl-3 col-lg-8 col-md-8 col-sm-8 col-6">
                                 <div class="tp-header-right d-flex align-items-center justify-content-end">
                                     <div class="tp-header-btn d-none d-sm-inline-block">
-                                        <a href="{% url 'contact' %}" class="tp-btn-ai p-relative hover-text-white d-inline-block text-uppercase tp-text-common-black-6 lh-1 fs-16 fw-700 tp-ff-dm">Contact Us</a>
+                                       <a href="{% url 'contact' %}" 
+   class="tp-btn-ai p-relative hover-text-white d-inline-block text-uppercase tp-text-common-blacks lh-1 fs-16 fw-700 tp-ff-dm">
+   Contact Us
+</a>
+
                                     </div>
                                     <button class="tp-menu-bar tp-header-sidebar-btn tp-header-2-menu-btn tp-header-ai-menu-btn ml-20">
                                         <span></span>
@@ -914,9 +918,65 @@ Kochi, Kerala 683104, India</a>
                                     
                                 </div>
                                 
+                                
                             </div>
+                            <style>
+                                .tp-text-common-blacks {
+                                    color:white;
+                                }
+                            </style>
                        
-                            
+                            {% comment %} <style>
+                                .tp-header-btn {
+    align-self: flex-end !important;
+    padding-top: 10px !important;
+}
+
+                                /* FULL RESET + NEW DESIGN */
+.tp-btn-ai {
+    
+    background: #001448 !important;       /* Default dark navy */
+    color: #fff !important;
+ 
+
+    padding: 16px 36px !important;        /* Increased size */
+    font-size: 17px !important;           /* Slightly larger text */
+    border-radius: 50px !important;       /* Smooth pill shape */
+
+    border: none !important;
+    box-shadow: none !important;
+
+    position: relative;
+    overflow: hidden;
+
+    line-height: 1 !important;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    transition: all 0.3s ease !important;
+}
+
+/* Remove any theme pseudo elements that break the design */
+.tp-btn-ai::before,
+.tp-btn-ai::after {
+    content: none !important;
+}
+
+/* STRONG VISIBLE HOVER EFFECT */
+.tp-btn-ai:hover {
+    background: linear-gradient(
+        90deg,
+        #0a45b5 0%,
+        #07378b 50%,
+        #051c74 100%
+    ) !important;  /* brighter, clearer gradient */
+    color: #fff !important;
+    transform: translateY(-1px);  /* small lift effect (optional) */
+}
+
+
+                            </style> {% endcomment %}
                             
           
                         </div>
@@ -1588,21 +1648,24 @@ document.addEventListener('DOMContentLoaded', function() {
                                     <div class="tp-hero-ai-right-content mb-100 text-end">
                                         <h3 class="tp-hero-ai-title mb-75 tp-ff-jakarta fw-600 ls-m-4 text-capitalize tp-text-common-black-5">
                                             Fuel Your<br>
-                                            {% comment %} <span class="" style="color:#001F3F">
+                                            <span class="title-slides">
                                                 <img class="mr-20 tp-live-anim-spin hero-shape" src="{% static 'assets/img/hero/ai/shape-2.webp' %}" alt="Vision Shape">Vision with
-                                            </span> {% endcomment %}
-                                            <span style="
+                                            </span>
+                                             <style>
+                                                .title-slides {
     background: linear-gradient(135deg, #001F3F, #000000);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    display: inline-flex;
-    align-items: center;
-">
-    <img class="mr-20 tp-live-anim-spin hero-shshape" 
-         src="{% static 'assets/img/hero/ai/shape-2.webp' %}" 
-         alt="Vision Shape">
-    Vision with
-</span>
+    display: inline-block;
+    line-height: 1.2;
+
+
+}
+
+
+                                            </style>
+                                           
+
 
                                             <br>
                                             AI Intelligence
@@ -1663,7 +1726,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                             We empower businesses 
                               {% comment %} <span class="has-scale-image hide-ball" data-img="{% static 'assets/img/about/ai/shape.webp' %}" data-bgcolor="#111112"></span> {% endcomment %}
                                             and start stay ahead of  {% comment %}<span class="has-scale-image hide-ball" data-img="{% static 'assets/img/about/ai/shape-2.webp' %}" data-bgcolor="#111112"></span> {% endcomment %}
-                                            the by building intelligent, scalable solutions that solve real-world {% comment %} <span class="has-scale-image hide-ball" data-img="{% static 'assets/img/about/ai/shape-3.webp' %}" data-bgcolor="#111112"></span> {% endcomment %}
+                                            the by building intelligent, scalable solutions that solve real world {% comment %} <span class="has-scale-image hide-ball" data-img="{% static 'assets/img/about/ai/shape-3.webp' %}" data-bgcolor="#111112"></span> {% endcomment %}
                                             problems. From strategy to deployment.
                                         </h3>
                                     </div>
@@ -1677,34 +1740,68 @@ document.addEventListener('DOMContentLoaded', function() {
                                 </div>
                                 <div class="col-lg-7">
                                     <div class="tp-about-ai-content mb-30">
-                                        <h2 class="tp-about-ai-title fw-600 tp-ff-jakarta ls-m-4 d-flex align-items-start mb-35 tp_fade_anim" data-delay=".3">
-                                            <span class="" style="
-    background: linear-gradient(135deg, #001F3F, #000000);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    display: inline-flex;
-    align-items: center;
-">VYNZORA</span>
-                                            {% comment %} <span class="vynzora-ai fs-22 ls-0 mt-35">AI</span> {% endcomment %}
-                                           {% comment %} <span class="vynzora-ai fs-22 ls-0 ai-adjust">AI</span> {% endcomment %}
-                                           {% comment %} <style>
-                                            
-                                            .ai-adjust {
-    margin-top: -3px;
-   /* very small lift */
-    display: inline-block;
+                                        <h2 class="tp-about-ai-title fw-600 tp-ff-jakarta ls-m-4 mb-35 tp_fade_anim" data-delay=".3">
+    <span class="title-slide-gradient">VYNZORA</span>
+</h2>
+    <style>
+      
+   /* FIX CLIPPED TEXT */
+
+.tp-about-ai-title {
+    overflow: visible !important;
+    line-height: 1.15 !important;
+}
+
+.title-slide-gradient {
+    overflow: visible !important;
+    line-height: 1.15 !important;
+    padding-bottom: 6px !important;
+    display: inline-block !important;
+}
+
+/* Parent containers sometimes clip animated text */
+.col-lg-7,
+.tp-about-ai-content,
+.tp-about-ai-subtitle {
+    overflow: visible !important;
 }
 
 
-                                           </style> {% endcomment %}
-                                        </h2>
+/* DARK BLACK + DARK BLUE TEXT GRADIENT */
+.title-slide-gradient {
+    background: linear-gradient(90deg, #000000 0%, #001a66 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Mobile Optimization */
+@media (max-width: 576px) {
+    .tp-about-ai-title {
+        display: block !important;
+        text-align: center;
+        font-size: 50px;
+        line-height: 1.2;
+    }
+
+    .title-slide-gradient {
+        display: inline-block;
+        font-size: 50px;
+    }
+
+
+}
+
+
+
+
+    </style>
                                         <div class="tp_fade_anim" data-delay=".5">
                                             <p class="tp-about-ai-para tp-ff-dm mb-55 fw-400 fs-22 ls-m-2 lh-150-per tp-text-common-black-6">
                                                 At Vynzora, we harness the power of artificial intelligence, machine learning, and advanced automation to create intelligent digital solutions that redefine industries. Our expertise lies in developing scalable, secure, and AI-powered IT solutions that help businesses thrive in an era of digital transformation.
                                             </p>
                                         </div>
                                         <div class="tp_fade_anim" data-delay=".7" data-fade-from="bottom" data-ease="bounce">
-                                            <a href="{% url 'about' %}" class="tp-btn-ai tp-btn-switch-2-animation p-relative hover-text-white d-inline-block text-uppercase tp-text-common-black-6 lh-1 fs-16 fw-700 tp-ff-dm">
+                                            <a href="{% url 'about' %}" class="tp-btn-ai tp-btn-switch-2-animation p-relative hover-text-white d-inline-block text-uppercase tp-text-common-blacks lh-1 fs-16 fw-700 tp-ff-dm">
                                                 <span class="d-flex align-items-center justify-content-center">
                                                     <span class="btn-text">ABOUT US</span>
                                                     <span class="btn-icon">
@@ -2196,7 +2293,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         </p>
                     </div>
                     <div class="tp_fade_anim" data-delay=".6" data-fade-from="bottom" data-ease="bounce">
-                        <a href="{% url 'portfolio' %}" class="tp-btn-ai tp-btn-switch-2-animation p-relative hover-text-white d-inline-block text-uppercase tp-text-common-black-6 lh-1 fs-16 fw-700 tp-ff-dm">
+                        <a href="{% url 'portfolio' %}" class="tp-btn-ai tp-btn-switch-2-animation p-relative hover-text-white d-inline-block text-uppercase tp-text-common-blacks lh-1 fs-16 fw-700 tp-ff-dm">
                             <span class="d-flex align-items-center justify-content-center">
                                 <span class="btn-text">See All Projects</span>
                                 <span class="btn-icon">
@@ -3001,7 +3098,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     <div class="tp-cta-area tp-bg-common-black-5 section-m-spacing p-relative z-index-1">
                         <img class="tp-faq-ai-noise" src="{% static 'assets/img/body/noise.webp' %}" alt="">
                         <div class="container-fluid container-1824">
-                            <div class="tp-cta-ai-bg bg-position tp-image-distortion z-index-1" data-background="{% static 'assets/img/cta/ai/bg.webp' %}">
+                            <div class="tp-cta-ai-bg bg-position tp-image-distortion z-index-1" data-background="{% static 'assets/img/service/ai/five.jpg' %}">
                                 <div class="row justify-content-center">
                                     <div class="col-12">
                                         <div class="tp-cta-ai-wrap text-center">
@@ -3009,7 +3106,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                                 Transform Ideas into <br>Intelligent Solutions with Us
                                             </h2>
                                             <div class="tp_fade_anim" data-delay=".5" data-fade-from="bottom" data-ease="bounce">
-                                                <a href="{% url 'contact' %}" class="tp-btn-ai-xxl tp-bg-common-angry tp-btn-switch-2-animation p-relative hover-text-white d-inline-block text-uppercase tp-text-grey-5 lh-1 fs-16 fw-700 tp-ff-dm">
+                                                <a href="{% url 'contact' %}" class="tp-btn-cst tp-btn-switch-2-animation d-inline-block text-uppercase tp-text-common-white hover-text-white tp-round-36 lh-1 fs-16 fw-700 tp-ff-dm tp-bg-common-black-5">
                                                     <span class="d-flex align-items-center justify-content-center">
                                                         <span class="btn-text">Get Starteed Now</span>
                                                         <span class="btn-icon">
@@ -3307,7 +3404,7 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
             <div class="col-lg-4">
                 <div class="tp-service-ai-btn mb-40 text-lg-end tp_fade_anim" data-delay=".5" data-fade-from="top" data-ease="bounce">
-                    <a href="{% url 'blog' %}" class="tp-btn-ai tp-btn-ai-black tp-btn-switch-2-animation p-relative hover-text-white d-inline-block text-uppercase tp-text-grey-5 lh-1 fs-16 fw-700 tp-ff-dm">
+                    <a href="{% url 'blog' %}" class="tp-btn-cst tp-btn-switch-2-animation d-inline-block text-uppercase tp-text-common-white hover-text-white tp-round-36 lh-1 fs-16 fw-700 tp-ff-dm tp-bg-common-blacks">
                         <span class="d-flex align-items-center justify-content-center">
                             <span class="btn-text">See All Blog</span>
                             <span class="btn-icon">
