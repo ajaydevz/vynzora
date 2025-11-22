@@ -331,7 +331,7 @@
                            <h4 class="tp-ff-dm fs-28 lh-130-per tp-text-common-black-5 mb-15">  Empowering start-ups from idea to IPO.</h4>
                            <p class="tp-ff-dm fs-18 lh-150-per mb-25">Building lasting partnerships through strategic insight,<br>
                               innovation, and trust.</p>
-                           <a href="{% url 'contact' %}" class="tp-btn-cst mb-15 tp-btn-gradian d-inline-block lh-0 tp-round-26 fs-15 ls-0 tp-btn-switch-2-animation tp-text-common-white hover-text-white fw-700 tp-ff-dm">
+                           <a href="{% url 'contact' %}" class="tp-btn-ai tp-btn-switch-2-animation  p-relative hover-text-white d-inline-block text-uppercase tp-text-common-blacks lh-1 fs-16 fw-700 tp-ff-dm">
                               <span class="d-flex align-items-center justify-content-center">
                                  <span class="btn-text">Contact Us</span>
                                  <span class="btn-icon">
@@ -619,8 +619,8 @@
                                     <div class="tp-banner-cst-logo">
                                        <a href="{% url 'index' %}"><img data-width="125" src="{% static 'assets/img/logo/logo-white-2.png' %}" alt=""></a>
                                     </div>
-                                    <p class="tp-ff-dm fw-500 fs-18 tp-text-grey-5 ls-m-2 lh-1 mb-10">Explore what we <br> provides</p>
-                                    <a href="#" class="tp-banner-cst-logo-btn tp-left-right">
+                                    <p class="tp-ff-dm fw-500 fs-18 tp-text-grey-5 ls-m-2 lh-1 mb-10">Explore our<br> partners </p>
+                                    <a href="{% url 'partners' %}" class="tp-banner-cst-logo-btn tp-left-right">
                                        <span class="tp-arrow-angle">
                                           <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" style="color: white;">
                                              <path fill-rule="evenodd" clip-rule="evenodd" d="M2.41379 3.30208C5.97452 3.05821 10.6092 1.55558 14 0C12.4438 3.39014 10.9406 8.02425 10.6973 11.585L8.35765 6.59331L1.14783 13.8037C1.02165 13.9295 0.850656 14.0001 0.672431 14C0.539461 14 0.409486 13.9605 0.298934 13.8866C0.188382 13.8128 0.102217 13.7077 0.0513353 13.5849C0.000453949 13.462 -0.0128613 13.3269 0.013072 13.1965C0.0390053 13.066 0.103024 12.9462 0.197034 12.8522L7.40683 5.64241L2.41379 3.30208Z" fill="currentColor" />
@@ -640,7 +640,7 @@
                                  </div>
                                  <div class="col-lg-6">
                                     <div class="tp-hero-cst-btn-inner text-lg-end mb-5">
-                                       <div class="tp_fade_anim d-inline-block" data-delay=".3" data-fade-from="top" data-ease="bounce">
+                                       {% comment %} <div class="tp_fade_anim d-inline-block" data-delay=".3" data-fade-from="top" data-ease="bounce">
                                           <a href="{% url 'contact' %}" class="tp-btn-cst mb-15 tp-btn-gradian d-inline-block lh-0 tp-round-26 fs-15 ls-0 tp-btn-switch-2-animation tp-text-common-white hover-text-white fw-700 tp-ff-dm">
                                              <span class="d-flex align-items-center justify-content-center">
                                                 <span class="btn-text">whatsapp</span>
@@ -656,9 +656,9 @@
                                                 </span>
                                              </span> 
                                           </a>
-                                       </div>
+                                       </div> {% endcomment %}
                                        <div class="tp_fade_anim d-inline-block" data-delay=".5" data-fade-from="top" data-ease="bounce">
-                                          <a href="{% url 'contact' %}" class="tp-btn-cst mb-15 tp-btn-gradian d-inline-block lh-0 tp-round-26 fs-15 ls-0 tp-btn-switch-2-animation tp-text-common-white hover-text-white fw-700 tp-ff-dm">
+                                          <a href="{% url 'contact' %}" class="tp-btn-ai tp-btn-switch-2-animation  p-relative hover-text-white d-inline-block text-uppercase tp-text-common-blacks lh-1 fs-16 fw-700 tp-ff-dm">
                                              <span class="d-flex align-items-center justify-content-center">
                                                 <span class="btn-text">Schedule a Consultation</span>
                                                 <span class="btn-icon">
@@ -673,7 +673,7 @@
                                                 </span>
                                              </span> 
                                           </a>
-                                          <style>
+                                          {% comment %} <style>
                                              /* Default: Dark Royal Blue */
 .tp-btn-cst.tp-btn-gradian {
     background: #001448ff !important;   /* Dark royal blue */
@@ -687,7 +687,7 @@
     color: #fff !important;
 }
 
-                                          </style>
+                                          </style> {% endcomment %}
                                        </div>
                                     </div>
                                  </div>

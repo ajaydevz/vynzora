@@ -1313,7 +1313,7 @@
 </div>
 
 <!-- Update Modal -->
-<div id="updateModal" class="modal">
+{% comment %} <div id="updateModal" class="modal">
   <div class="modal-content">
     <div class="modal-header">
       <h3>
@@ -1421,7 +1421,1178 @@
       </form>
     </div>
   </div>
+</div> {% endcomment %}
+
+<!-- Update Modal -->
+<!-- Update Modal -->
+<div id="updateModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>
+        <i class="mdi mdi-pencil"></i>
+        Update Website
+      </h3>
+      <button type="button" class="modal-close" onclick="closeUpdateModal()">
+        <i class="mdi mdi-close"></i>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form method="POST" enctype="multipart/form-data" id="updateForm">
+        {% csrf_token %}
+        
+        <div id="formErrors" class="alert-message alert-error" style="display: none;"></div>
+
+        <div class="form-group">
+          <label class="form-label">Category<span class="required">*</span></label>
+          <select class="form-control" id="updateCategory" name="category" required>
+            {% for category in categories %}
+              <option value="{{ category.id }}">{{ category.name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Website Name<span class="required">*</span></label>
+          <input type="text" class="form-control" name="name" id="updateName" required maxlength="200">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Slug<span class="required">*</span></label>
+          <input type="text" class="form-control" name="slug" id="updateSlug" required maxlength="255">
+          <small style="color: #6c757d;">Slug is auto-generated from website name</small>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Main Title</label>
+          <input type="text" class="form-control" name="main_title" id="updateMainTitle" maxlength="200">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Meta Title</label>
+          <input type="text" class="form-control" name="meta_title" id="updateMetaTitle" maxlength="200">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Meta Description</label>
+          <textarea class="form-control" name="meta_description" id="updateMetaDescription" rows="3"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Description</label>
+          <textarea class="form-control" name="description" id="updateDescription" rows="4"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Additional Title</label>
+          <input type="text" class="form-control" name="add_title" id="updateAddTitle" maxlength="200">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Additional Description</label>
+          <textarea class="form-control" name="add_description" id="updateAddDescription" rows="4"></textarea>
+        </div>
+
+        <!-- IMAGE SECTION - Single Preview Area -->
+        <div class="form-group">
+          <label class="form-label">Website Image</label>
+          
+          <!-- Single Image Preview Container -->
+          <div class="image-preview-wrapper" id="imagePreviewWrapper">
+            <div class="preview-label" id="previewLabel">Current Image</div>
+            <img src="" alt="Preview" class="modal-image-preview" id="modalImagePreview">
+            <div class="preview-info" id="modalPreviewInfo"></div>
+          </div>
+          
+          <div class="file-input-wrapper" style="margin-top: 15px;">
+            <input type="file" class="form-control" name="image" id="updateImageInput" accept="image/*">
+            <div class="file-input-custom" id="updateFileInputCustom">
+              <i class="mdi mdi-cloud-upload" style="font-size: 20px; margin-bottom: 6px;"></i>
+              <div>Click to upload new image</div>
+              <small>Leave empty to keep current image</small>
+            </div>
+          </div>
+        </div>
+
+        <!-- VIDEO SECTION - Single Preview Area -->
+        <div class="form-group">
+          <label class="form-label">YouTube Video URL</label>
+          <input type="text" class="form-control" name="videos" id="updateVideoUrl" placeholder="Paste YouTube link here">
+          
+          <!-- Single Video Preview Container -->
+          <div class="video-preview-wrapper" id="videoPreviewWrapper" style="display: none; margin-top: 15px;">
+            <div class="preview-label" id="videoPreviewLabel">Current Video</div>
+            <div class="video-frame-container">
+              <iframe id="updateVideoFrame" width="100%" height="250" frameborder="0" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>
+            </div>
+          </div>
+        </div>
+
+        <!-- FAQs Section -->
+        <div class="section-divider"></div>
+        <div class="services-section">
+          <div class="services-header">
+            <h5>
+              <i class="mdi mdi-comment-question-outline"></i>
+              FAQs (Optional, Max 6)
+            </h5>
+            <button type="button" class="btn-add-formset" id="addFaqBtn" onclick="addFaq()">
+              <i class="mdi mdi-plus"></i>
+              Add FAQ
+            </button>
+          </div>
+          <div id="faqFormset"></div>
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="btn-modal btn-cancel" onclick="closeUpdateModal()">
+            <i class="mdi mdi-close"></i>
+            Cancel
+          </button>
+          <button type="submit" class="btn-modal btn-submit">
+            <i class="mdi mdi-check"></i>
+            Update Website
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
 </div>
+
+<!-- Add these styles to your existing style block -->
+<style>
+/* Image Preview Wrapper */
+.image-preview-wrapper {
+  display: none;
+  text-align: center;
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 12px;
+  border: 2px solid #e9ecef;
+  margin-bottom: 10px;
+}
+
+.image-preview-wrapper.show {
+  display: block;
+}
+
+.preview-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #667eea;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.preview-label.new-image {
+  color: #27ae60;
+}
+
+.modal-image-preview {
+  max-width: 250px;
+  max-height: 180px;
+  border-radius: 10px;
+  border: 2px solid #e9ecef;
+  object-fit: cover;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.preview-info {
+  margin-top: 10px;
+  font-size: 12px;
+  color: #6c757d;
+}
+
+/* Video Preview Wrapper */
+.video-preview-wrapper {
+  padding: 15px;
+  background: #f8f9fa;
+  border-radius: 12px;
+  border: 2px solid #e9ecef;
+}
+
+.video-preview-wrapper.show {
+  display: block !important;
+}
+
+.video-frame-container {
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.video-frame-container iframe {
+  display: block;
+}
+
+/* File input styling for modal */
+#updateModal .file-input-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+#updateModal .file-input-wrapper input[type=file] {
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  z-index: 2;
+}
+
+#updateModal .file-input-custom {
+  padding: 15px;
+  border: 2px dashed #e9ecef;
+  border-radius: 10px;
+  background: #f8f9fa;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: #6c757d;
+}
+
+#updateModal .file-input-custom:hover {
+  border-color: #667eea;
+  background: #f0f4ff;
+}
+
+#updateModal .file-input-custom.has-file {
+  border-color: #27ae60;
+  background: #e8f8f0;
+  color: #27ae60;
+}
+</style>
+
+<script>
+let currentWebsiteId = null;
+let faqCounter = 0;
+let originalSlug = '';
+
+// Escape HTML
+function escapeHtml(text) {
+  const div = document.createElement('div');
+  div.textContent = text || '';
+  return div.innerHTML;
+}
+
+// Generate slug from text
+function generateSlug(text) {
+  return text
+    .toLowerCase()
+    .trim()
+    .replace(/[^\w\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/--+/g, '-');
+}
+
+// Convert YouTube URL to embed URL
+function convertToEmbedURL(url) {
+  if (!url) return "";
+  let videoId = "";
+  
+  if (url.includes("watch?v=")) {
+    videoId = url.split("v=")[1].split("&")[0];
+  } else if (url.includes("youtu.be/")) {
+    videoId = url.split("youtu.be/")[1].split("?")[0];
+  } else if (url.includes("youtube.com/embed/")) {
+    videoId = url.split("embed/")[1].split("?")[0];
+  }
+  
+  if (!videoId) return "";
+  return `https://www.youtube.com/embed/${videoId}`;
+}
+
+// Add FAQ
+function addFaq(data = {}) {
+  const currentFaqs = document.querySelectorAll('#faqFormset .formset-item:not(.marked-for-deletion)').length;
+  if (currentFaqs >= 6) {
+    alert('Maximum 6 FAQs allowed');
+    return;
+  }
+  
+  faqCounter++;
+  const html = `
+    <div class="formset-item" id="faq-${faqCounter}">
+      <div class="formset-header">
+        <div class="formset-title">
+          <span class="formset-number">${faqCounter}</span>
+          FAQ ${faqCounter}
+        </div>
+        <button type="button" class="btn-remove-formset" onclick="removeFaq(${faqCounter})">
+          <i class="mdi mdi-delete"></i> Remove
+        </button>
+      </div>
+      <input type="hidden" name="faqs-${faqCounter}-id" value="${data.id || ''}">
+      <input type="hidden" name="faqs-${faqCounter}-DELETE" value="">
+      <div class="form-group">
+        <label class="form-label">Question</label>
+        <input type="text" class="form-control" name="faqs-${faqCounter}-question" value="${escapeHtml(data.question || '')}" maxlength="200">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Answer</label>
+        <textarea class="form-control" name="faqs-${faqCounter}-answer" rows="3">${escapeHtml(data.answer || '')}</textarea>
+      </div>
+    </div>
+  `;
+  document.getElementById('faqFormset').insertAdjacentHTML('beforeend', html);
+  
+  const addBtn = document.getElementById('addFaqBtn');
+  if (currentFaqs + 1 >= 6) {
+    addBtn.style.display = 'none';
+  }
+}
+
+// Remove FAQ
+function removeFaq(id) {
+  const item = document.getElementById(`faq-${id}`);
+  const deleteInput = item.querySelector('input[name$="-DELETE"]');
+  deleteInput.value = 'on';
+  item.classList.add('marked-for-deletion');
+  item.style.display = 'none';
+  
+  const currentFaqs = document.querySelectorAll('#faqFormset .formset-item:not(.marked-for-deletion)').length;
+  const addBtn = document.getElementById('addFaqBtn');
+  if (currentFaqs < 6) {
+    addBtn.style.display = 'inline-flex';
+  }
+}
+
+// Update Image Preview (same container)
+function updateImagePreview(src, isNew = false, fileInfo = null) {
+  const wrapper = document.getElementById('imagePreviewWrapper');
+  const img = document.getElementById('modalImagePreview');
+  const label = document.getElementById('previewLabel');
+  const info = document.getElementById('modalPreviewInfo');
+  
+  if (src) {
+    img.src = src;
+    wrapper.classList.add('show');
+    
+    if (isNew) {
+      label.textContent = 'New Image Preview';
+      label.classList.add('new-image');
+      if (fileInfo) {
+        info.innerHTML = `<div>File: ${fileInfo.name}</div><div>Size: ${(fileInfo.size / 1024).toFixed(2)} KB</div>`;
+      }
+    } else {
+      label.textContent = 'Current Image';
+      label.classList.remove('new-image');
+      info.innerHTML = '';
+    }
+  } else {
+    wrapper.classList.remove('show');
+    img.src = '';
+  }
+}
+
+// Update Video Preview (same container)
+function updateVideoPreview(url, isNew = false) {
+  const wrapper = document.getElementById('videoPreviewWrapper');
+  const iframe = document.getElementById('updateVideoFrame');
+  const label = document.getElementById('videoPreviewLabel');
+  
+  const embedUrl = convertToEmbedURL(url);
+  
+  if (embedUrl) {
+    iframe.src = embedUrl;
+    wrapper.classList.add('show');
+    wrapper.style.display = 'block';
+    
+    if (isNew) {
+      label.textContent = 'New Video Preview';
+      label.style.color = '#27ae60';
+    } else {
+      label.textContent = 'Current Video';
+      label.style.color = '#667eea';
+    }
+  } else {
+    wrapper.classList.remove('show');
+    wrapper.style.display = 'none';
+    iframe.src = '';
+  }
+}
+
+// Open Update Modal
+function openUpdateModal(websiteId) {
+  currentWebsiteId = websiteId;
+  
+  // Reset
+  faqCounter = 0;
+  document.getElementById('faqFormset').innerHTML = '';
+  document.getElementById('formErrors').style.display = 'none';
+  document.getElementById('updateImageInput').value = '';
+  document.getElementById('updateFileInputCustom').classList.remove('has-file');
+  document.getElementById('updateFileInputCustom').innerHTML = `
+    <i class="mdi mdi-cloud-upload" style="font-size: 20px; margin-bottom: 6px;"></i>
+    <div>Click to upload new image</div>
+    <small>Leave empty to keep current image</small>
+  `;
+  
+  // Load data
+  fetch(`/api/website/${websiteId}/`)
+    .then(res => res.json())
+    .then(data => {
+      // Basic fields
+      document.getElementById('updateCategory').value = data.category_id;
+      document.getElementById('updateName').value = data.name;
+      document.getElementById('updateSlug').value = data.slug;
+      originalSlug = data.slug; // Store original slug
+      
+      document.getElementById('updateMainTitle').value = data.main_title || '';
+      document.getElementById('updateMetaTitle').value = data.meta_title || '';
+      document.getElementById('updateMetaDescription').value = data.meta_description || '';
+      document.getElementById('updateDescription').value = data.description || '';
+      document.getElementById('updateAddTitle').value = data.add_title || '';
+      document.getElementById('updateAddDescription').value = data.add_description || '';
+      
+      // Image - Show in single preview area
+      if (data.image) {
+        updateImagePreview(data.image, false);
+      } else {
+        updateImagePreview(null);
+      }
+      
+      // Video - Show in single preview area with preview immediately
+      const videoUrl = data.videos || '';
+      document.getElementById('updateVideoUrl').value = videoUrl;
+      if (videoUrl) {
+        updateVideoPreview(videoUrl, false);
+      } else {
+        updateVideoPreview('');
+      }
+      
+      // FAQs
+      data.faqs.forEach(faq => addFaq(faq));
+      
+      // Update FAQ button visibility
+      const addBtn = document.getElementById('addFaqBtn');
+      if (data.faqs.length >= 6) {
+        addBtn.style.display = 'none';
+      } else {
+        addBtn.style.display = 'inline-flex';
+      }
+      
+      document.getElementById('updateModal').classList.add('show');
+      document.body.style.overflow = 'hidden';
+    })
+    .catch(err => {
+      console.error(err);
+    });
+}
+
+// Close Update Modal
+function closeUpdateModal() {
+  document.getElementById('updateModal').classList.remove('show');
+  document.body.style.overflow = 'auto';
+  document.getElementById('updateImageInput').value = '';
+  
+  // Reset previews
+  updateImagePreview(null);
+  updateVideoPreview('');
+}
+
+// Website Name Input Change Handler - Auto-generate slug
+document.getElementById('updateName').addEventListener('input', function() {
+  const slugField = document.getElementById('updateSlug');
+  slugField.value = generateSlug(this.value);
+});
+
+// Image Input Change Handler - Replace in same preview area
+document.getElementById('updateImageInput').addEventListener('change', function(e) {
+  const file = e.target.files[0];
+  const fileInputCustom = document.getElementById('updateFileInputCustom');
+  
+  if (file) {
+    // Validate file type
+    if (!file.type.match('image.*')) {
+      alert('Please select a valid image file');
+      this.value = '';
+      return;
+    }
+    
+    // Validate file size (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      alert('Image size should be less than 5MB');
+      this.value = '';
+      return;
+    }
+    
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      // Update the SAME preview area with new image
+      updateImagePreview(e.target.result, true, file);
+      
+      // Update file input display
+      fileInputCustom.classList.add('has-file');
+      fileInputCustom.innerHTML = `
+        <i class="mdi mdi-check-circle" style="color: #27ae60; font-size: 20px; margin-bottom: 6px;"></i>
+        <div>${file.name}</div>
+        <small>${(file.size / 1024 / 1024).toFixed(2)} MB</small>
+      `;
+    };
+    reader.readAsDataURL(file);
+  }
+});
+
+// Video URL Input Handler - Replace in same preview area and update in real-time
+document.getElementById('updateVideoUrl').addEventListener('input', function() {
+  const url = this.value.trim();
+  // Show updated preview as user types (mark as new when editing)
+  if (url) {
+    updateVideoPreview(url, true);
+  } else {
+    updateVideoPreview('');
+  }
+});
+
+// Submit Form
+document.getElementById('updateForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  
+  const formData = new FormData(this);
+  formData.set('faqs-TOTAL_FORMS', faqCounter.toString());
+  
+  fetch(`/update-website/${currentWebsiteId}/`, {
+    method: 'POST',
+    body: formData,
+    headers: {'X-Requested-With': 'XMLHttpRequest'}
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.success) {
+      closeUpdateModal();
+      location.reload();
+    } else {
+      document.getElementById('formErrors').textContent = data.message;
+      document.getElementById('formErrors').style.display = 'block';
+    }
+  })
+  .catch(err => {
+    console.error(err);
+  });
+});
+
+// Delete Modal Functions (keep these as they were)
+function openDeleteModal(id, name) {
+  document.getElementById('deleteForm').action = `/delete-website/${id}/`;
+  document.getElementById('deleteWebsiteName').textContent = name;
+  document.getElementById('deleteModal').classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeDeleteModal() {
+  document.getElementById('deleteModal').classList.remove('show');
+  document.body.style.overflow = 'auto';
+}
+
+// Close modals on outside click
+window.addEventListener('click', (e) => {
+  if (e.target.classList.contains('modal')) {
+    e.target.classList.remove('show');
+    document.body.style.overflow = 'auto';
+  }
+});
+
+// Search functionality (keep as is)
+const searchInput = document.getElementById('searchInput');
+const clearSearch = document.getElementById('clearSearch');
+
+if (searchInput) {
+  searchInput.addEventListener('input', function() {
+    const query = this.value.toLowerCase().trim();
+    clearSearch.classList.toggle('show', query.length > 0);
+    
+    const rows = document.querySelectorAll('#websitesTableBody tr');
+    rows.forEach(row => {
+      const text = row.textContent.toLowerCase();
+      row.style.display = text.includes(query) ? '' : 'none';
+    });
+  });
+}
+
+if (clearSearch) {
+  clearSearch.addEventListener('click', function() {
+    searchInput.value = '';
+    this.classList.remove('show');
+    document.querySelectorAll('#websitesTableBody tr').forEach(row => {
+      row.style.display = '';
+    });
+  });
+}
+</script>
+
+
+{% comment %} <div id="updateModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>
+        <i class="mdi mdi-pencil"></i>
+        Update Website
+      </h3>
+      <button type="button" class="modal-close" onclick="closeUpdateModal()">
+        <i class="mdi mdi-close"></i>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form method="POST" enctype="multipart/form-data" id="updateForm">
+        {% csrf_token %}
+        
+        <div id="formErrors" class="alert-message alert-error" style="display: none;"></div>
+
+        <div class="form-group">
+          <label class="form-label">Category<span class="required">*</span></label>
+          <select class="form-control" id="updateCategory" name="category" required>
+            {% for category in categories %}
+              <option value="{{ category.id }}">{{ category.name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Website Name<span class="required">*</span></label>
+          <input type="text" class="form-control" name="name" id="updateName" required maxlength="200">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Slug<span class="required">*</span></label>
+          <input type="text" class="form-control" name="slug" id="updateSlug" required maxlength="255">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Main Title</label>
+          <input type="text" class="form-control" name="main_title" id="updateMainTitle" maxlength="200">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Meta Title</label>
+          <input type="text" class="form-control" name="meta_title" id="updateMetaTitle" maxlength="200">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Meta Description</label>
+          <textarea class="form-control" name="meta_description" id="updateMetaDescription" rows="3"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Description</label>
+          <textarea class="form-control" name="description" id="updateDescription" rows="4"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Additional Title</label>
+          <input type="text" class="form-control" name="add_title" id="updateAddTitle" maxlength="200">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Additional Description</label>
+          <textarea class="form-control" name="add_description" id="updateAddDescription" rows="4"></textarea>
+        </div>
+
+        <!-- IMAGE SECTION - Single Preview Area -->
+        <div class="form-group">
+          <label class="form-label">Website Image</label>
+          
+          <!-- Single Image Preview Container -->
+          <div class="image-preview-wrapper" id="imagePreviewWrapper">
+            <div class="preview-label" id="previewLabel">Current Image</div>
+            <img src="" alt="Preview" class="modal-image-preview" id="modalImagePreview">
+            <div class="preview-info" id="modalPreviewInfo"></div>
+          </div>
+          
+          <div class="file-input-wrapper" style="margin-top: 15px;">
+            <input type="file" class="form-control" name="image" id="updateImageInput" accept="image/*">
+            <div class="file-input-custom" id="updateFileInputCustom">
+              <i class="mdi mdi-cloud-upload" style="font-size: 20px; margin-bottom: 6px;"></i>
+              <div>Click to upload new image</div>
+              <small>Leave empty to keep current image</small>
+            </div>
+          </div>
+        </div>
+
+        <!-- VIDEO SECTION - Single Preview Area -->
+        <div class="form-group">
+          <label class="form-label">YouTube Video URL</label>
+          <input type="text" class="form-control" name="video_url" id="updateVideoUrl" placeholder="Paste YouTube link here">
+          
+          <!-- Single Video Preview Container -->
+          <div class="video-preview-wrapper" id="videoPreviewWrapper" style="display: none; margin-top: 15px;">
+            <div class="preview-label" id="videoPreviewLabel">Current Video</div>
+            <div class="video-frame-container">
+              <iframe id="updateVideoFrame" width="100%" height="250" frameborder="0" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>
+            </div>
+          </div>
+        </div>
+
+        <!-- FAQs Section -->
+        <div class="section-divider"></div>
+        <div class="services-section">
+          <div class="services-header">
+            <h5>
+              <i class="mdi mdi-comment-question-outline"></i>
+              FAQs (Optional, Max 6)
+            </h5>
+            <button type="button" class="btn-add-formset" id="addFaqBtn" onclick="addFaq()">
+              <i class="mdi mdi-plus"></i>
+              Add FAQ
+            </button>
+          </div>
+          <div id="faqFormset"></div>
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="btn-modal btn-cancel" onclick="closeUpdateModal()">
+            <i class="mdi mdi-close"></i>
+            Cancel
+          </button>
+          <button type="submit" class="btn-modal btn-submit">
+            <i class="mdi mdi-check"></i>
+            Update Website
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Add these styles to your existing style block -->
+<style>
+/* Image Preview Wrapper */
+.image-preview-wrapper {
+  display: none;
+  text-align: center;
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 12px;
+  border: 2px solid #e9ecef;
+  margin-bottom: 10px;
+}
+
+.image-preview-wrapper.show {
+  display: block;
+}
+
+.preview-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #667eea;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.preview-label.new-image {
+  color: #27ae60;
+}
+
+.modal-image-preview {
+  max-width: 250px;
+  max-height: 180px;
+  border-radius: 10px;
+  border: 2px solid #e9ecef;
+  object-fit: cover;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.preview-info {
+  margin-top: 10px;
+  font-size: 12px;
+  color: #6c757d;
+}
+
+/* Video Preview Wrapper */
+.video-preview-wrapper {
+  padding: 15px;
+  background: #f8f9fa;
+  border-radius: 12px;
+  border: 2px solid #e9ecef;
+}
+
+.video-preview-wrapper.show {
+  display: block !important;
+}
+
+.video-frame-container {
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.video-frame-container iframe {
+  display: block;
+}
+
+/* File input styling for modal */
+#updateModal .file-input-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+#updateModal .file-input-wrapper input[type=file] {
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  z-index: 2;
+}
+
+#updateModal .file-input-custom {
+  padding: 15px;
+  border: 2px dashed #e9ecef;
+  border-radius: 10px;
+  background: #f8f9fa;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: #6c757d;
+}
+
+#updateModal .file-input-custom:hover {
+  border-color: #667eea;
+  background: #f0f4ff;
+}
+
+#updateModal .file-input-custom.has-file {
+  border-color: #27ae60;
+  background: #e8f8f0;
+  color: #27ae60;
+}
+</style>
+
+<script>
+let currentWebsiteId = null;
+let faqCounter = 0;
+
+// Escape HTML
+function escapeHtml(text) {
+  const div = document.createElement('div');
+  div.textContent = text || '';
+  return div.innerHTML;
+}
+
+// Convert YouTube URL to embed URL
+function convertToEmbedURL(url) {
+  if (!url) return "";
+  let videoId = "";
+  
+  if (url.includes("watch?v=")) {
+    videoId = url.split("v=")[1].split("&")[0];
+  } else if (url.includes("youtu.be/")) {
+    videoId = url.split("youtu.be/")[1].split("?")[0];
+  } else if (url.includes("youtube.com/embed/")) {
+    videoId = url.split("embed/")[1].split("?")[0];
+  }
+  
+  if (!videoId) return "";
+  return `https://www.youtube.com/embed/${videoId}`;
+}
+
+// Add FAQ
+function addFaq(data = {}) {
+  const currentFaqs = document.querySelectorAll('#faqFormset .formset-item:not(.marked-for-deletion)').length;
+  if (currentFaqs >= 6) {
+    alert('Maximum 6 FAQs allowed');
+    return;
+  }
+  
+  faqCounter++;
+  const html = `
+    <div class="formset-item" id="faq-${faqCounter}">
+      <div class="formset-header">
+        <div class="formset-title">
+          <span class="formset-number">${faqCounter}</span>
+          FAQ ${faqCounter}
+        </div>
+        <button type="button" class="btn-remove-formset" onclick="removeFaq(${faqCounter})">
+          <i class="mdi mdi-delete"></i> Remove
+        </button>
+      </div>
+      <input type="hidden" name="faqs-${faqCounter}-id" value="${data.id || ''}">
+      <input type="hidden" name="faqs-${faqCounter}-DELETE" value="">
+      <div class="form-group">
+        <label class="form-label">Question</label>
+        <input type="text" class="form-control" name="faqs-${faqCounter}-question" value="${escapeHtml(data.question || '')}" maxlength="200">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Answer</label>
+        <textarea class="form-control" name="faqs-${faqCounter}-answer" rows="3">${escapeHtml(data.answer || '')}</textarea>
+      </div>
+    </div>
+  `;
+  document.getElementById('faqFormset').insertAdjacentHTML('beforeend', html);
+  
+  const addBtn = document.getElementById('addFaqBtn');
+  if (currentFaqs + 1 >= 6) {
+    addBtn.style.display = 'none';
+  }
+}
+
+// Remove FAQ
+function removeFaq(id) {
+  const item = document.getElementById(`faq-${id}`);
+  const deleteInput = item.querySelector('input[name$="-DELETE"]');
+  deleteInput.value = 'on';
+  item.classList.add('marked-for-deletion');
+  item.style.display = 'none';
+  
+  const currentFaqs = document.querySelectorAll('#faqFormset .formset-item:not(.marked-for-deletion)').length;
+  const addBtn = document.getElementById('addFaqBtn');
+  if (currentFaqs < 6) {
+    addBtn.style.display = 'inline-flex';
+  }
+}
+
+// Update Image Preview (same container)
+function updateImagePreview(src, isNew = false, fileInfo = null) {
+  const wrapper = document.getElementById('imagePreviewWrapper');
+  const img = document.getElementById('modalImagePreview');
+  const label = document.getElementById('previewLabel');
+  const info = document.getElementById('modalPreviewInfo');
+  
+  if (src) {
+    img.src = src;
+    wrapper.classList.add('show');
+    
+    if (isNew) {
+      label.textContent = 'New Image Preview';
+      label.classList.add('new-image');
+      if (fileInfo) {
+        info.innerHTML = `<div>File: ${fileInfo.name}</div><div>Size: ${(fileInfo.size / 1024).toFixed(2)} KB</div>`;
+      }
+    } else {
+      label.textContent = 'Current Image';
+      label.classList.remove('new-image');
+      info.innerHTML = '';
+    }
+  } else {
+    wrapper.classList.remove('show');
+    img.src = '';
+  }
+}
+
+// Update Video Preview (same container)
+function updateVideoPreview(url, isNew = false) {
+  const wrapper = document.getElementById('videoPreviewWrapper');
+  const iframe = document.getElementById('updateVideoFrame');
+  const label = document.getElementById('videoPreviewLabel');
+  
+  const embedUrl = convertToEmbedURL(url);
+  
+  if (embedUrl) {
+    iframe.src = embedUrl;
+    wrapper.style.display = 'block';
+    
+    if (isNew) {
+      label.textContent = 'New Video Preview';
+      label.style.color = '#27ae60';
+    } else {
+      label.textContent = 'Current Video';
+      label.style.color = '#667eea';
+    }
+  } else {
+    wrapper.style.display = 'none';
+    iframe.src = '';
+  }
+}
+
+// Open Update Modal
+function openUpdateModal(websiteId) {
+  currentWebsiteId = websiteId;
+  
+  // Reset
+  faqCounter = 0;
+  document.getElementById('faqFormset').innerHTML = '';
+  document.getElementById('formErrors').style.display = 'none';
+  document.getElementById('updateImageInput').value = '';
+  document.getElementById('updateFileInputCustom').classList.remove('has-file');
+  document.getElementById('updateFileInputCustom').innerHTML = `
+    <i class="mdi mdi-cloud-upload" style="font-size: 20px; margin-bottom: 6px;"></i>
+    <div>Click to upload new image</div>
+    <small>Leave empty to keep current image</small>
+  `;
+  
+  // Load data
+  fetch(`/api/website/${websiteId}/`)
+    .then(res => res.json())
+    .then(data => {
+      // Basic fields
+      document.getElementById('updateCategory').value = data.category_id;
+      document.getElementById('updateName').value = data.name;
+      document.getElementById('updateSlug').value = data.slug;
+      document.getElementById('updateMainTitle').value = data.main_title || '';
+      document.getElementById('updateMetaTitle').value = data.meta_title || '';
+      document.getElementById('updateMetaDescription').value = data.meta_description || '';
+      document.getElementById('updateDescription').value = data.description || '';
+      document.getElementById('updateAddTitle').value = data.add_title || '';
+      document.getElementById('updateAddDescription').value = data.add_description || '';
+      
+      // Image - Show in single preview area
+      if (data.image) {
+        updateImagePreview(data.image, false);
+      } else {
+        updateImagePreview(null);
+      }
+      
+      // Video - Show in single preview area
+      const videoUrl = data.video_url || '';
+      document.getElementById('updateVideoUrl').value = videoUrl;
+      updateVideoPreview(videoUrl, false);
+      
+      // FAQs
+      data.faqs.forEach(faq => addFaq(faq));
+      
+      // Update FAQ button visibility
+      const addBtn = document.getElementById('addFaqBtn');
+      if (data.faqs.length >= 6) {
+        addBtn.style.display = 'none';
+      } else {
+        addBtn.style.display = 'inline-flex';
+      }
+      
+      document.getElementById('updateModal').classList.add('show');
+      document.body.style.overflow = 'hidden';
+    })
+    .catch(err => {
+      console.error(err);
+    });
+}
+
+// Close Update Modal
+function closeUpdateModal() {
+  document.getElementById('updateModal').classList.remove('show');
+  document.body.style.overflow = 'auto';
+  document.getElementById('updateImageInput').value = '';
+  
+  // Reset previews
+  updateImagePreview(null);
+  updateVideoPreview('');
+}
+
+// Image Input Change Handler - Replace in same preview area
+document.getElementById('updateImageInput').addEventListener('change', function(e) {
+  const file = e.target.files[0];
+  const fileInputCustom = document.getElementById('updateFileInputCustom');
+  
+  if (file) {
+    // Validate file type
+    if (!file.type.match('image.*')) {
+      alert('Please select a valid image file');
+      this.value = '';
+      return;
+    }
+    
+    // Validate file size (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      alert('Image size should be less than 5MB');
+      this.value = '';
+      return;
+    }
+    
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      // Update the SAME preview area with new image
+      updateImagePreview(e.target.result, true, file);
+      
+      // Update file input display
+      fileInputCustom.classList.add('has-file');
+      fileInputCustom.innerHTML = `
+        <i class="mdi mdi-check-circle" style="color: #27ae60; font-size: 20px; margin-bottom: 6px;"></i>
+        <div>${file.name}</div>
+        <small>${(file.size / 1024 / 1024).toFixed(2)} MB</small>
+      `;
+    };
+    reader.readAsDataURL(file);
+  }
+});
+
+// Video URL Input Handler - Replace in same preview area
+document.getElementById('updateVideoUrl').addEventListener('input', function() {
+  const url = this.value.trim();
+  // Always show as "new" when user is typing/editing
+  updateVideoPreview(url, true);
+});
+
+// Submit Form
+document.getElementById('updateForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  
+  const formData = new FormData(this);
+  formData.set('faqs-TOTAL_FORMS', faqCounter.toString());
+  
+  fetch(`/update-website/${currentWebsiteId}/`, {
+    method: 'POST',
+    body: formData,
+    headers: {'X-Requested-With': 'XMLHttpRequest'}
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.success) {
+      closeUpdateModal();
+      location.reload();
+    } else {
+      document.getElementById('formErrors').textContent = data.message;
+      document.getElementById('formErrors').style.display = 'block';
+    }
+  })
+  .catch(err => {
+    console.error(err);
+  });
+});
+
+// Delete Modal Functions (keep these as they were)
+function openDeleteModal(id, name) {
+  document.getElementById('deleteForm').action = `/delete-website/${id}/`;
+  document.getElementById('deleteWebsiteName').textContent = name;
+  document.getElementById('deleteModal').classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeDeleteModal() {
+  document.getElementById('deleteModal').classList.remove('show');
+  document.body.style.overflow = 'auto';
+}
+
+// Close modals on outside click
+window.addEventListener('click', (e) => {
+  if (e.target.classList.contains('modal')) {
+    e.target.classList.remove('show');
+    document.body.style.overflow = 'auto';
+  }
+});
+
+// Search functionality (keep as is)
+const searchInput = document.getElementById('searchInput');
+const clearSearch = document.getElementById('clearSearch');
+
+if (searchInput) {
+  searchInput.addEventListener('input', function() {
+    const query = this.value.toLowerCase().trim();
+    clearSearch.classList.toggle('show', query.length > 0);
+    
+    const rows = document.querySelectorAll('#websitesTableBody tr');
+    rows.forEach(row => {
+      const text = row.textContent.toLowerCase();
+      row.style.display = text.includes(query) ? '' : 'none';
+    });
+  });
+}
+
+if (clearSearch) {
+  clearSearch.addEventListener('click', function() {
+    searchInput.value = '';
+    this.classList.remove('show');
+    document.querySelectorAll('#websitesTableBody tr').forEach(row => {
+      row.style.display = '';
+    });
+  });
+}
+</script> {% endcomment %}
+
+
 
 <!-- Delete Modal -->
 <div id="deleteModal" class="modal">
@@ -1570,7 +2741,7 @@
 }
 
 </style>
-
+{% comment %} 
 <script>
 let currentWebsiteId = null;
 let faqCounter = 0;
@@ -1665,6 +2836,8 @@ function openUpdateModal(websiteId) {
       document.getElementById('updateDescription').value = data.description || '';
       document.getElementById('updateAddTitle').value = data.add_title || '';
       document.getElementById('updateAddDescription').value = data.add_description || '';
+
+      
       
       // Image
       const imageWrapper = document.getElementById('currentImageWrapper');
@@ -1752,6 +2925,7 @@ window.addEventListener('click', (e) => {
     document.body.style.overflow = 'auto';
   }
 });
-</script>
+</script>  {% endcomment %}
+
 
 {% endblock %}

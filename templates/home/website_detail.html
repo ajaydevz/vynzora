@@ -11,7 +11,9 @@
         <!-- Place favicon.ico in the root directory -->
     <link rel="shortcut icon" type="image/x-icon" href="{% static 'favicon.ico' %}">
 
-         <!-- Google Tag Manager -->
+        
+
+         <!-- Google Tag Manager -->    
         <script>
           (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
           new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -20,6 +22,19 @@
           })(window,document,'script','dataLayer','GTM-572V4DS5');
       </script>
       <!-- End Google Tag Manager -->
+
+      <!-- In your base template head -->
+
+    <!-- Preload critical YouTube resources -->
+        <link rel="dns-prefetch" href="//www.youtube.com">
+        <link rel="dns-prefetch" href="//i.ytimg.com">
+        <link rel="dns-prefetch" href:"//s.ytimg.com">
+        
+        <!-- Preload the YouTube frame if video exists -->
+        {% if video_id %}
+        <link rel="preload" href="https://www.youtube.com/embed/{{ video_id }}" as="document">
+        {% endif %}
+
 
 
         <!-- CSS here -->
@@ -90,7 +105,7 @@
             <div class="tp-offcanvas">
                 <div class="tp-offcanvas-top d-flex align-items-center justify-content-between">
                     <div class="tp-offcanvas-logo">
-                        <a href="index.html" class="logo">
+                        <a href="{% url 'index' %}" class="logo">
                                     <img data-width="150" src="{% static 'assets/img/logo/logo22.png' %}" alt="logo">
                         </a>
                     </div>
@@ -105,12 +120,12 @@
                 </div>
                 <div class="tp-offcanvas-content d-none d-xl-block">
                     <h3 class="tp-offcanvas-title">Welcome!</h3>
-                    <p>Explore our latest projects and creative works.</p>
+                    <p>Explore our website.</p>
                 </div>
                 <div class="tp-offcanvas-menu d-xl-none">
                     <nav></nav>
                 </div>
-                <div class="tp-offcanvas-gallery d-none d-xl-block">
+                {% comment %} <div class="tp-offcanvas-gallery d-none d-xl-block">
                     <div class="row gx-2">
                          {% for project in projects %}
                         <div class="col-md-3 col-3">
@@ -122,7 +137,7 @@
                         </div>
                        {% endfor %}
                     </div>
-                </div>
+                </div> {% endcomment %}
                 <div class="tp-offcanvas-contact">
                     <h3 class="tp-offcanvas-title sm">Information</h3>
                     <ul>
@@ -139,7 +154,7 @@ Kochi, Kerala 683104, India</a>
                     </ul>
                 </div>
                 <div class="tp-offcanvas-social">
-                    <h3 class="tp-offcanvas-title sm">Follow Us</h3>
+                    {% comment %} <h3 class="tp-offcanvas-title sm">Follow Us</h3> {% endcomment %}
                     <ul>
                         <li>
                             <a href="https://www.instagram.com/vynzora/?hl=en">
@@ -171,6 +186,19 @@ Kochi, Kerala 683104, India</a>
   </a>
 </li>
 
+                            <li>
+                                <a href="https://www.facebook.com/profile.php?id=61566425547531" target="_blank" rel="noopener noreferrer">
+                                    <i class="fa-brands fa-facebook"></i>
+                                </a>
+                            </li>
+                            
+                            <li>
+                                <a href="https://wa.me/918590627934" target="_blank" rel="noopener noreferrer">
+                                    <i class="fa-brands fa-whatsapp"></i>
+                                </a>
+                            <li>
+                            
+
                        
                     </ul>
                 </div>
@@ -184,6 +212,7 @@ Kochi, Kerala 683104, India</a>
 }
 
          </style>
+         
     
          <header>
             <!-- tp-header-area-start -->
@@ -628,8 +657,13 @@ Kochi, Kerala 683104, India</a>
                                                         <a href="{% url 'about' %}">Our Story</a>
                                                     </li>
                                                     <li>
+                                                        <a href="{% url 'partners' %}">Our Partners</a>
+                                                    </li>
+                                                    <li>
                                                         <a href="{% url 'team' %}">Team</a>
                                                     </li>
+                                                   
+
                                                 
                                                    
                                                 </ul>
@@ -682,7 +716,7 @@ Kochi, Kerala 683104, India</a>
 
 <li class="has-dropdown">
      {% if career_job_count > 0 %}
-        <span class="hiring-badges">HIRE</span>
+        <span class="hiring-badges">HIRING</span>
         {% endif %}
     <a href="{% url 'submit_application' %}" class="career-nav-link">
         Career
@@ -794,7 +828,11 @@ Kochi, Kerala 683104, India</a>
                             <div class="col-xxl-3 col-xl-3 col-lg-8 col-md-8 col-sm-8 col-6">
                                 <div class="tp-header-right d-flex align-items-center justify-content-end">
                                     <div class="tp-header-btn d-none d-sm-inline-block">
-                                        <a href="{% url 'contact' %}" class="tp-btn-ai p-relative hover-text-white d-inline-block text-uppercase tp-text-common-black-6 lh-1 fs-16 fw-700 tp-ff-dm">Contact Us</a>
+                                       <a href="{% url 'contact' %}" 
+   class="tp-btn-ai p-relative hover-text-white d-inline-block text-uppercase tp-text-common-blacks lh-1 fs-16 fw-700 tp-ff-dm">
+   Contact Us
+</a>
+
                                     </div>
                                     <button class="tp-menu-bar tp-header-sidebar-btn tp-header-2-menu-btn tp-header-ai-menu-btn ml-20">
                                         <span></span>
@@ -804,9 +842,88 @@ Kochi, Kerala 683104, India</a>
                                     
                                 </div>
                                 
+                                <style>
+                                    .tp-btn-ai {
+    color: white; /* default text color */
+    text-decoration: none; /* optional, remove underline */
+}
+
+/* Keep the color white even when hovered */
+.tp-btn-ai:hover {
+    color: white;
+}
+
+/* Keep the color white when focused (after click) */
+.tp-btn-ai:focus {
+    color: white;
+    outline: none; /* removes default focus outline if you want */
+}
+
+/* Keep the color white when active (during click) */
+.tp-btn-ai:active {
+    color: white;
+}
+
+                                </style>
+                                
                             </div>
+                            <style>
+                                .tp-text-common-blacks {
+                                    color:white;
+                                }
+                            </style>
                        
-                            
+                            {% comment %} <style>
+                                .tp-header-btn {
+    align-self: flex-end !important;
+    padding-top: 10px !important;
+}
+
+                                /* FULL RESET + NEW DESIGN */
+.tp-btn-ai {
+    
+    background: #001448 !important;       /* Default dark navy */
+    color: #fff !important;
+ 
+
+    padding: 16px 36px !important;        /* Increased size */
+    font-size: 17px !important;           /* Slightly larger text */
+    border-radius: 50px !important;       /* Smooth pill shape */
+
+    border: none !important;
+    box-shadow: none !important;
+
+    position: relative;
+    overflow: hidden;
+
+    line-height: 1 !important;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    transition: all 0.3s ease !important;
+}
+
+/* Remove any theme pseudo elements that break the design */
+.tp-btn-ai::before,
+.tp-btn-ai::after {
+    content: none !important;
+}
+
+/* STRONG VISIBLE HOVER EFFECT */
+.tp-btn-ai:hover {
+    background: linear-gradient(
+        90deg,
+        #0a45b5 0%,
+        #07378b 50%,
+        #051c74 100%
+    ) !important;  /* brighter, clearer gradient */
+    color: #fff !important;
+    transform: translateY(-1px);  /* small lift effect (optional) */
+}
+
+
+                            </style> {% endcomment %}
                             
           
                         </div>
@@ -843,10 +960,10 @@ Kochi, Kerala 683104, India</a>
         </header>
         
 
-        
+       
 
-
-        
+    
+    
         
         <div id="smooth-wrapper">
             <div id="smooth-content">
@@ -855,17 +972,160 @@ Kochi, Kerala 683104, India</a>
                     
 
                 <div class="tp-hero-area pre-header tp-hero-2-spacing fix p-relative z-index-1">
-               <div class="tp-hero-2-video-container">
-                  {% comment %} <video loop="" muted="" autoplay="" playsinline="">
-                     <source src="https://html.aqlova.com/videos/aleric/aleric-video.mp4" type="video/mp4">
-                  </video> {% endcomment %}
-                  <video loop muted autoplay playsinline>
-  <source src="{% static 'assets/videos/myvideo.mp4' %}" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
+                    <!-- VIDEO SECTION USING YOUTUBE API -->
+{% if video_id %}
+<div class="tp-hero-2-video-container">
+    <div class="youtube-video-wrapper">
+        <div id="youtubePlayer"></div>
+    </div>
+</div>
 
-               </div> 
-               <img class="tp-hero-2-shape-two d-none d-lg-block" data-speed="0.9" src="assets/img/hero/hero-2/shape.png" alt="">
+<style>
+/* YouTube Video Responsive Styles - Match static video behavior */
+.tp-hero-2-video-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: -1;
+}
+
+.tp-hero-2-video-container .youtube-video-wrapper {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+}
+
+.tp-hero-2-video-container .youtube-video-wrapper iframe,
+.tp-hero-2-video-container .youtube-video-wrapper #youtubePlayer {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100vw;
+    height: 56.25vw; /* 16:9 aspect ratio */
+    min-height: 100vh;
+    min-width: 177.78vh; /* 100 * 16/9 */
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+}
+
+/* Ensure video covers on all screen sizes */
+@media (max-aspect-ratio: 16/9) {
+    .tp-hero-2-video-container .youtube-video-wrapper iframe,
+    .tp-hero-2-video-container .youtube-video-wrapper #youtubePlayer {
+        width: 177.78vh;
+        height: 100vh;
+    }
+}
+
+@media (min-aspect-ratio: 16/9) {
+    .tp-hero-2-video-container .youtube-video-wrapper iframe,
+    .tp-hero-2-video-container .youtube-video-wrapper #youtubePlayer {
+        width: 100vw;
+        height: 56.25vw;
+    }
+}
+
+/* Mobile responsiveness */
+@media (max-width: 991px) {
+    .tp-hero-2-video-container .youtube-video-wrapper iframe,
+    .tp-hero-2-video-container .youtube-video-wrapper #youtubePlayer {
+        min-width: 200vh;
+        min-height: 100vh;
+    }
+}
+
+@media (max-width: 767px) {
+    .tp-hero-2-video-container .youtube-video-wrapper iframe,
+    .tp-hero-2-video-container .youtube-video-wrapper #youtubePlayer {
+        min-width: 250vh;
+        min-height: 100vh;
+    }
+}
+
+@media (max-width: 575px) {
+    .tp-hero-2-video-container .youtube-video-wrapper iframe,
+    .tp-hero-2-video-container .youtube-video-wrapper #youtubePlayer {
+        min-width: 300vh;
+        min-height: 100vh;
+    }
+}
+</style>
+
+<!-- YouTube IFrame Player API -->
+<script>
+var tag = document.createElement('script');
+tag.src = "https://www.youtube.com/iframe_api";
+var firstScriptTag = document.getElementsByTagName('script')[0];
+firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+var player;
+function onYouTubeIframeAPIReady() {
+    player = new YT.Player('youtubePlayer', {
+        videoId: '{{ video_id }}',
+        playerVars: {
+            'autoplay': 1,
+            'mute': 1,
+            'controls': 0,
+            'loop': 1,
+            'playlist': '{{ video_id }}',
+            'playsinline': 1,
+            'rel': 0,
+            'modestbranding': 1,
+            'showinfo': 0,
+            'iv_load_policy': 3,
+            'disablekb': 1,
+            'fs': 0,
+            'cc_load_policy': 0,
+            'origin': window.location.origin
+        },
+        events: {
+            'onReady': onPlayerReady,
+            'onStateChange': onPlayerStateChange,
+            'onError': onPlayerError
+        }
+    });
+}
+
+function onPlayerReady(event) {
+    event.target.playVideo();
+}
+
+function onPlayerStateChange(event) {
+    if (event.data === YT.PlayerState.ENDED) {
+        player.playVideo();
+    }
+}
+
+function onPlayerError(event) {
+    console.error('YouTube Player Error:', event.data);
+}
+</script>
+
+{% elif video_url %}
+<div class="tp-hero-2-video-container">
+    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #ccc; text-align: center;">
+        <p>Could not extract video ID from URL</p>
+    </div>
+</div>
+
+{% else %}
+<!-- Fallback to static video if no YouTube URL -->
+<div class="tp-hero-2-video-container">
+    <video loop muted autoplay playsinline>
+        <source src="{% static 'assets/videos/myvideo.mp4' %}" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+</div>
+{% endif %}
+               
+               <img class="tp-hero-2-shape-two d-none d-lg-block" data-speed="0.9"  src="{% static 'assets/img/hero/hero-2/shape.png' %}"  alt="">
                <div class="container-fluid container-1800 containers">
                   <div class="row">
                      <div class="col-lg-9">
@@ -942,7 +1202,7 @@ Kochi, Kerala 683104, India</a>
                </div>
                <div class="tp-hero-2-bottom-shape d-none d-sm-inline-block">
                   <div class="p-relative">
-                     <img src="assets/img/hero/hero-2/bottom-shape.png" alt="">
+                     <img src="{% static 'assets/img/hero/hero-2/bottom-shape.webp' %}" alt="">
                      <div class="tp-hero-2-bottom-scrool">
                         <a href="#service" class="tp-smooth">
                            <svg width="22" height="30" viewBox="0 0 22 30" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -955,6 +1215,8 @@ Kochi, Kerala 683104, India</a>
                </div>
             </div>
             <!-- hero area end -->
+
+            
 
                     
                     
@@ -1055,9 +1317,61 @@ Kochi, Kerala 683104, India</a>
                                 <div class="col-lg-7">
                                     <div class="tp-about-ai-content mb-30">
                                         <h2 class="tp-about-ai-title fw-600 tp-ff-jakarta ls-m-4 d-flex align-items-start mb-35 tp_fade_anim" data-delay=".3">
-                                            <span class="title-slide-gradient">Vynzora</span>
-                                            <span class="vynzora-ai fs-22 ls-0 mt-35">AI</span>
-                                        </h2>
+                                            <span class="title-slide-gradient">VYNZORA</span>
+</h2>
+    <style>
+      
+   /* FIX CLIPPED TEXT */
+
+.tp-about-ai-title {
+    overflow: visible !important;
+    line-height: 1.15 !important;
+}
+
+.title-slide-gradient {
+    overflow: visible !important;
+    line-height: 1.15 !important;
+    padding-bottom: 6px !important;
+    display: inline-block !important;
+    padding-right: 8px; 
+}
+
+/* Parent containers sometimes clip animated text */
+.col-lg-7,
+.tp-about-ai-content,
+.tp-about-ai-subtitle {
+    overflow: visible !important;
+}
+
+
+/* DARK BLACK + DARK BLUE TEXT GRADIENT */
+.title-slide-gradient {
+    background: linear-gradient(90deg, #000000 0%, #001a66 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Mobile Optimization */
+@media (max-width: 576px) {
+    .tp-about-ai-title {
+        display: block !important;
+        text-align: center;
+        font-size: 50px;
+        line-height: 1.2;
+    }
+
+    .title-slide-gradient {
+        display: inline-block;
+        font-size: 50px;
+    }
+
+
+}
+
+
+
+
+    </style>
                                         <div class="tp_fade_anim" data-delay=".5">
                                             <p class="tp-about-ai-para tp-ff-dm mb-55 fw-400 fs-22 ls-m-2 lh-150-per tp-text-common-black-6">
                                                 At Vynzora, we harness the power of artificial intelligence, machine learning, and advanced automation to create intelligent digital solutions that redefine industries. Our expertise lies in developing scalable, secure, and AI-powered IT solutions that help businesses thrive in an era of digital transformation.
@@ -1842,10 +2156,10 @@ Kochi, Kerala 683104, India</a>
 
                      </style>
                     <!-- tp-cta-area-start -->
-                    <div class="tp-cta-area tp-bg-common-black-5 section-m-spacing p-relative z-index-1">
+                     <div class="tp-cta-area tp-bg-common-black-5 section-m-spacing p-relative z-index-1">
                         <img class="tp-faq-ai-noise" src="{% static 'assets/img/body/noise.webp' %}" alt="">
                         <div class="container-fluid container-1824">
-                            <div class="tp-cta-ai-bg bg-position tp-image-distortion z-index-1" data-background="{% static 'assets/img/cta/ai/bg.webp' %}">
+                            <div class="tp-cta-ai-bg bg-position tp-image-distortion z-index-1" data-background="{% static 'assets/img/service/ai/five.jpg' %}">
                                 <div class="row justify-content-center">
                                     <div class="col-12">
                                         <div class="tp-cta-ai-wrap text-center">
@@ -1853,7 +2167,7 @@ Kochi, Kerala 683104, India</a>
                                                 Transform Ideas into <br>Intelligent Solutions with Us
                                             </h2>
                                             <div class="tp_fade_anim" data-delay=".5" data-fade-from="bottom" data-ease="bounce">
-                                                <a href="{% url 'contact' %}" class="tp-btn-ai-xxl tp-bg-common-angry tp-btn-switch-2-animation p-relative hover-text-white d-inline-block text-uppercase tp-text-grey-5 lh-1 fs-16 fw-700 tp-ff-dm">
+                                                <a href="{% url 'contact' %}" class="tp-btn-ai tp-btn-switch-2-animation p-relative hover-text-white d-inline-block text-uppercase tp-text-common-blacks lh-1 fs-16 fw-700 tp-ff-dm">
                                                     <span class="d-flex align-items-center justify-content-center">
                                                         <span class="btn-text">Get Starteed Now</span>
                                                         <span class="btn-icon">
@@ -2093,6 +2407,78 @@ Kochi, Kerala 683104, India</a>
                     </div> {% endcomment %}
                     <!-- tp-blog-area-end -->
                 </main>
+                <div class="tp-brand-area tp-brand-cst-spacing tp-bg-common-white z-index-1 p-relative">
+               <div class="tp-section-title-area text-center pb-40">
+   <h2 class="fw-600 fs-50 tp-ff-dm tp-text-common-black-1">
+      Our Trusted Partners
+   </h2>
+   <p class="tp-ff-dm fs-18 tp-text-common-3 mt-10">
+      Brands that believe in our digital expertise and continue to grow with us.
+   </p>
+</div>
+               <div class="container-fluid container-1524">
+                  <div class="row">
+                     <div class="tp-brand-wrap">
+                        <div class="swiper tp-brand-slide-active">
+                           <div class="swiper-wrapper slide-transtion">
+                              {% for client in client_logos %}
+                              <div class="swiper-slide">
+                                 <div class="tp-brand-item">
+                                    <a href="#">
+                                      
+                                       <img src="{{ client.logo.url }}" alt="">
+                                    </a>
+                                 </div>
+                              </div>
+                              {% endfor %}
+                              
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <!-- tp-brands-area-end -->
+
+            <style>
+               /* Brand Section Fix */
+.tp-brand-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 15px 20px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    min-height: 140px; /* ensures equal height for all items */
+}
+
+/* Brand Section Updated Size */
+.tp-brand-item img {
+    width: 150px; /* Previously 120px */
+    height: 75px; /* Previously 60px */
+    object-fit: contain;
+    margin-top: 10px;
+}
+
+.tp-brand-item p {
+    font-size: 18px; /* Previously 16px */
+    font-weight: 700; /* Slightly bolder for better emphasis */
+    text-align: center;
+    margin: 0;
+    line-height: 1.25;
+}
+
+
+/* Make swiper slide centered properly */
+.swiper-slide {
+    display: flex;
+    justify-content: center;
+}
+
+            </style>
+
+
                 
 <footer>
     <!-- tp-footer-area-start -->
@@ -2198,7 +2584,7 @@ Kochi, Kerala 683104, India</a>
                         </div>
                         
                         <!-- Social Media Links -->
-                        <h5 class="tp-ff-jakarta fw-600 fs-18 lh-140-per ls-m-2 text-uppercase tp-text-common-black-5 mb-15 mt-30">Follow Us</h5>
+                        {% comment %} <h5 class="tp-ff-jakarta fw-600 fs-18 lh-140-per ls-m-2 text-uppercase tp-text-common-black-5 mb-15 mt-30">Follow Us</h5> {% endcomment %}
                         <div class="tp-footer-wd-social tp-footer-ai-social d-flex">
                             <div class="tp_fade_anim" data-delay=".9" data-fade-from="top" data-ease="bounce">
                                 <a href="https://www.linkedin.com/company/vynzora/posts/?feedView=all" target="_blank" rel="noopener noreferrer">

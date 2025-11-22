@@ -198,12 +198,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
                 <div class="tp-offcanvas-content d-none d-xl-block">
                     <h3 class="tp-offcanvas-title">Welcome!</h3>
-                    <p>Explore our latest projects and creative works.</p>
+                    <p>Explore our website.</p>
                 </div>
                 <div class="tp-offcanvas-menu d-xl-none">
                     <nav></nav>
                 </div>
-                <div class="tp-offcanvas-gallery d-none d-xl-block">
+                {% comment %} <div class="tp-offcanvas-gallery d-none d-xl-block">
                     <div class="row gx-2">
                          {% for project in projects %}
                         <div class="col-md-3 col-3">
@@ -215,7 +215,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         </div>
                        {% endfor %}
                     </div>
-                </div>
+                </div> {% endcomment %}
                 <div class="tp-offcanvas-contact">
                     <h3 class="tp-offcanvas-title sm">Information</h3>
                     <ul>
@@ -232,7 +232,7 @@ Kochi, Kerala 683104, India</a>
                     </ul>
                 </div>
                 <div class="tp-offcanvas-social">
-                    <h3 class="tp-offcanvas-title sm">Follow Us</h3>
+                    {% comment %} <h3 class="tp-offcanvas-title sm">Follow Us</h3> {% endcomment %}
                     <ul>
                         <li>
                             <a href="https://www.instagram.com/vynzora/?hl=en">
@@ -263,6 +263,19 @@ Kochi, Kerala 683104, India</a>
     </svg>
   </a>
 </li>
+
+                            <li>
+                                <a href="https://www.facebook.com/profile.php?id=61566425547531" target="_blank" rel="noopener noreferrer">
+                                    <i class="fa-brands fa-facebook"></i>
+                                </a>
+                            </li>
+                            
+                            <li>
+                                <a href="https://wa.me/918590627934" target="_blank" rel="noopener noreferrer">
+                                    <i class="fa-brands fa-whatsapp"></i>
+                                </a>
+                            <li>
+                            
 
                        
                     </ul>
@@ -734,11 +747,12 @@ Kochi, Kerala 683104, India</a>
                                                         <a href="{% url 'about' %}">Our Story</a>
                                                     </li>
                                                     <li>
-                                                        <a href="{% url 'team' %}">Team</a>
+                                                        <a href="{% url 'partners' %}">Our Partners</a>
                                                     </li>
                                                     <li>
-                                                        <a href="{% url 'partners' %}">Partners</a>
+                                                        <a href="{% url 'team' %}">Team</a>
                                                     </li>
+                                                   
 
                                                 
                                                    
@@ -792,7 +806,7 @@ Kochi, Kerala 683104, India</a>
 
 <li class="has-dropdown">
      {% if career_job_count > 0 %}
-        <span class="hiring-badges">HIRE</span>
+        <span class="hiring-badges">HIRING</span>
         {% endif %}
     <a href="{% url 'submit_application' %}" class="career-nav-link">
         Career
@@ -918,6 +932,29 @@ Kochi, Kerala 683104, India</a>
                                     
                                 </div>
                                 
+                                <style>
+                                    .tp-btn-ai {
+    color: white; /* default text color */
+    text-decoration: none; /* optional, remove underline */
+}
+
+/* Keep the color white even when hovered */
+.tp-btn-ai:hover {
+    color: white;
+}
+
+/* Keep the color white when focused (after click) */
+.tp-btn-ai:focus {
+    color: white;
+    outline: none; /* removes default focus outline if you want */
+}
+
+/* Keep the color white when active (during click) */
+.tp-btn-ai:active {
+    color: white;
+}
+
+                                </style>
                                 
                             </div>
                             <style>
@@ -1604,6 +1641,18 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 {% endif %}
                 <main>
+                    <style>
+.tp-hero-ai-thumb-text {
+    font-size: 110px;       /* smaller text */
+    left: 15px;            /* move text slightly to the right */
+    bottom: 20px;          /* keep position stable */
+    position: absolute;
+    white-space: nowrap;
+    z-index: 10;
+    text-shadow: 0 3px 8px rgba(0,0,0,0.6);
+}
+</style>
+
 
                     
                     <!-- tp-hero-area-start -->
@@ -1616,16 +1665,16 @@ document.addEventListener('DOMContentLoaded', function() {
                                         <div class="col-lg-7 col-md-7">
                                             <div class="tp-hero-ai-thumb tp-round-32 tp--hover-item fix p-relative mb-30 mr-60">
                                                 <div class="tp--hover-img " data-displacement="{% static 'assets/img/hero/ai/thumb.webp' %}" data-intensity="0.6" data-speedin="1" data-speedout="1">
-                                                    <img class="tp-round-32 w-100" src="{% static 'assets/img/service/ai/news.jpg' %}" alt="">
+                                                    <img class="tp-round-32 w-100" src="{% static 'assets/img/service/ai/news.jpg' %}" alt="" style="height: 470px;">
                                                 </div>
-                                                {% comment %} <h4 class="tp-hero-ai-thumb-text tp-ff-jakarta ls-m-2 tp-text-common-white lh-1">Vynzora</h4> {% endcomment %}
+                                                <h4 class="tp-hero-ai-thumb-text tp-ff-jakarta ls-m-2 tp-text-common-white lh-1" >Vynzora</h4> 
                                             </div>
                                         </div>
                                         <div class="col-lg-5 col-md-5">
                                             <div class="tp-hero-ai-dec tp-bg-common-white tp-round-32 mb-30">
                                                 <h3 class="tp-hero-ai-dec-title ls-m-3 tp-ff-playfair fw-400 ls-m-4 tp-text-common-black-5 mb-25">ai</h3>
                                                 <p class="opacity-8 mb-50 tp-ff-dm fw-500 lh-140-per fs-22 ls-m-2 tp-text-common-black-5">Tired of Being Invisible Online?<br>We Help You Stand Out! Get a Free Digital Growth Plan</p>
-                                                <a href="{% url 'about' %}" class="tp-btn-cst tp-btn-switch-2-animation d-inline-block text-uppercase tp-text-common-white hover-text-white tp-round-36 lh-1 fs-16 fw-700 tp-ff-dm tp-bg-common-black-5">
+                                                <a href="{% url 'about' %}" class="tp-btn-ai tp-btn-switch-2-animation  p-relative hover-text-white d-inline-block text-uppercase tp-text-common-blacks lh-1 fs-16 fw-700 tp-ff-dm">
                                                     <span class="d-flex align-items-center justify-content-center">
                                                         <span class="btn-text">Get started</span>
                                                         <span class="btn-icon">
@@ -1637,7 +1686,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                                             <svg width="20" height="12" viewBox="0 0 20 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                                 <path d="M20 6.00071C16.4166 4.67142 11.9705 2.40252 9.21414 0L11.1357 5.31243H0.688756C0.552576 5.31246 0.419232 5.35209 0.305998 5.42773C0.192725 5.50341 0.104852 5.61172 0.0527125 5.73756C0.00064999 5.86334 -0.0134432 6.0016 0.0130924 6.13511C0.0396547 6.26871 0.105682 6.39175 0.201995 6.48809C0.330914 6.61703 0.505697 6.68939 0.688048 6.6897H11.135L9.21414 12C11.9701 9.59697 16.4165 7.32913 20 6.00071Z" fill="currentColor"/>
                                                             </svg>
-                                                        </span>
+                                                        </span> 
                                                     </span>
                                                 </a>
                                             </div>
@@ -1709,6 +1758,146 @@ document.addEventListener('DOMContentLoaded', function() {
                             </div>
                         </div>
                     </div>
+                     
+                    {% comment %} <div class="tp-hero-area pre-header tp-hero-ai-spacing bg-position p-relative z-index-1"
+     data-background="{% static 'assets/img/hero/ai/bg.webp' %}">
+    
+    <!-- Hero decorative shape -->
+    <img class="tp-hero-ai-shape" src="{% static 'assets/img/hero/ai/shape.webp' %}" alt="">
+
+    <div class="container-fluid container-1824 containers">
+        <div class="row align-items-end">
+
+            <!-- LEFT CONTENT -->
+            <div class="col-xl-6 order-2 order-xl-1">
+                <div class="row align-items-end">
+
+                    <!-- Image + Label -->
+                    <div class="col-lg-7 col-md-7">
+                        <div class="tp-hero-ai-thumb tp-round-32 tp--hover-item fix p-relative mb-40 mr-60">
+                            <div class="tp--hover-img"
+                                 data-displacement="{% static 'assets/img/hero/ai/thumb.webp' %}"
+                                 data-intensity="0.6" data-speedin="1" data-speedout="1">
+                                <img class="tp-round-32 w-100"
+                                     src="{% static 'assets/img/service/ai/news.jpg' %}" alt="">
+                            </div>
+                            <h4 class="tp-hero-ai-thumb-text tp-ff-jakarta ls-m-2 tp-text-common-white lh-1">
+                                Vynzora
+                            </h4>
+                        </div>
+                    </div>
+
+                    <!-- Text Box -->
+                    <div class="col-lg-5 col-md-5">
+                        <div class="tp-hero-ai-dec tp-bg-common-white tp-round-32 p-40 mb-40">
+                            <h3 class="tp-hero-ai-dec-title tp-ff-playfair fw-400 ls-m-4 tp-text-common-black-5 mb-25">
+                                AI
+                            </h3>
+
+                            <p class="opacity-8 mb-45 tp-ff-dm fw-500 lh-140-per fs-22 ls-m-2 tp-text-common-black-5">
+                                Tired of Being Invisible Online?<br>
+                                We Help You Stand Out! Get a Free Digital Growth Plan.
+                            </p>
+
+                            <a href="{% url 'about' %}"
+                               class="tp-btn-cst tp-btn-switch-2-animation d-inline-block text-uppercase
+                                      tp-text-common-white hover-text-white tp-round-36 lh-1 fs-16 fw-700 tp-ff-dm
+                                      tp-bg-common-black-5">
+                                <span class="d-flex align-items-center justify-content-center">
+                                    <span class="btn-text">Get started</span>
+                                    <span class="btn-icon">
+                                        <svg width="20" height="12" viewBox="0 0 20 12" fill="none"
+                                             xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M20 6.00071C16.4166 4.67142 11.9705 2.40252 9.21414 0L11.1357 5.31243
+                                            H0.688756C0.552576 5.31246 0.419232 5.35209 0.305998 5.42773C0.192725 5.50341
+                                            0.104852 5.61172 0.0527125 5.73756C0.00064999 5.86334 -0.0134432 6.0016
+                                            0.0130924 6.13511C0.0396547 6.26871 0.105682 6.39175 0.201995 6.48809
+                                            C0.330914 6.61703 0.505697 6.68939 0.688048 6.6897H11.135L9.21414 12
+                                            C11.9701 9.59697 16.4165 7.32913 20 6.00071Z" fill="currentColor"/>
+                                        </svg>
+                                    </span>
+                                </span>
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- RIGHT CONTENT -->
+            <div class="col-xl-6 order-1 order-xl-2">
+                <div class="tp-hero-ai-right-content mb-100 text-end">
+
+                    <h3 class="tp-hero-ai-title mb-60 tp-ff-jakarta fw-600 ls-m-4 text-capitalize tp-text-common-black-5">
+                        Fuel Your<br>
+
+                        <span class="title-slides">
+                            <img class="mr-20 tp-live-anim-spin hero-shape"
+                                 src="{% static 'assets/img/hero/ai/shape-2.webp' %}" alt="">
+                            Vision with
+                        </span>
+
+                        <br>AI Intelligence
+
+                        <span class="d-flex align-items-center justify-content-end mt-20">
+                            <img class="rounded-circle mr-15 authors"
+                                 src="{% static 'assets/img/hero/ai/author.web' %}" alt="">
+                            Empower
+                        </span>
+                    </h3>
+
+                    <p class="opacity-8 tp-ff-dm fw-400 fs-24 fs-xs-17 ls-m-2 tp-text-common-black-5 lh-140-per">
+                        We follow a streamlined, intelligent workflow<br>
+                        designed to eliminate friction.
+                    </p>
+                </div>
+            </div>
+
+            <!-- TECHNOLOGY SLIDER -->
+            <div class="col-12 order-3">
+                <div class="tp-brand-wrap tp-hero-ai-brand pt-125">
+                    <div class="swiper tp-brand-slide-active">
+                        <div class="swiper-wrapper slide-transtion">
+
+                            {% for tech in technologies %}
+                            <div class="swiper-slide">
+                                <div class="tp-brand-item text-center">
+                                    <a href="#">
+                                        <img src="{{ tech.logo.url }}" alt="{{ tech.name }}"
+                                             style="width:80px; height:auto; object-fit:contain;">
+                                        <p style="margin-top:8px; font-size:14px; font-weight:500; color:#000;">
+                                            {{ tech.name }}
+                                        </p>
+                                    </a>
+                                </div>
+                            </div>
+                            {% empty %}
+                            <div class="swiper-slide">
+                                <p style="text-align:center;">No technologies available</p>
+                            </div>
+                            {% endfor %}
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<style>
+.title-slides {
+    background: linear-gradient(135deg, #001F3F, #000D29);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: inline-block;
+}
+.tp-hero-ai-dec {
+    padding: 35px 30px;
+}
+</style> {% endcomment %}
+
                     <!-- tp-hero-area-end -->
 
 
@@ -1757,6 +1946,7 @@ document.addEventListener('DOMContentLoaded', function() {
     line-height: 1.15 !important;
     padding-bottom: 6px !important;
     display: inline-block !important;
+    padding-right: 8px; 
 }
 
 /* Parent containers sometimes clip animated text */
@@ -2296,6 +2486,11 @@ document.addEventListener('DOMContentLoaded', function() {
                         <a href="{% url 'portfolio' %}" class="tp-btn-ai tp-btn-switch-2-animation p-relative hover-text-white d-inline-block text-uppercase tp-text-common-blacks lh-1 fs-16 fw-700 tp-ff-dm">
                             <span class="d-flex align-items-center justify-content-center">
                                 <span class="btn-text">See All Projects</span>
+                                <span class="btn-icon">
+                                    <svg width="20" height="12" viewBox="0 0 20 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M20 6.00071C16.4166 4.67142 11.9705 2.40252 9.21414 0L11.1357 5.31243H0.688756C0.552576 5.31246 0.419232 5.35209 0.305998 5.42773C0.192725 5.50341 0.104852 5.61172 0.0527125 5.73756C0.00064999 5.86334 -0.0134432 6.0016 0.0130924 6.13511C0.0396547 6.26871 0.105682 6.39175 0.201995 6.48809C0.330914 6.61703 0.505697 6.68939 0.688048 6.6897H11.135L9.21414 12C11.9701 9.59697 16.4165 7.32913 20 6.00071Z" fill="currentColor"/>
+                                    </svg>
+                                </span>
                                 <span class="btn-icon">
                                     <svg width="20" height="12" viewBox="0 0 20 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M20 6.00071C16.4166 4.67142 11.9705 2.40252 9.21414 0L11.1357 5.31243H0.688756C0.552576 5.31246 0.419232 5.35209 0.305998 5.42773C0.192725 5.50341 0.104852 5.61172 0.0527125 5.73756C0.00064999 5.86334 -0.0134432 6.0016 0.0130924 6.13511C0.0396547 6.26871 0.105682 6.39175 0.201995 6.48809C0.330914 6.61703 0.505697 6.68939 0.688048 6.6897H11.135L9.21414 12C11.9701 9.59697 16.4165 7.32913 20 6.00071Z" fill="currentColor"/>
@@ -3106,7 +3301,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                                 Transform Ideas into <br>Intelligent Solutions with Us
                                             </h2>
                                             <div class="tp_fade_anim" data-delay=".5" data-fade-from="bottom" data-ease="bounce">
-                                                <a href="{% url 'contact' %}" class="tp-btn-cst tp-btn-switch-2-animation d-inline-block text-uppercase tp-text-common-white hover-text-white tp-round-36 lh-1 fs-16 fw-700 tp-ff-dm tp-bg-common-black-5">
+                                                <a href="{% url 'contact' %}" class="tp-btn-ai tp-btn-switch-2-animation p-relative hover-text-white d-inline-block text-uppercase tp-text-common-blacks lh-1 fs-16 fw-700 tp-ff-dm">
                                                     <span class="d-flex align-items-center justify-content-center">
                                                         <span class="btn-text">Get Starteed Now</span>
                                                         <span class="btn-icon">
@@ -3617,15 +3812,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         <a href="#" class="tp-ff-dm fs-18 lh-140-per ls-m-2 tp-text-common-black-5 opacity-8 underline-black">
                             5/257A8, FACT Kalamassery <br> Kochi, Kerala 683104, India
                         </a>
-                        {% comment %} <div class="mt-20">
-                            <h5 class="tp-ff-jakarta fw-600 fs-18 lh-140-per ls-m-2 text-uppercase tp-text-common-black-5 mb-15">Contact</h5>
-                            <div class="mb-10">
-                                <a href="tel:+918590627934" class="tp-ff-dm fs-18 lh-140-per ls-m-2 tp-text-common-black-5 opacity-8 underline-black">+91 8590627934</a>
-                            </div>
-                            <div>
-                                <a href="mailto:support@vynzora.com" class="tp-ff-dm fs-18 lh-140-per ls-m-2 tp-text-common-black-5 opacity-8 underline-black">support@vynzora.com</a>
-                            </div>
-                        </div> {% endcomment %}
+                       
                     </div>
                 </div>
 
@@ -3666,7 +3853,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         </div>
                         
                         <!-- Social Media Links -->
-                        <h5 class="tp-ff-jakarta fw-600 fs-18 lh-140-per ls-m-2 text-uppercase tp-text-common-black-5 mb-15 mt-30">Follow Us</h5>
+                        {% comment %} <h5 class="tp-ff-jakarta fw-600 fs-18 lh-140-per ls-m-2 text-uppercase tp-text-common-black-5 mb-15 mt-30">Follow Us</h5> {% endcomment %}
                         <div class="tp-footer-wd-social tp-footer-ai-social d-flex">
                             <div class="tp_fade_anim" data-delay=".9" data-fade-from="top" data-ease="bounce">
                                 <a href="https://www.linkedin.com/company/vynzora/posts/?feedView=all" target="_blank" rel="noopener noreferrer">
@@ -3805,8 +3992,10 @@ document.addEventListener('DOMContentLoaded', function() {
         padding: 10px;
     }
 }
+
 </style>
-                    <!-- tp-blog-area-end -->
+                  
+
                 </main>
 {% comment %}                 
                 <div class="certificate-verify-section tp_fade_anim pt-80 pb-80" data-background="{% static 'assets/img/footer/ai/bg.webp' %}" 

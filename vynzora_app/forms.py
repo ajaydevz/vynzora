@@ -6,7 +6,7 @@ from django.forms import inlineformset_factory
 class ServiceForm(forms.ModelForm):
     class Meta:
         model = Services
-        fields = ["name", "description", "image"]
+        fields = ["name", "description", "image","meta_title", "meta_description"]
 
 
 OfferFormSet = inlineformset_factory(

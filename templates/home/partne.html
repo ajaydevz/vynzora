@@ -1,0 +1,1027 @@
+{% extends "home/base.html" %}
+{% load static %}
+{% block content %}
+
+<div id="smooth-wrapper">
+   <div id="smooth-content">
+      <main>
+
+         <!-- Partner Page Styles -->
+         <style>
+            /* ===== Global Partner Page Styles ===== */
+            .partner-page * {
+               font-family: 'DM Sans', sans-serif;
+            }
+
+            /* ===== Hero Section ===== */
+            .tp-partner-hero {
+               padding: 160px 0 100px;
+               background: #fff;
+            }
+
+            .tp-partner-hero-subtitle {
+               font-family: 'DM Sans', sans-serif;
+               font-weight: 500;
+               font-size: 18px;
+               letter-spacing: -0.4px;
+               color: #1a1a2e;
+               margin-bottom: 10px;
+               display: inline-block;
+            }
+
+            .tp-partner-hero-title {
+               font-family: 'DM Sans', sans-serif;
+               font-size: 72px;
+               font-weight: 600;
+               letter-spacing: -0.4px;
+               color: #1a1a2e;
+               line-height: 1.1;
+               margin-bottom: 30px;
+            }
+
+            .tp-partner-hero-desc {
+               font-family: 'DM Sans', sans-serif;
+               font-size: 22px;
+               font-weight: 400;
+               letter-spacing: -0.2px;
+               line-height: 1.5;
+               color: #1a1a2e;
+               margin-bottom: 55px;
+               max-width: 600px;
+            }
+
+            /* ===== Brand Slider Section ===== */
+            .tp-brand-section {
+               padding: 80px 0;
+               background: #fff;
+            }
+
+            .tp-brand-wrap {
+               text-align: center;
+            }
+
+            .tp-brand-item img {
+               max-height: 70px;
+               width: auto;
+               object-fit: contain;
+               filter: grayscale(100%);
+               transition: all 0.3s ease;
+            }
+
+            .tp-brand-item img:hover {
+               filter: grayscale(0);
+               transform: scale(1.08);
+            }
+
+            .tp-brand-slide-active .swiper-slide {
+               display: flex;
+               justify-content: center;
+               align-items: center;
+            }
+
+            /* ===== Partner Grid Section ===== */
+            .tp-partner-grid {
+               padding: 120px 0;
+               background: #f8f9fa;
+            }
+
+            .tp-partner-grid-header {
+               text-align: center;
+               margin-bottom: 80px;
+            }
+
+            .tp-partner-grid-subtitle {
+               font-family: 'DM Sans', sans-serif;
+               display: inline-flex;
+               align-items: center;
+               gap: 10px;
+               font-size: 18px;
+               font-weight: 500;
+               letter-spacing: -0.4px;
+               color: #1a1a2e;
+               margin-bottom: 15px;
+            }
+
+            .tp-partner-grid-subtitle::before,
+            .tp-partner-grid-subtitle::after {
+               content: '/';
+               color: #1a1a2e;
+            }
+
+            .tp-partner-grid-title {
+               font-family: 'DM Sans', sans-serif;
+               font-size: 60px;
+               font-weight: 600;
+               letter-spacing: -0.4px;
+               color: #1a1a2e;
+               margin-bottom: 20px;
+               line-height: 1.1;
+            }
+
+            .tp-partner-grid-desc {
+               font-family: 'DM Sans', sans-serif;
+               font-size: 20px;
+               font-weight: 400;
+               color: #64748b;
+               max-width: 600px;
+               margin: 0 auto;
+               line-height: 1.5;
+            }
+
+            /* Partner Cards */
+            .tp-partner-card {
+               background: #fff;
+               border-radius: 20px;
+               padding: 50px 40px;
+               text-align: center;
+               position: relative;
+               overflow: hidden;
+               border: 1px solid #e2e8f0;
+               transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+               height: 100%;
+               display: flex;
+               flex-direction: column;
+            }
+
+            .tp-partner-card::before {
+               content: '';
+               position: absolute;
+               top: 0;
+               left: 0;
+               right: 0;
+               height: 4px;
+               background: linear-gradient(90deg, #1a1a2e 0%, #3b82f6 50%, #1a1a2e 100%);
+               transform: scaleX(0);
+               transform-origin: left;
+               transition: transform 0.4s ease;
+            }
+
+            .tp-partner-card:hover::before {
+               transform: scaleX(1);
+            }
+
+            .tp-partner-card:hover {
+               transform: translateY(-10px);
+               box-shadow: 0 25px 50px rgba(26, 26, 46, 0.1);
+               border-color: transparent;
+            }
+
+            .tp-partner-card-icon {
+               height: 100px;
+               display: flex;
+               align-items: center;
+               justify-content: center;
+               margin-bottom: 30px;
+            }
+
+            .tp-partner-card-icon img {
+               max-height: 80px;
+               width: auto;
+               object-fit: contain;
+            }
+
+            .tp-partner-card-title {
+               font-family: 'DM Sans', sans-serif;
+               font-size: 28px;
+               font-weight: 600;
+               letter-spacing: -0.4px;
+               color: #1a1a2e;
+               margin-bottom: 15px;
+            }
+
+            .tp-partner-card-desc {
+               font-family: 'DM Sans', sans-serif;
+               font-size: 16px;
+               font-weight: 400;
+               color: #64748b;
+               line-height: 1.7;
+               margin-bottom: 30px;
+            }
+
+            .tp-partner-features {
+               display: flex;
+               flex-direction: column;
+               gap: 12px;
+               align-items: flex-start;
+               text-align: left;
+               margin-top: auto;
+               padding-top: 30px;
+               border-top: 1px solid #e2e8f0;
+            }
+
+            .tp-partner-feature {
+               font-family: 'DM Sans', sans-serif;
+               display: flex;
+               align-items: center;
+               gap: 12px;
+               font-size: 15px;
+               font-weight: 500;
+               color: #475569;
+               width: 100%;
+            }
+
+            .tp-partner-feature-icon {
+               width: 22px;
+               height: 22px;
+               background: rgba(26, 26, 46, 0.08);
+               border-radius: 50%;
+               display: flex;
+               align-items: center;
+               justify-content: center;
+               flex-shrink: 0;
+            }
+
+            .tp-partner-feature-icon svg {
+               width: 12px;
+               height: 12px;
+            }
+
+            .tp-partner-cta {
+               margin-top: 30px;
+            }
+
+            .tp-partner-cta a {
+               font-family: 'DM Sans', sans-serif;
+               display: inline-block;
+               padding: 14px 32px;
+               background: #1a1a2e;
+               color: #fff;
+               border-radius: 30px;
+               font-weight: 600;
+               font-size: 15px;
+               letter-spacing: -0.2px;
+               text-decoration: none;
+               transition: all 0.3s ease;
+               border: 2px solid #1a1a2e;
+            }
+
+            .tp-partner-cta a:hover {
+               background: transparent;
+               color: #1a1a2e;
+               transform: translateY(-2px);
+            }
+
+            /* ===== Benefits Section ===== */
+            .tp-partner-benefits {
+               padding: 120px 0 100px;
+               background: #1a1a2e;
+            }
+
+            .tp-partner-benefits-header {
+               text-align: center;
+               margin-bottom: 60px;
+            }
+
+            .tp-partner-benefits-subtitle {
+               font-family: 'DM Sans', sans-serif;
+               font-weight: 500;
+               font-size: 18px;
+               color: rgba(255, 255, 255, 0.7);
+               margin-bottom: 15px;
+               display: inline-block;
+            }
+
+            .tp-partner-benefits-title {
+               font-family: 'DM Sans', sans-serif;
+               font-size: 50px;
+               font-weight: 600;
+               letter-spacing: -0.4px;
+               color: #fff;
+               margin-bottom: 20px;
+               line-height: 1.1;
+            }
+
+            .tp-partner-benefits-desc {
+               font-family: 'DM Sans', sans-serif;
+               font-size: 18px;
+               font-weight: 400;
+               color: rgba(255, 255, 255, 0.7);
+               max-width: 600px;
+               margin: 0 auto;
+               line-height: 1.5;
+            }
+
+            .tp-benefit-card {
+               background: rgba(255, 255, 255, 0.05);
+               border: 1px solid rgba(255, 255, 255, 0.1);
+               border-radius: 16px;
+               padding: 40px 35px;
+               text-align: center;
+               transition: all 0.4s ease;
+               height: 100%;
+            }
+
+            .tp-benefit-card:hover {
+               background: rgba(255, 255, 255, 0.08);
+               border-color: rgba(255, 255, 255, 0.2);
+               transform: translateY(-5px);
+            }
+
+            .tp-benefit-icon {
+               width: 80px;
+               height: 80px;
+               background: rgba(196, 238, 24, 0.1);
+               border-radius: 50%;
+               display: flex;
+               align-items: center;
+               justify-content: center;
+               margin: 0 auto 25px;
+            }
+
+            .tp-benefit-icon svg {
+               width: 40px;
+               height: 40px;
+            }
+
+            .tp-benefit-title {
+               font-family: 'DM Sans', sans-serif;
+               font-size: 24px;
+               font-weight: 600;
+               letter-spacing: -0.4px;
+               color: #fff;
+               margin-bottom: 15px;
+            }
+
+            .tp-benefit-desc {
+               font-family: 'DM Sans', sans-serif;
+               font-size: 16px;
+               font-weight: 400;
+               color: rgba(255, 255, 255, 0.7);
+               line-height: 1.6;
+            }
+
+            /* ===== FAQ Section ===== */
+            .tp-partner-faq {
+               padding: 120px 0 100px;
+               background: #fff;
+            }
+
+            .tp-partner-faq-header {
+               margin-bottom: 50px;
+            }
+
+            .tp-partner-faq-subtitle {
+               font-family: 'DM Sans', sans-serif;
+               font-weight: 500;
+               font-size: 18px;
+               letter-spacing: -0.4px;
+               color: #1a1a2e;
+               margin-bottom: 10px;
+               display: inline-block;
+            }
+
+            .tp-partner-faq-title {
+               font-family: 'DM Sans', sans-serif;
+               font-size: 60px;
+               font-weight: 600;
+               letter-spacing: -0.4px;
+               color: #1a1a2e;
+               line-height: 1.1;
+            }
+
+            .tp-partner-accordion .accordion-item {
+               border: none;
+               border-bottom: 1px solid #e2e8f0;
+               background: transparent;
+            }
+
+            .tp-partner-accordion .accordion-item:last-child {
+               border-bottom: none;
+            }
+
+            .tp-partner-accordion .tp-faq-btn {
+               font-family: 'DM Sans', sans-serif;
+               width: 100%;
+               padding: 25px 0;
+               background: transparent;
+               border: none;
+               text-align: left;
+               font-size: 20px;
+               font-weight: 500;
+               color: #1a1a2e;
+               display: flex;
+               align-items: center;
+               gap: 20px;
+               cursor: pointer;
+               transition: all 0.3s ease;
+            }
+
+            .tp-partner-accordion .tp-faq-btn:hover {
+               color: #3b82f6;
+            }
+
+            .tp-partner-accordion .tp-faq-count {
+               font-family: 'DM Sans', sans-serif;
+               font-size: 16px;
+               font-weight: 600;
+               color: #94a3b8;
+               min-width: 30px;
+            }
+
+            .tp-partner-accordion .accordion-body {
+               font-family: 'DM Sans', sans-serif;
+               padding: 0 0 25px 50px;
+               font-size: 16px;
+               font-weight: 400;
+               color: #64748b;
+               line-height: 1.7;
+            }
+
+            .tp-partner-accordion .accordion-btn {
+               margin-left: auto;
+               width: 40px;
+               height: 40px;
+               background: #f1f5f9;
+               border-radius: 50%;
+               display: flex;
+               align-items: center;
+               justify-content: center;
+               transition: all 0.3s ease;
+               position: relative;
+            }
+
+            .tp-partner-accordion .accordion-btn::before,
+            .tp-partner-accordion .accordion-btn::after {
+               content: '';
+               position: absolute;
+               background: #1a1a2e;
+               transition: all 0.3s ease;
+            }
+
+            .tp-partner-accordion .accordion-btn::before {
+               width: 12px;
+               height: 2px;
+            }
+
+            .tp-partner-accordion .accordion-btn::after {
+               width: 2px;
+               height: 12px;
+            }
+
+            .tp-partner-accordion .tp-faq-btn:not(.collapsed) .accordion-btn::after {
+               transform: rotate(90deg);
+               opacity: 0;
+            }
+
+            .tp-partner-accordion .tp-faq-btn:not(.collapsed) .accordion-btn {
+               background: #1a1a2e;
+            }
+
+            .tp-partner-accordion .tp-faq-btn:not(.collapsed) .accordion-btn::before {
+               background: #fff;
+            }
+
+            /* ===== CTA Section ===== */
+            .tp-partner-cta-section {
+               padding: 120px 0;
+               background: #f8f9fa;
+            }
+
+            .tp-partner-cta-content {
+               text-align: center;
+            }
+
+            .tp-partner-cta-title {
+               font-family: 'DM Sans', sans-serif;
+               font-size: 60px;
+               font-weight: 600;
+               letter-spacing: -0.4px;
+               color: #1a1a2e;
+               margin-bottom: 25px;
+               line-height: 1.1;
+            }
+
+            .tp-partner-cta-desc {
+               font-family: 'DM Sans', sans-serif;
+               font-size: 20px;
+               font-weight: 400;
+               color: #64748b;
+               max-width: 650px;
+               margin: 0 auto 40px;
+               line-height: 1.5;
+            }
+
+            /* ===== Responsive Styles ===== */
+            @media (max-width: 1200px) {
+               .tp-partner-hero-title,
+               .tp-partner-grid-title,
+               .tp-partner-faq-title,
+               .tp-partner-cta-title {
+                  font-size: 50px;
+               }
+
+               .tp-partner-benefits-title {
+                  font-size: 42px;
+               }
+            }
+
+            @media (max-width: 992px) {
+               .tp-partner-hero-title,
+               .tp-partner-grid-title,
+               .tp-partner-faq-title,
+               .tp-partner-cta-title {
+                  font-size: 42px;
+               }
+
+               .tp-partner-benefits-title {
+                  font-size: 36px;
+               }
+
+               .tp-partner-hero-desc,
+               .tp-partner-grid-desc {
+                  font-size: 18px;
+               }
+
+               .tp-partner-hero {
+                  padding: 120px 0 80px;
+               }
+
+               .tp-partner-grid,
+               .tp-partner-benefits,
+               .tp-partner-faq,
+               .tp-partner-cta-section {
+                  padding: 80px 0;
+               }
+
+               .tp-partner-card {
+                  padding: 40px 30px;
+               }
+            }
+
+            @media (max-width: 768px) {
+               .tp-partner-hero-title,
+               .tp-partner-grid-title,
+               .tp-partner-faq-title,
+               .tp-partner-cta-title {
+                  font-size: 36px;
+               }
+
+               .tp-partner-benefits-title {
+                  font-size: 32px;
+               }
+
+               .tp-partner-hero-desc {
+                  font-size: 16px;
+               }
+
+               .tp-partner-card-title {
+                  font-size: 24px;
+               }
+
+               .tp-partner-accordion .tp-faq-btn {
+                  font-size: 18px;
+                  gap: 15px;
+               }
+
+               .tp-partner-accordion .accordion-body {
+                  padding-left: 45px;
+               }
+
+               .tp-benefit-card {
+                  padding: 30px 25px;
+               }
+            }
+
+            @media (max-width: 576px) {
+               .tp-partner-hero-title,
+               .tp-partner-grid-title,
+               .tp-partner-faq-title,
+               .tp-partner-cta-title {
+                  font-size: 32px;
+               }
+
+               .tp-partner-benefits-title {
+                  font-size: 28px;
+               }
+
+               .tp-partner-hero {
+                  padding: 100px 0 60px;
+               }
+
+               .tp-partner-grid,
+               .tp-partner-benefits,
+               .tp-partner-faq,
+               .tp-partner-cta-section {
+                  padding: 60px 0;
+               }
+
+               .tp-partner-card {
+                  padding: 35px 25px;
+               }
+
+               .tp-partner-card-title {
+                  font-size: 22px;
+               }
+
+               .tp-partner-accordion .tp-faq-btn {
+                  font-size: 16px;
+               }
+
+               .tp-partner-accordion .accordion-body {
+                  padding-left: 0;
+                  font-size: 15px;
+               }
+            }
+         </style>
+         
+         <div class="partner-page">
+            
+
+            <!-- Hero Section -->
+            <section class="tp-partner-hero"  style="background-image: url('{% static 'assets/img/banner/ai/partners.jpg' %}'); background-size: cover; background-position: center;">
+               <div class="container">
+                  <div class="row align-items-center">
+                     <div class="col-xl-8 col-lg-10">
+                        <span class="tp-partner-hero-subtitle">/ Our Partners /</span>
+                        <h1 class="tp-partner-hero-title">
+                           Discover the<br>
+                           Perfect Plan to Power<br>
+                           Your AI Vision
+                        </h1>
+                        <p class="tp-partner-hero-desc">
+                           From strategy to deployment, we fuse cutting-edge technology
+                           with creative thinking to craft digital solutions.
+                        </p>
+                        <a href="{% url 'contact' %}" 
+                           class="tp-btn-ai tp-btn-switch-2-animation  p-relative hover-text-white d-inline-block text-uppercase tp-text-common-blacks lh-1 fs-16 fw-700 tp-ff-dm">
+                           <span class="d-flex align-items-center justify-content-center">
+                              <span class="btn-text">See All Partners</span>
+                              <span class="btn-icon">
+                                 <svg width="20" height="12" viewBox="0 0 20 12" fill="none">
+                                    <path d="M20 6.00071C16.4166 4.67142 11.9705 2.40252 9.21414 0L11.1357 5.31243H0.688756C0.552576 5.31246 0.419232 5.35209 0.305998 5.42773C0.192725 5.50341 0.104852 5.61172 0.0527125 5.73756C0.00064999 5.86334 -0.0134432 6.0016 0.0130924 6.13511C0.0396547 6.26871 0.105682 6.39175 0.201995 6.48809C0.330914 6.61703 0.505697 6.68939 0.688048 6.6897H11.135L9.21414 12C11.9701 9.59697 16.4165 7.32913 20 6.00071Z" fill="currentColor"/>
+                                 </svg>
+                              </span>
+                           </span>
+                        </a>
+                     </div>
+                  </div>
+
+                  <!-- Brand Slider -->
+                  {% comment %} <div class="row">
+                     <div class="col-12">
+                        <div class="tp-brand-wrap pt-100">
+                           <div class="swiper tp-brand-slide-active">
+                              <div class="swiper-wrapper">
+                                 {% for client in client_logos %}
+                                 <div class="swiper-slide">
+                                    <div class="tp-brand-item">
+                                       <a href="#">
+                                          <img src="{{ client.logo.url }}" alt="{{ client.name }}">
+                                       </a>
+                                    </div>
+                                 </div>
+                                 {% endfor %}
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div> {% endcomment %}
+               </div>
+            </section>
+
+            <!-- Partner Grid Section -->
+            <section class="tp-partner-grid">
+               <div class="container">
+                  <div class="tp-partner-grid-header">
+                     <span class="tp-partner-grid-subtitle">Our Partnerships</span>
+                     <h2 class="tp-partner-grid-title">Strategic Cloud Partnerships</h2>
+                     <p class="tp-partner-grid-desc">
+                        We partner with industry leaders to deliver cutting-edge solutions tailored to your business needs.
+                     </p>
+                  </div>
+
+                  <div class="row justify-content-center">
+                     <!-- AWS Card -->
+                     <div class="col-lg-4 col-md-6 mb-4">
+                        <div class="tp-partner-card">
+                           <div class="tp-partner-card-icon">
+                              <img src="{% static 'assets/img/logo/aws.png' %}" alt="AWS">
+                           </div>
+                           <h3 class="tp-partner-card-title">Amazon Web Services</h3>
+                           <p class="tp-partner-card-desc">
+                              Industry-leading cloud computing platform offering compute, storage, and database solutions with 200+ services.
+                           </p>
+                           <div class="tp-partner-features">
+                              <div class="tp-partner-feature">
+                                 <span class="tp-partner-feature-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="#1a1a2e" stroke-width="3">
+                                       <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
+                                 </span>
+                                 EC2 & Compute Services
+                              </div>
+                              <div class="tp-partner-feature">
+                                 <span class="tp-partner-feature-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="#1a1a2e" stroke-width="3">
+                                       <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
+                                 </span>
+                                 S3 Storage Solutions
+                              </div>
+                              <div class="tp-partner-feature">
+                                 <span class="tp-partner-feature-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="#1a1a2e" stroke-width="3">
+                                       <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
+                                 </span>
+                                 Database & Analytics
+                              </div>
+                              <div class="tp-partner-feature">
+                                 <span class="tp-partner-feature-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="#1a1a2e" stroke-width="3">
+                                       <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
+                                 </span>
+                                 Security & Compliance
+                              </div>
+                           </div>
+                           <div class="tp-partner-cta">
+   <a href="{% url 'contact' %}" class="tp-btn-ai tp-btn-switch-2-animation p-relative hover-text-white d-inline-block text-uppercase tp-text-common-blacks lh-1 fs-16 fw-700 tp-ff-dm">
+      <span class="d-flex align-items-center justify-content-center">
+         <span class="btn-text" style="color: white;">Learn More</span>
+         <span class="btn-icon" style="color: white;">
+            <svg width="20" height="12" viewBox="0 0 20 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+               <path d="M20 6.00071C16.4166 4.67142 11.9705 2.40252 9.21414 0L11.1357 5.31243H0.688756C0.552576 5.31246 0.419232 5.35209 0.305998 5.42773C0.192725 5.50341 0.104852 5.61172 0.0527125 5.73756C0.00064999 5.86334 -0.0134432 6.0016 0.0130924 6.13511C0.0396547 6.26871 0.105682 6.39175 0.201995 6.48809C0.330914 6.61703 0.505697 6.68939 0.688048 6.6897H11.135L9.21414 12C11.9701 9.59697 16.4165 7.32913 20 6.00071Z" fill="currentColor"/>
+            </svg>
+         </span>
+         <span class="btn-icon" style="color: white;">
+            <svg width="20" height="12" viewBox="0 0 20 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+               <path d="M20 6.00071C16.4166 4.67142 11.9705 2.40252 9.21414 0L11.1357 5.31243H0.688756C0.552576 5.31246 0.419232 5.35209 0.305998 5.42773C0.192725 5.50341 0.104852 5.61172 0.0527125 5.73756C0.00064999 5.86334 -0.0134432 6.0016 0.0130924 6.13511C0.0396547 6.26871 0.105682 6.39175 0.201995 6.48809C0.330914 6.61703 0.505697 6.68939 0.688048 6.6897H11.135L9.21414 12C11.9701 9.59697 16.4165 7.32913 20 6.00071Z" fill="currentColor"/>
+            </svg>
+         </span>
+      </span>
+   </a>
+</div>
+
+                        </div>
+                     </div>
+
+                     <!-- Shopify Card -->
+                     <div class="col-lg-4 col-md-6 mb-4">
+                        <div class="tp-partner-card">
+                           <div class="tp-partner-card-icon">
+                              <img src="{% static 'assets/img/logo/shop.png' %}" alt="Shopify">
+                           </div>
+                           <h3 class="tp-partner-card-title">Shopify Plus</h3>
+                           <p class="tp-partner-card-desc">
+                              Enterprise-grade e-commerce platform empowering businesses to build, grow, and scale their online stores globally.
+                           </p>
+                           <div class="tp-partner-features">
+                              <div class="tp-partner-feature">
+                                 <span class="tp-partner-feature-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="#1a1a2e" stroke-width="3">
+                                       <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
+                                 </span>
+                                 E-commerce Platform
+                              </div>
+                              <div class="tp-partner-feature">
+                                 <span class="tp-partner-feature-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="#1a1a2e" stroke-width="3">
+                                       <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
+                                 </span>
+                                 Multi-channel Selling
+                              </div>
+                              <div class="tp-partner-feature">
+                                 <span class="tp-partner-feature-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="#1a1a2e" stroke-width="3">
+                                       <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
+                                 </span>
+                                 Payment Solutions
+                              </div>
+                              <div class="tp-partner-feature">
+                                 <span class="tp-partner-feature-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="#1a1a2e" stroke-width="3">
+                                       <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
+                                 </span>
+                                 App Ecosystem
+                              </div>
+                           </div>
+                           {% comment %} <div class="tp-partner-cta">
+                              <a href="{% url 'contact' %}">Learn More</a>
+                           </div> {% endcomment %}
+                            <div class="tp-partner-cta">
+   <a href="{% url 'contact' %}" class="tp-btn-ai tp-btn-switch-2-animation p-relative hover-text-white d-inline-block text-uppercase tp-text-common-blacks lh-1 fs-16 fw-700 tp-ff-dm">
+      <span class="d-flex align-items-center justify-content-center">
+         <span class="btn-text" style="color: white;">Learn More</span>
+         <span class="btn-icon" style="color: white;">
+            <svg width="20" height="12" viewBox="0 0 20 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+               <path d="M20 6.00071C16.4166 4.67142 11.9705 2.40252 9.21414 0L11.1357 5.31243H0.688756C0.552576 5.31246 0.419232 5.35209 0.305998 5.42773C0.192725 5.50341 0.104852 5.61172 0.0527125 5.73756C0.00064999 5.86334 -0.0134432 6.0016 0.0130924 6.13511C0.0396547 6.26871 0.105682 6.39175 0.201995 6.48809C0.330914 6.61703 0.505697 6.68939 0.688048 6.6897H11.135L9.21414 12C11.9701 9.59697 16.4165 7.32913 20 6.00071Z" fill="currentColor"/>
+            </svg>
+         </span>
+         <span class="btn-icon" style="color: white;">
+            <svg width="20" height="12" viewBox="0 0 20 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+               <path d="M20 6.00071C16.4166 4.67142 11.9705 2.40252 9.21414 0L11.1357 5.31243H0.688756C0.552576 5.31246 0.419232 5.35209 0.305998 5.42773C0.192725 5.50341 0.104852 5.61172 0.0527125 5.73756C0.00064999 5.86334 -0.0134432 6.0016 0.0130924 6.13511C0.0396547 6.26871 0.105682 6.39175 0.201995 6.48809C0.330914 6.61703 0.505697 6.68939 0.688048 6.6897H11.135L9.21414 12C11.9701 9.59697 16.4165 7.32913 20 6.00071Z" fill="currentColor"/>
+            </svg>
+         </span>
+      </span>
+   </a>
+</div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </section>
+
+            <div class="tp-service-area tp-bg-common-black pt-110 pb-100">
+               <div class="container">
+                  <div class="row justify-content-center mb-60">
+                     <div class="col-lg-8">
+                        <div class="text-center">
+                           <span class="tp-section-pp-subtitle mb-15 tp-ff-heading fw-500 fs-18 tp-text-common-white d-inline-block">Why Choose Us</span>
+                           <h2 class="fs-50 fs-xl-45 fs-sm-35 fw-600 tp-text-common-white mb-20">Partnership Benefits</h2>
+                           <p class="fs-18 lh-150-per tp-text-grey-2">Leverage our certified expertise and strategic partnerships for your success</p>
+                        </div>
+                     </div>
+                  </div>
+                  
+                  <div class="row">
+                     <div class="col-lg-4 col-md-6">
+                        <div class="tp-about-pp-skill-wrap text-center mb-40" style="padding: 40px 30px;">
+                           <div class="mb-30">
+                              <span style="display: inline-flex; align-items: center; justify-content: center; width: 80px; height: 80px; background: rgba(196, 238, 24, 0.1); border-radius: 50%;">
+                                 <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M20 0C8.97 0 0 8.97 0 20C0 31.03 8.97 40 20 40C31.03 40 40 31.03 40 20C40 8.97 31.03 0 20 0ZM16 30L6 20L8.83 17.17L16 24.34L31.17 9.17L34 12L16 30Z" fill="#ffffffff"/>
+                                 </svg>
+                              </span>
+                           </div>
+                           <h3 class="fs-25 tp-text-common-white lh-140-per mb-20">Certified Experts</h3>
+                           <p class="fs-16 lh-150-per tp-text-grey-2">Our team holds official certifications from Google Cloud, AWS, and Shopify</p>
+                        </div>
+                     </div>
+                     
+                     <div class="col-lg-4 col-md-6">
+                        <div class="tp-about-pp-skill-wrap text-center mb-40" style="padding: 40px 30px;">
+                           <div class="mb-30">
+                              <span style="display: inline-flex; align-items: center; justify-content: center; width: 80px; height: 80px; background: rgba(196, 238, 24, 0.1); border-radius: 50%;">
+                                 <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M35 5H5C2.24 5 0 7.24 0 10V30C0 32.76 2.24 35 5 35H35C37.76 35 40 32.76 40 30V10C40 7.24 37.76 5 35 5ZM35 30H5V15H35V30ZM35 12.5H5V10H35V12.5Z" fill="#ffffffff"/>
+                                 </svg>
+                              </span>
+                           </div>
+                           <h3 class="fs-25 tp-text-common-white lh-140-per mb-20">Proven Solutions</h3>
+                           <p class="fs-16 lh-150-per tp-text-grey-2">Implement battle-tested architectures and best practices from industry leaders</p>
+                        </div>
+                     </div>
+                     
+                     <div class="col-lg-4 col-md-6">
+                        <div class="tp-about-pp-skill-wrap text-center mb-40" style="padding: 40px 30px;">
+                           <div class="mb-30">
+                              <span style="display: inline-flex; align-items: center; justify-content: center; width: 80px; height: 80px; background: rgba(196, 238, 24, 0.1); border-radius: 50%;">
+                                 <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M20 0C8.95 0 0 8.95 0 20C0 31.05 8.95 40 20 40C31.05 40 40 31.05 40 20C40 8.95 31.05 0 20 0ZM20 6C23.31 6 26 8.69 26 12C26 15.31 23.31 18 20 18C16.69 18 14 15.31 14 12C14 8.69 16.69 6 20 6ZM20 34.4C15 34.4 10.58 31.84 8 27.98C8.06 23.99 16 21.8 20 21.8C23.98 21.8 31.94 23.99 32 27.98C29.42 31.84 25 34.4 20 34.4Z" fill="#ffffffff"/>
+                                 </svg>
+                              </span>
+                           </div>
+                           <h3 class="fs-25 tp-text-common-white lh-140-per mb-20">24/7 Support</h3>
+                           <p class="fs-16 lh-150-per tp-text-grey-2">Access to premium support channels and dedicated account management</p>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+
+            
+
+            
+
+
+            <!-- FAQ Section -->
+           <div class="tp-faq-area p-relative z-index-1 pt-155 pb-100">
+               <div class="container">
+                  <div class="row">
+                     <div class="col-lg-9 offset-lg-3">
+                        <div class="tp-faq-ai-title-wrap mb-50">
+                           <span class="text-anim tp-ff-dm fw-500 fs-18 ls-m-4 tp-text-common-black-1 mb-10 d-inline-block">/ FAQ /</span>
+                           <h2 class="text-anim tp-section-ai-title fs-72 fs-xl-65 fs-lg-55  fs-sm-45 fs-xs-40 fw-600 ls-m-4 tp-ff-dm tp-text-common-black-1">Explore Answers to<br> Our Most Asked Questions</h2>
+                        </div>
+                     </div>
+                     <div class="col-12">
+                        <div class="tp-faq-wrap tp-faq-cst-tab-content tp-faq-cst-tab-content-2 tp-faq-ai-tab-content">
+                           <div class="accordion mb-60" id="general_faqaccordion">
+                              <div class="accordion-item tp_fade_anim" data-delay=".3">
+                                 <h2 class="accordion-header p-relative" id="order_one">
+                                    <button class="tp-faq-btn" type="button" data-bs-toggle="collapse" data-bs-target="#order__collapse_one" aria-expanded="true" aria-controls="order__collapse_one">
+                                       <span class="tp-faq-ai-count">01</span>
+                                          What industries do you serve?
+                                       <span class="accordion-btn"></span>
+                                    </button>
+                                 </h2>
+                                 <div id="order__collapse_one" class="accordion-collapse collapse show" aria-labelledby="order_one" data-bs-parent="#general_faqaccordion">
+                                    <div class="accordion-body tp-faq-details-para">
+                                       <p>Partnering with this AI agency was one of the best decisions we’ve made. From the very first call,<br>
+                                          their team demonstrated deep technical knowledge and a strong understanding.</p>
+                                    </div>
+                                 </div>
+                              </div>
+                              <div class="accordion-item tp_fade_anim" data-delay=".3">
+                                 <h2 class="accordion-header p-relative" id="order_two">
+                                    <button class="collapsed tp-faq-btn" type="button" data-bs-toggle="collapse" data-bs-target="#order__collapse_two" aria-expanded="false" aria-controls="order__collapse_two">
+                                       <span class="tp-faq-ai-count">02</span>
+                                       How do you protect client data and privacy?
+                                       <span class="accordion-btn"></span>
+                                    </button>
+                                 </h2>
+                                 <div id="order__collapse_two" class="accordion-collapse collapse" aria-labelledby="order_two" data-bs-parent="#general_faqaccordion">
+                                    <div class="accordion-body tp-faq-details-para">
+                                       <p>Partnering with this AI agency was one of the best decisions we’ve made. From the very first call,<br>
+                                          their team demonstrated deep technical knowledge and a strong understanding.</p>
+                                    </div>
+                                 </div>
+                              </div>
+                              <div class="accordion-item tp_fade_anim" data-delay=".3">
+                                 <h2 class="accordion-header p-relative" id="order_three">
+                                    <button class="collapsed tp-faq-btn" type="button" data-bs-toggle="collapse" data-bs-target="#order__collapse_three" aria-expanded="false" aria-controls="order__collapse_three">
+                                       <span class="tp-faq-ai-count">03</span>
+                                       Do you provide support after the project is done?
+                                       <span class="accordion-btn"></span>
+                                    </button>
+                                 </h2>
+                                 <div id="order__collapse_three" class="accordion-collapse collapse" aria-labelledby="order_three" data-bs-parent="#general_faqaccordion">
+                                    <div class="accordion-body tp-faq-details-para">
+                                        <p>Partnering with this AI agency was one of the best decisions we’ve made. From the very first call,<br>
+                                          their team demonstrated deep technical knowledge and a strong understanding.</p>
+                                    </div>
+                                 </div>
+                              </div>
+                              <div class="accordion-item tp_fade_anim" data-delay=".3">
+                                 <h2 class="accordion-header p-relative" id="order_four">
+                                    <button class="collapsed tp-faq-btn" type="button" data-bs-toggle="collapse" data-bs-target="#order__collapse_four" aria-expanded="false" aria-controls="order__collapse_four">
+                                       <span class="tp-faq-ai-count">04</span>
+                                       How long does an average AI project take?
+                                       <span class="accordion-btn"></span>
+                                    </button>
+                                 </h2>
+                                 <div id="order__collapse_four" class="accordion-collapse collapse" aria-labelledby="order_four" data-bs-parent="#general_faqaccordion">
+                                    <div class="accordion-body tp-faq-details-para">
+                                        <p>Partnering with this AI agency was one of the best decisions we’ve made. From the very first call,<br>
+                                          their team demonstrated deep technical knowledge and a strong understanding.</p>
+                                    </div>
+                                 </div>
+                              </div>
+                              <div class="accordion-item tp_fade_anim" data-delay=".3">
+                                 <h2 class="accordion-header p-relative" id="order_five">
+                                    <button class="collapsed tp-faq-btn" type="button" data-bs-toggle="collapse" data-bs-target="#order__collapse_five" aria-expanded="false" aria-controls="order__collapse_five">
+                                       <span class="tp-faq-ai-count">05</span>
+                                       Is my data safe and secure?
+                                       <span class="accordion-btn"></span>
+                                    </button>
+                                 </h2>
+                                 <div id="order__collapse_five" class="accordion-collapse collapse" aria-labelledby="order_five" data-bs-parent="#general_faqaccordion">
+                                    <div class="accordion-body tp-faq-details-para">
+                                        <p>Partnering with this AI agency was one of the best decisions we’ve made. From the very first call,<br>
+                                          their team demonstrated deep technical knowledge and a strong understanding.</p>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+
+        
+
+
+            <!-- CTA Section -->
+            {% comment %} <section class="tp-partner-cta-section">
+               <div class="container">
+                  <div class="row justify-content-center">
+                     <div class="col-lg-10">
+                        <div class="tp-partner-cta-content">
+                           <h2 class="tp-partner-cta-title">Ready to leverage our partnerships?</h2>
+                           <p class="tp-partner-cta-desc">
+                              Let's discuss how our strategic partnerships can help transform your business with enterprise-grade solutions.
+                           </p>
+                           <div class="tp-rounded-btn-wrap">
+                              <div class="btn_wrapper d-inline-block">
+                                 <a href="{% url 'contact' %}" class="tp-btn-rounded btn-item">
+                                    <span class="d-block mb-10">
+                                       <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+                                          <path fill-rule="evenodd" clip-rule="evenodd" d="M11.3791 3.0269C14.6431 2.80336 18.8916 1.42595 21.9998 0C20.5732 3.10763 19.1953 7.35556 18.9723 10.6196L16.8276 6.04382L1.05193 21.82C0.936264 21.9354 0.779526 22.0001 0.616152 22C0.494263 22 0.375118 21.9638 0.273781 21.8961C0.172441 21.8284 0.0934544 21.7321 0.046814 21.6195C0.000171661 21.5069 -0.0120335 21.383 0.0117397 21.2634C0.035511 21.1439 0.0941944 21.034 0.18037 20.9478L15.956 5.17221L11.3791 3.0269Z" fill="currentColor"/>
+                                       </svg>
+                                    </span>
+                                    Get Started<br> Today
+                                    <i class="tp-btn-circle-dot"></i>
+                                 </a>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </section> {% endcomment %}
+
+         </div>
+
+      </main>
+   </div>
+</div>
+
+{% endblock %}
+                            
+

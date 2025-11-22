@@ -1153,6 +1153,18 @@
             <textarea class="form-control" name="description" id="updateDescription" placeholder="Enter service description..." required rows="6"></textarea>
           </div>
 
+          <div class="form-group">
+    <label class="form-label">Meta Title</label>
+    <input type="text" id="updateMetaTitle" name="meta_title" class="form-control" maxlength="70">
+    <div class="character-count" id="metaTitleCount">0/70</div>
+</div>
+
+<div class="form-group">
+    <label class="form-label">Meta Description</label>
+    <textarea id="updateMetaDescription" name="meta_description" class="form-control" rows="3" maxlength="160"></textarea>
+    <div class="character-count" id="metaDescCount">0/160</div>
+</div>
+
           <div class="current-image-wrapper" id="currentImageWrapper" style="display: none;">
             <h4>Current Image</h4>
             <img src="" alt="Current" class="current-image" id="currentImage">
@@ -1640,6 +1652,42 @@ function openUpdateModal(serviceId) {
       // Basic fields
       document.getElementById('updateName').value = data.name;
       document.getElementById('updateDescription').value = data.description;
+
+      document.getElementById('updateMetaTitle').value = data.meta_title || '';
+      document.getElementById('updateMetaDescription').value = data.meta_description || '';
+
+// Update character counters
+      updateCharCount('updateMetaTitle', 'metaTitleCount', 70);
+      updateCharCount('updateMetaDescription', 'metaDescCount', 160);
+
+      // Character count helper
+function updateCharCount(inputId, counterId, max) {
+  const input = document.getElementById(inputId);
+  const counter = document.getElementById(counterId);
+  if (input && counter) {
+    const count = input.value.length;
+    counter.textContent = `${count}/${max}`;
+    counter.classList.remove('warning', 'error');
+    if (count > max) {
+      counter.classList.add('error');
+    } else if (count > max - 20) {
+      counter.classList.add('warning');
+    }
+  }
+}
+
+// Add event listeners for real-time counting
+document.addEventListener('DOMContentLoaded', function() {
+  const metaTitle = document.getElementById('updateMetaTitle');
+  const metaDesc = document.getElementById('updateMetaDescription');
+  
+  if (metaTitle) {
+    metaTitle.addEventListener('input', () => updateCharCount('updateMetaTitle', 'metaTitleCount', 70));
+  }
+  if (metaDesc) {
+    metaDesc.addEventListener('input', () => updateCharCount('updateMetaDescription', 'metaDescCount', 160));
+  }
+});
       
       // Image
       const imageWrapper = document.getElementById('currentImageWrapper');

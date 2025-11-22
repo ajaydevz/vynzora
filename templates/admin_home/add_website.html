@@ -2,7 +2,1224 @@
 {% load static %}
 
 {% block content %}
+
 <style>
+  .add-website-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    animation: fadeIn 0.5s ease;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+
+  .header-left h2 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 8px;
+  }
+
+  .header-left p {
+    color: #6c757d;
+    font-size: 14px;
+    margin: 0;
+  }
+
+  .btn-back {
+    padding: 12px 24px;
+    background: #6c757d;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+  }
+
+  .btn-back:hover {
+    background: #5a6268;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(108, 117, 125, 0.3);
+  }
+
+  .website-form-card {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+  }
+
+  .website-form-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 25px 30px;
+    color: white;
+  }
+
+  .website-form-header h3 {
+    font-size: 20px;
+    font-weight: 700;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .website-form-body {
+    padding: 30px;
+  }
+
+  .form-group {
+    margin-bottom: 24px;
+  }
+
+  .form-label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 8px;
+  }
+
+  .form-label .required {
+    color: #e74c3c;
+    margin-left: 4px;
+  }
+
+  .form-control {
+    width: 100%;
+    padding: 12px 16px;
+    font-size: 14px;
+    border: 2px solid #e9ecef;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    background: #f8f9fa;
+    box-sizing: border-box;
+    font-family: inherit;
+  }
+
+  .form-control:focus {
+    outline: none;
+    border-color: #3498db;
+    background: #fff;
+    box-shadow: 0 0 0 4px rgba(52, 152, 219, 0.1);
+  }
+
+  select.form-control {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+    background-position: right 12px center;
+    background-repeat: no-repeat;
+    background-size: 16px;
+    padding-right: 40px;
+  }
+
+  textarea.form-control {
+    resize: vertical;
+    min-height: 100px;
+    line-height: 1.5;
+  }
+
+  .character-count {
+    font-size: 12px;
+    color: #6c757d;
+    margin-top: 6px;
+    text-align: right;
+  }
+
+  .character-count.warning {
+    color: #e67e22;
+  }
+
+  .character-count.error {
+    color: #e74c3c;
+    font-weight: 600;
+  }
+
+  .file-input-wrapper {
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+    width: 100%;
+  }
+
+  .file-input-wrapper input[type=file] {
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+  }
+
+  .file-input-custom {
+    padding: 20px;
+    border: 2px dashed #e9ecef;
+    border-radius: 10px;
+    background: #f8f9fa;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: #6c757d;
+  }
+
+  .file-input-custom:hover {
+    border-color: #3498db;
+    background: #e3f2fd;
+  }
+
+  .file-input-custom.has-file {
+    border-color: #27ae60;
+    background: #e8f5e8;
+    color: #27ae60;
+  }
+
+  .image-preview {
+    margin-top: 20px;
+    text-align: center;
+    display: none;
+  }
+
+  .image-preview.show {
+    display: block;
+  }
+
+  .preview-image {
+    max-width: 200px;
+    max-height: 150px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    object-fit: cover;
+  }
+
+  .preview-info {
+    margin-top: 10px;
+    font-size: 12px;
+    color: #6c757d;
+  }
+
+  .services-section {
+    margin-top: 40px;
+    padding-top: 30px;
+    border-top: 1px solid #e9ecef;
+  }
+
+  .services-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  .services-header h5 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #2c3e50;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .service-group {
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    border: 2px solid #e9ecef;
+    transition: all 0.3s ease;
+  }
+
+  .service-group:hover {
+    border-color: #3498db;
+    background: #f1f9fe;
+  }
+
+  .service-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+  }
+
+  .service-number {
+    font-size: 14px;
+    font-weight: 600;
+    color: #3498db;
+    background: #e3f2fd;
+    padding: 4px 12px;
+    border-radius: 20px;
+  }
+
+  .btn-remove-service {
+    padding: 6px 12px;
+    background: #e74c3c;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .btn-remove-service:hover {
+    background: #c0392b;
+    transform: translateY(-1px);
+  }
+
+  .btn-add-service {
+    padding: 12px 24px;
+    background: #27ae60;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .btn-add-service:hover {
+    background: #219653;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(39, 174, 96, 0.3);
+  }
+
+  .form-actions {
+    display: flex;
+    gap: 15px;
+    margin-top: 40px;
+    padding-top: 30px;
+    border-top: 1px solid #e9ecef;
+  }
+
+  .btn-form {
+    flex: 1;
+    padding: 14px 24px;
+    border: none;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .btn-cancel {
+    background: #e9ecef;
+    color: #495057;
+    text-decoration: none;
+    text-align: center;
+  }
+
+  .btn-cancel:hover {
+    background: #dee2e6;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(108, 117, 125, 0.2);
+  }
+
+  .btn-submit {
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    color: white;
+  }
+
+  .btn-submit:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(52, 152, 219, 0.3);
+  }
+
+  .btn-submit:disabled {
+    background: #bdc3c7;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+
+  .section-divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #e9ecef, transparent);
+    margin: 30px 0;
+  }
+
+  /* Video Preview Styles */
+  .video-preview-section {
+    margin-top: 20px;
+    padding: 20px;
+    background: #f0f4ff;
+    border-radius: 10px;
+    border: 2px solid #667eea;
+    display: none;
+    animation: slideDown 0.3s ease;
+  }
+
+  .video-preview-section.active {
+    display: block;
+  }
+
+  @keyframes slideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .video-preview-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .video-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 15px;
+  }
+
+  .video-item {
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+  }
+
+  .video-item:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    border-color: #667eea;
+  }
+
+  .video-thumbnail {
+    width: 100%;
+    height: 160px;
+    background: #000;
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px 8px 0 0;
+  }
+
+  .video-thumbnail iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    border-radius: 8px 8px 0 0;
+  }
+
+  .video-info {
+    padding: 12px;
+  }
+
+  .video-type {
+    font-size: 11px;
+    font-weight: 600;
+    color: #667eea;
+    background: #f0f4ff;
+    padding: 4px 8px;
+    border-radius: 4px;
+    display: inline-block;
+    margin-bottom: 8px;
+  }
+
+  .video-url {
+    font-size: 12px;
+    color: #6c757d;
+    word-break: break-all;
+    margin-bottom: 8px;
+    max-height: 30px;
+    overflow: hidden;
+  }
+
+  .video-actions {
+    display: flex;
+    gap: 5px;
+  }
+
+  .btn-small {
+    flex: 1;
+    padding: 6px 8px;
+    border: none;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .btn-remove-video {
+    background: #e74c3c;
+    color: white;
+    width: 100%;
+  }
+
+  .btn-remove-video:hover {
+    background: #c0392b;
+  }
+
+  .no-videos {
+    text-align: center;
+    padding: 20px;
+    color: #6c757d;
+    font-size: 14px;
+  }
+
+  @media (max-width: 768px) {
+    .video-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .page-header {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .website-form-body {
+      padding: 20px;
+    }
+
+    .form-actions {
+      flex-direction: column;
+    }
+
+    .btn-form {
+      width: 100%;
+    }
+
+    .service-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+    }
+  }
+</style>
+
+<div class="add-website-container">
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="header-left">
+      <h2>Add Website Details</h2>
+      <p>Create a new website entry with comprehensive details</p>
+    </div>
+    <a href="{% url 'view_websites' %}" class="btn-back">
+      <i class="mdi mdi-arrow-left"></i>
+      Back to Websites
+    </a>
+  </div>
+
+  <!-- Website Form Card -->
+  <div class="website-form-card">
+    <div class="website-form-header">
+      <h3>
+        <i class="mdi mdi-web"></i>
+        Website Information
+      </h3>
+    </div>
+
+    <div class="website-form-body">
+      <form class="forms-sample" method="POST" enctype="multipart/form-data" id="websiteForm">
+        {% csrf_token %}
+
+        <!-- Category -->
+        <div class="form-group">
+          <label class="form-label">
+            Category<span class="required">*</span>
+          </label>
+          <select class="form-control" id="category" name="category" required>
+            <option value="">Select a category</option>
+            {% for category in categories %}
+              <option value="{{ category.id }}">{{ category.name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <!-- Main Title -->
+        <div class="form-group">
+          <label class="form-label">
+            Main Title
+          </label>
+          <input 
+            type="text" 
+            class="form-control" 
+            id="main_title" 
+            name="main_title" 
+            placeholder="Enter main title"
+            maxlength="200"
+          >
+          <div class="character-count" id="mainTitleCount">0/50 characters</div>
+        </div>
+
+        <!-- Website Name -->
+        <div class="form-group">
+          <label class="form-label">
+            Website Name<span class="required">*</span>
+          </label>
+          <input 
+            type="text" 
+            class="form-control" 
+            id="name" 
+            name="name" 
+            placeholder="Enter website name"
+            required
+            maxlength="100"
+          >
+          <div class="character-count" id="nameCount">0/100 characters</div>
+        </div>
+
+        <!-- Slug -->
+        <div class="form-group">
+          <label class="form-label">
+            Slug<span class="required">*</span>
+          </label>
+          <input 
+            type="text" 
+            class="form-control" 
+            id="slug" 
+            name="slug" 
+            placeholder="Enter URL slug"
+            required
+            maxlength="100"
+          >
+          <div class="character-count" id="slugCount">0/100 characters</div>
+        </div>
+
+        <!-- Meta Title -->
+        <div class="form-group">
+          <label class="form-label">
+            Meta Title<span class="required">*</span>
+          </label>
+          <input 
+            type="text" 
+            class="form-control" 
+            id="meta_title" 
+            name="meta_title" 
+            placeholder="Enter meta title for SEO"
+            required
+            maxlength="60"
+          >
+          <div class="character-count" id="metaTitleCount">0/60 characters</div>
+        </div>
+
+        <!-- Meta Description -->
+        <div class="form-group">
+          <label class="form-label">
+            Meta Description
+          </label>
+          <textarea 
+            class="form-control" 
+            id="meta_description" 
+            name="meta_description" 
+            rows="4" 
+            placeholder="Enter meta description for SEO"
+            maxlength="160"
+          ></textarea>
+          <div class="character-count" id="metaDescriptionCount">0/160 characters</div>
+        </div>
+
+        <!-- Website Description -->
+        <div class="form-group">
+          <label class="form-label">
+            Website Description
+          </label>
+          <textarea 
+            class="form-control" 
+            id="description" 
+            name="description" 
+            rows="5" 
+            placeholder="Enter detailed website description"
+            maxlength="1000"
+          ></textarea>
+          <div class="character-count" id="descriptionCount">0/1000 characters</div>
+        </div>
+
+        <!-- Additional Name -->
+        <div class="form-group">
+          <label class="form-label">
+            Additional Name<span class="required">*</span>
+          </label>
+          <input 
+            type="text" 
+            class="form-control" 
+            id="add_title" 
+            name="add_title" 
+            placeholder="Enter additional name"
+            required
+            maxlength="100"
+          >
+          <div class="character-count" id="addCount">0/100 characters</div>
+        </div>
+
+        <!-- Additional Description -->
+        <div class="form-group">
+          <label class="form-label">
+            Additional Description
+          </label>
+          <textarea 
+            class="form-control" 
+            id="add_description" 
+            name="add_description" 
+            rows="5" 
+            placeholder="Enter additional details"
+            maxlength="2000"
+          ></textarea>
+          <div class="character-count" id="addDescriptionCount">0/2000 characters</div>
+        </div>
+
+        <!-- Image Upload -->
+        <div class="form-group">
+          <label class="form-label">
+            Website Image<span class="required">*</span>
+          </label>
+          <div class="file-input-wrapper">
+            <input 
+              type="file" 
+              class="form-control" 
+              id="image" 
+              name="image" 
+              accept="image/*"
+              required
+            >
+            <div class="file-input-custom" id="fileInputCustom">
+              <i class="mdi mdi-cloud-upload" style="font-size: 24px; margin-bottom: 8px;"></i>
+              <div>Click to browse or drag & drop website image</div>
+              <small>Supports: JPG, PNG, WebP (Max: 5MB)</small>
+            </div>
+          </div>
+          
+          <div class="image-preview" id="imagePreview">
+            <h4 style="font-size: 14px; color: #2c3e50; margin-bottom: 10px;">Image Preview</h4>
+            <img src="" alt="Preview" class="preview-image" id="previewImage">
+            <div class="preview-info" id="previewInfo"></div>
+          </div>
+        </div>
+
+        <!-- Videos Section -->
+        <div class="form-group">
+          <label class="form-label">
+            Website Videos
+          </label>
+          <textarea 
+            class="form-control" 
+            id="videos" 
+            name="videos" 
+            rows="5" 
+            placeholder="Paste YouTube/Vimeo URLs here (one per line)&#10;Examples:&#10;https://www.youtube.com/watch?v=VIDEO_ID&#10;https://youtu.be/VIDEO_ID&#10;https://vimeo.com/VIDEO_ID"
+          ></textarea>
+          <div class="character-count" id="videosCount">0 videos detected</div>
+          <small style="color: #6c757d; display: block; margin-top: 8px;">
+            💡 Tip: Paste one video URL per line. Supports YouTube and Vimeo links.
+          </small>
+        </div>
+
+        <!-- Video Preview Section -->
+        <div class="video-preview-section" id="videoPreviewSection">
+          <div class="video-preview-title">
+            <i class="mdi mdi-play-circle" style="font-size: 18px;"></i>
+            Video Previews
+          </div>
+          <div class="video-grid" id="videoPreviewContainer"></div>
+        </div>
+
+        <div class="section-divider"></div>
+
+        <!-- FAQ Section -->
+        <div class="services-section">
+          <div class="services-header">
+            <h5>
+              <i class="mdi mdi-comment-question-outline"></i>
+              Frequently Asked Questions
+            </h5>
+          </div>
+          
+          <div id="faq-container">
+            <div class="service-group faq-item">
+              <div class="service-header">
+                <span class="service-number">FAQ #1</span>
+                <button type="button" class="btn-remove-service remove-faq-btn" style="display: none;">
+                  <i class="mdi mdi-delete"></i>
+                  Remove
+                </button>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Question</label>
+                <input 
+                  type="text" 
+                  class="form-control" 
+                  name="faq_question[]" 
+                  placeholder="Enter FAQ question"
+                  maxlength="255"
+                >
+              </div>
+              <div class="form-group">
+                <label class="form-label">Answer</label>
+                <textarea 
+                  class="form-control" 
+                  name="faq_answer[]" 
+                  rows="3" 
+                  placeholder="Enter FAQ answer"
+                  maxlength="1000"
+                ></textarea>
+              </div>
+            </div>
+          </div>
+          
+          <button type="button" class="btn-add-service" id="add-faq">
+            <i class="mdi mdi-plus"></i>
+            Add Another FAQ
+          </button>
+        </div>
+
+        <div class="form-actions">
+          <a href="{% url 'view_websites' %}" class="btn-form btn-cancel">
+            <i class="mdi mdi-close"></i>
+            Cancel
+          </a>
+          <button type="submit" class="btn-form btn-submit" id="submitBtn">
+            <i class="mdi mdi-check"></i>
+            Create Website
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // ========== CHARACTER COUNT FUNCTIONALITY ==========
+  function updateCharacterCount(element, countElement, maxLength) {
+    const currentLength = element.value.length;
+    countElement.textContent = currentLength + '/' + maxLength + ' characters';
+    
+    if (currentLength > maxLength * 0.9) {
+      countElement.classList.add('warning');
+      countElement.classList.remove('error');
+    } else if (currentLength > maxLength) {
+      countElement.classList.add('error');
+      countElement.classList.remove('warning');
+    } else {
+      countElement.classList.remove('warning', 'error');
+    }
+  }
+
+  // Setup character counters
+  const mainTitleInput = document.getElementById('main_title');
+  const nameInput = document.getElementById('name');
+  const nameInput1 = document.getElementById('add_title');
+  const slugInput = document.getElementById('slug');
+  const metaTitleInput = document.getElementById('meta_title');
+  const metaDescriptionInput = document.getElementById('meta_description');
+  const descriptionInput = document.getElementById('description');
+  const addDescriptionInput = document.getElementById('add_description');
+
+  if (mainTitleInput) {
+    mainTitleInput.addEventListener('input', function() {
+      updateCharacterCount(this, document.getElementById('mainTitleCount'), 50);
+    });
+  }
+
+  if (nameInput1) {
+    nameInput1.addEventListener('input', function() {
+      updateCharacterCount(this, document.getElementById('addCount'), 100);
+    });
+  }
+
+  if (slugInput) {
+    slugInput.addEventListener('input', function() {
+      updateCharacterCount(this, document.getElementById('slugCount'), 100);
+    });
+  }
+
+  if (metaTitleInput) {
+    metaTitleInput.addEventListener('input', function() {
+      updateCharacterCount(this, document.getElementById('metaTitleCount'), 60);
+    });
+  }
+
+  if (metaDescriptionInput) {
+    metaDescriptionInput.addEventListener('input', function() {
+      updateCharacterCount(this, document.getElementById('metaDescriptionCount'), 160);
+    });
+  }
+
+  if (descriptionInput) {
+    descriptionInput.addEventListener('input', function() {
+      updateCharacterCount(this, document.getElementById('descriptionCount'), 1000);
+    });
+  }
+
+  if (addDescriptionInput) {
+    addDescriptionInput.addEventListener('input', function() {
+      updateCharacterCount(this, document.getElementById('addDescriptionCount'), 2000);
+    });
+  }
+
+  // Auto-generate slug from Website Name
+  if (nameInput) {
+    nameInput.addEventListener('input', function() {
+      updateCharacterCount(this, document.getElementById('nameCount'), 100);
+      
+      const slug = this.value
+        .toLowerCase()
+        .trim()
+        .replace(/[^\w\s-]/g, '')
+        .replace(/[\s_-]+/g, '-')
+        .replace(/^-+|-+$/g, '');
+      
+      slugInput.value = slug;
+      updateCharacterCount(slugInput, document.getElementById('slugCount'), 100);
+    });
+  }
+
+  // ========== VIDEO PREVIEW FUNCTIONALITY ==========
+  // ========== VIDEO PREVIEW FUNCTIONALITY ==========
+const videosInput = document.getElementById('videos');
+const videosCount = document.getElementById('videosCount');
+const videoPreviewSection = document.getElementById('videoPreviewSection');
+const videoPreviewContainer = document.getElementById('videoPreviewContainer');
+
+function extractVideoId(url) {
+  url = url.trim();
+  
+  try {
+    const urlObj = new URL(url);
+    
+    // YouTube
+    if (urlObj.hostname.includes('youtube.com')) {
+      return urlObj.searchParams.get('v');
+    }
+    if (urlObj.hostname.includes('youtu.be')) {
+      return urlObj.pathname.substring(1);
+    }
+    // Vimeo
+    if (urlObj.hostname.includes('vimeo.com')) {
+      const pathParts = urlObj.pathname.split('/').filter(Boolean);
+      return pathParts[pathParts.length - 1];
+    }
+  } catch (e) {
+    // Try to extract YouTube ID with simple regex for malformed URLs
+    const ytMatch = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\n?#]+)/);
+    if (ytMatch) return ytMatch[1];
+    
+    const vimeoMatch = url.match(/vimeo\.com\/(\d+)/);
+    if (vimeoMatch) return vimeoMatch[1];
+    
+    return null;
+  }
+  
+  return null;
+}
+
+function getVideoType(url) {
+  if (url.includes('youtube.com') || url.includes('youtu.be')) {
+    return 'YouTube';
+  }
+  if (url.includes('vimeo.com')) {
+    return 'Vimeo';
+  }
+  return 'Video';
+}
+
+function getThumbnailUrl(url, videoId, videoType) {
+  if (!videoId) return null;
+  
+  if (videoType === 'YouTube') {
+    return `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+  } else if (videoType === 'Vimeo') {
+    // Using vumbnail service for Vimeo thumbnails
+    return `https://vumbnail.com/${videoId}.jpg`;
+  }
+  return null;
+}
+
+function createVideoThumbnail(url, videoId, videoType) {
+  const thumbnailUrl = getThumbnailUrl(url, videoId, videoType);
+  
+  const videoItem = document.createElement('div');
+  videoItem.className = 'video-item';
+  
+  videoItem.innerHTML = `
+    <div class="video-thumbnail">
+      <img 
+        src="${thumbnailUrl}" 
+        alt="${videoType} thumbnail" 
+        style="width: 100%; height: 100%; object-fit: cover;"
+        onerror="this.onerror=null; this.src='https://via.placeholder.com/280x160/667eea/ffffff?text=${videoType}+Video'"
+      >
+      <div class="play-button-overlay">
+        <i class="mdi mdi-play"></i>
+      </div>
+    </div>
+    <div class="video-info">
+      <div class="video-type">${videoType}</div>
+      <div class="video-url" title="${url}">${url.length > 50 ? url.substring(0, 50) + '...' : url}</div>
+      <div class="video-actions">
+        <button type="button" class="btn-small btn-remove-video" data-url="${url}">
+          <i class="mdi mdi-delete"></i>
+          Remove
+        </button>
+      </div>
+    </div>
+  `;
+  
+  return videoItem;
+}
+
+function updateVideoPreview() {
+  const lines = videosInput.value.split('\n')
+    .map(line => line.trim())
+    .filter(line => line !== '');
+  
+  videoPreviewContainer.innerHTML = '';
+  
+  let validCount = 0;
+  const uniqueUrls = new Set();
+
+  lines.forEach((url) => {
+    if (uniqueUrls.has(url)) return; // Skip duplicates
+    uniqueUrls.add(url);
+    
+    const videoId = extractVideoId(url);
+    if (videoId) {
+      validCount++;
+      const videoType = getVideoType(url);
+      const videoItem = createVideoThumbnail(url, videoId, videoType);
+      
+      if (videoItem) {
+        videoPreviewContainer.appendChild(videoItem);
+      }
+    }
+  });
+
+  videosCount.textContent = validCount + ' video' + (validCount !== 1 ? 's' : '') + ' detected';
+  
+  if (validCount > 0) {
+    videoPreviewSection.classList.add('active');
+  } else {
+    videoPreviewSection.classList.remove('active');
+  }
+}
+
+// Remove video functionality
+function removeVideo(url) {
+  const lines = videosInput.value.split('\n')
+    .map(line => line.trim())
+    .filter(line => line !== '' && line !== url);
+  
+  videosInput.value = lines.join('\n');
+  updateVideoPreview();
+}
+
+// Event listeners
+if (videosInput) {
+  videosInput.addEventListener('input', updateVideoPreview);
+  
+  // Handle remove video clicks
+  videoPreviewContainer.addEventListener('click', function(e) {
+    if (e.target.closest('.btn-remove-video')) {
+      const url = e.target.closest('.btn-remove-video').getAttribute('data-url');
+      removeVideo(url);
+    }
+  });
+}
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', function() {
+  updateVideoPreview();
+});
+
+
+  // ========== FAQ FUNCTIONALITY ==========
+  const faqContainer = document.getElementById('faq-container');
+  const addFAQButton = document.getElementById('add-faq');
+
+  function updateFAQNumbers() {
+    const allFAQs = faqContainer.querySelectorAll('.faq-item');
+    allFAQs.forEach(function(faq, index) {
+      faq.querySelector('.service-number').textContent = 'FAQ #' + (index + 1);
+      const removeBtn = faq.querySelector('.remove-faq-btn');
+      if (allFAQs.length === 1) {
+        removeBtn.style.display = 'none';
+      } else {
+        removeBtn.style.display = 'inline-flex';
+      }
+    });
+  }
+
+  if (addFAQButton) {
+    addFAQButton.addEventListener('click', function(e) {
+      e.preventDefault();
+      
+      const firstFAQ = faqContainer.querySelector('.faq-item');
+      const newFAQ = firstFAQ.cloneNode(true);
+      
+      newFAQ.querySelectorAll('input, textarea').forEach(function(input) {
+        input.value = '';
+      });
+      
+      faqContainer.appendChild(newFAQ);
+      updateFAQNumbers();
+    });
+  }
+
+  if (faqContainer) {
+    faqContainer.addEventListener('click', function(e) {
+      if (e.target.closest('.remove-faq-btn')) {
+        e.preventDefault();
+        const allFAQs = faqContainer.querySelectorAll('.faq-item');
+        if (allFAQs.length > 1) {
+          e.target.closest('.faq-item').remove();
+          updateFAQNumbers();
+        }
+      }
+    });
+  }
+
+  // ========== IMAGE PREVIEW FUNCTIONALITY ==========
+  const imageInput = document.getElementById('image');
+  const fileInputCustom = document.getElementById('fileInputCustom');
+  const imagePreview = document.getElementById('imagePreview');
+  const previewImage = document.getElementById('previewImage');
+  const previewInfo = document.getElementById('previewInfo');
+
+  function resetImagePreview() {
+    imageInput.value = '';
+    imagePreview.classList.remove('show');
+    previewImage.src = '';
+    fileInputCustom.classList.remove('has-file');
+    fileInputCustom.innerHTML = '<i class="mdi mdi-cloud-upload" style="font-size: 24px; margin-bottom: 8px;"></i><div>Click to browse or drag & drop website image</div><small>Supports: JPG, PNG, WebP (Max: 5MB)</small>';
+  }
+
+  if (imageInput) {
+    imageInput.addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      
+      if (file) {
+        if (!file.type.match('image.*')) {
+          alert('Please select a valid image file (JPEG, PNG, WebP, etc.)');
+          resetImagePreview();
+          return;
+        }
+        
+        if (file.size > 5 * 1024 * 1024) {
+          alert('Image size should be less than 5MB');
+          resetImagePreview();
+          return;
+        }
+        
+        const reader = new FileReader();
+        
+        reader.onload = function(e) {
+          previewImage.src = e.target.result;
+          imagePreview.classList.add('show');
+          fileInputCustom.classList.add('has-file');
+          fileInputCustom.innerHTML = '<i class="mdi mdi-check-circle" style="color: #27ae60; font-size: 24px; margin-bottom: 8px;"></i><div>' + file.name + '</div><small>' + (file.size / 1024 / 1024).toFixed(2) + ' MB</small>';
+          
+          const img = new Image();
+          img.onload = function() {
+            previewInfo.innerHTML = '<div>Dimensions: ' + img.width + ' × ' + img.height + 'px</div><div>Size: ' + (file.size / 1024).toFixed(2) + ' KB</div><div>Type: ' + file.type + '</div>';
+          };
+          img.src = e.target.result;
+        };
+        
+        reader.onerror = function() {
+          alert('Error reading the image file. Please try again.');
+          resetImagePreview();
+        };
+        
+        reader.readAsDataURL(file);
+      } else {
+        resetImagePreview();
+      }
+    });
+  }
+
+  // Drag and drop functionality
+  if (fileInputCustom) {
+    fileInputCustom.addEventListener('dragover', function(e) {
+      e.preventDefault();
+      this.style.borderColor = '#3498db';
+      this.style.background = '#e3f2fd';
+    });
+
+    fileInputCustom.addEventListener('dragleave', function(e) {
+      e.preventDefault();
+      if (!fileInputCustom.classList.contains('has-file')) {
+        this.style.borderColor = '#e9ecef';
+        this.style.background = '#f8f9fa';
+      }
+    });
+
+    fileInputCustom.addEventListener('drop', function(e) {
+      e.preventDefault();
+      const files = e.dataTransfer.files;
+      if (files.length > 0) {
+        imageInput.files = files;
+        const event = new Event('change', { bubbles: true });
+        imageInput.dispatchEvent(event);
+      }
+    });
+  }
+
+  // ========== FORM VALIDATION ==========
+  const websiteForm = document.getElementById('websiteForm');
+  if (websiteForm) {
+    websiteForm.addEventListener('submit', function(e) {
+      let isValid = true;
+      
+      const requiredFields = this.querySelectorAll('[required]');
+      requiredFields.forEach(function(field) {
+        if (!field.value.trim()) {
+          isValid = false;
+          field.style.borderColor = '#e74c3c';
+        } else {
+          field.style.borderColor = '';
+        }
+      });
+      
+      if (!isValid) {
+        e.preventDefault();
+        alert('Please fill in all required fields.');
+      }
+    });
+  }
+});
+</script>
+{% comment %} <style>
   .add-website-container {
     max-width: 1000px;
     margin: 0 auto;
@@ -255,7 +1472,7 @@
 
   .service-header {
     display: flex;
-    justify-content: between;
+    justify-content: space-between;
     align-items: center;
     margin-bottom: 15px;
   }
@@ -441,6 +1658,181 @@
     }
   }
 </style>
+<style>
+  /* Video Preview Section */
+        .video-preview-section {
+            margin-top: 20px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border: 2px solid #e9ecef;
+        }
+
+        .video-preview-section.active {
+            background: #f0f4ff;
+            border-color: #667eea;
+        }
+
+        .video-preview-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+        }
+
+        .video-item {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .video-item:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            border-color: #667eea;
+        }
+
+        .video-thumbnail {
+            width: 100%;
+            height: 140px;
+            background: #000;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .video-thumbnail iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .video-placeholder {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 32px;
+        }
+
+        .video-info {
+            padding: 10px;
+        }
+
+        .video-type {
+            font-size: 11px;
+            font-weight: 600;
+            color: #667eea;
+            background: #f0f4ff;
+            padding: 4px 8px;
+            border-radius: 4px;
+            display: inline-block;
+            margin-bottom: 5px;
+        }
+
+        .video-url {
+            font-size: 11px;
+            color: #6c757d;
+            word-break: break-all;
+            margin-bottom: 8px;
+            max-height: 30px;
+            overflow: hidden;
+        }
+
+        .video-actions {
+            display: flex;
+            gap: 5px;
+        }
+
+        .btn-small {
+            flex: 1;
+            padding: 6px 8px;
+            border: none;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-copy {
+            background: #3498db;
+            color: white;
+        }
+
+        .btn-copy:hover {
+            background: #2980b9;
+        }
+
+        .btn-remove-video {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .btn-remove-video:hover {
+            background: #c0392b;
+        }
+
+        .no-videos {
+            text-align: center;
+            padding: 20px;
+            color: #6c757d;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 14px 24px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .info-box {
+            background: #e3f2fd;
+            border-left: 4px solid #667eea;
+            padding: 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            color: #1976d2;
+            margin-top: 8px;
+        }
+
+        @media (max-width: 768px) {
+            .video-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .website-form-body {
+                padding: 20px;
+            }
+        }
+
+</style>
 
 <div class="add-website-container">
   <!-- Page Header -->
@@ -482,21 +1874,20 @@
         </div>
 
         <!-- Main Title -->
-<div class="form-group">
-  <label class="form-label">
-    Main Title
-  </label>
-  <input 
-    type="text" 
-    class="form-control" 
-    id="main_title" 
-    name="main_title" 
-    placeholder="Enter main title"
-    maxlength="200"
-  >
-  <div class="character-count" id="mainTitleCount">0/50 characters</div>
-</div>
-
+        <div class="form-group">
+          <label class="form-label">
+            Main Title
+          </label>
+          <input 
+            type="text" 
+            class="form-control" 
+            id="main_title" 
+            name="main_title" 
+            placeholder="Enter main title"
+            maxlength="200"
+          >
+          <div class="character-count" id="mainTitleCount">0/50 characters</div>
+        </div>
 
         <!-- Website Name -->
         <div class="form-group">
@@ -639,58 +2030,114 @@
           </div>
         </div>
 
-        <div class="section-divider"></div>
+        <!-- Videos Input -->
+        <div>
+  <label>Video URLs (one per line)</label>
+  <textarea id="videos" name="videos" rows="5" placeholder="Paste YouTube links here..."></textarea>
+  <small id="videosCount" style="color: gray;">0 videos detected</small>
+</div>
 
-<!-- FAQ Section -->
-<div class="services-section">
-  <div class="services-header">
-    <h5>
-      <i class="mdi mdi-comment-question-outline"></i>
-      Frequently Asked Questions
-    </h5>
-  </div>
-  
-  <div id="faq-container">
-    <div class="service-group">
-      <div class="service-header">
-        <span class="service-number">FAQ #1</span>
-        <button type="button" class="btn-remove-service" onclick="removeFAQ(this)" style="display: none;">
-          <i class="mdi mdi-delete"></i>
-          Remove
-        </button>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Question</label>
-        <input 
-          type="text" 
-          class="form-control" 
-          name="faq_question[]" 
-          placeholder="Enter FAQ question"
-          maxlength="255"
-        >
-      </div>
-      <div class="form-group">
-        <label class="form-label">Answer</label>
-        <textarea 
-          class="form-control" 
-          name="faq_answer[]" 
-          rows="3" 
-          placeholder="Enter FAQ answer"
-          maxlength="1000"
-        ></textarea>
-      </div>
-    </div>
-  </div>
-  
-  <button type="button" class="btn-add-service" id="add-faq">
-    <i class="mdi mdi-plus"></i>
-    Add Another FAQ
-  </button>
+<div id="videoPreviewContainer" style="margin-top: 20px;">
 </div>
 
 
+<style>
+#videoPreview {
+    border-radius: 18px;
+    overflow: hidden;   /* IMPORTANT — makes iframe corners rounded */
+    max-width: 100%;
+}
+
+#videoFrame {
+    border-radius: 18px;
+}
+</style> {% endcomment %}
+
+
+         {% comment %} <div class="form-group">
+  <label class="form-label">
+    Website Videos
+  </label>
+  <textarea 
+    class="form-control" 
+    id="videos" 
+    name="videos" 
+    rows="4" 
+    placeholder="Add video URLs or iframe embed codes. For multiple videos, separate with commas.
+
+Examples:
+- YouTube: https://www.youtube.com/watch?v=VIDEO_ID or https://youtu.be/VIDEO_ID
+- YouTube Embed: https://www.youtube.com/embed/VIDEO_ID
+- Vimeo: https://vimeo.com/VIDEO_ID
+- Direct: https://example.com/video.mp4"
+  ></textarea>
+  <div class="character-count" id="videosCount">0/5000 characters</div>
+  <small style="color: #6c757d; display: block; margin-top: 8px;">
+    💡 Tip: Paste YouTube/Vimeo URLs. Separate multiple videos with commas.
+  </small>
+</div>
+
+<!-- VIDEO PREVIEW SECTION -->
+<div class="video-preview-container" id="videoPreviewContainer" style="margin-top: 20px; display: none;">
+  <div style="display: flex; align-items: center; margin-bottom: 15px; gap: 8px;">
+    <i class="mdi mdi-play-circle" style="font-size: 20px; color: #667eea;"></i>
+    <h5 style="margin: 0; font-size: 16px; color: #2c3e50; font-weight: 600;">Video Previews</h5>
+  </div>
+  
+  <div class="video-grid" id="videoGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 15px;"></div>
+</div> {% endcomment %}
+{% comment %} 
+        <div class="section-divider"></div>
+
+        <!-- FAQ Section -->
+        <div class="services-section">
+          <div class="services-header">
+            <h5>
+              <i class="mdi mdi-comment-question-outline"></i>
+              Frequently Asked Questions
+            </h5>
+          </div>
+          
+          <div id="faq-container">
+            <div class="service-group faq-item">
+              <div class="service-header">
+                <span class="service-number">FAQ #1</span>
+                <button type="button" class="btn-remove-service remove-faq-btn" style="display: none;">
+                  <i class="mdi mdi-delete"></i>
+                  Remove
+                </button>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Question</label>
+                <input 
+                  type="text" 
+                  class="form-control" 
+                  name="faq_question[]" 
+                  placeholder="Enter FAQ question"
+                  maxlength="255"
+                >
+              </div>
+              <div class="form-group">
+                <label class="form-label">Answer</label>
+                <textarea 
+                  class="form-control" 
+                  name="faq_answer[]" 
+                  rows="3" 
+                  placeholder="Enter FAQ answer"
+                  maxlength="1000"
+                ></textarea>
+              </div>
+            </div>
+          </div>
+          
+          <button type="button" class="btn-add-service" id="add-faq">
+            <i class="mdi mdi-plus"></i>
+            Add Another FAQ
+          </button>
+        </div>
+
         <div class="form-actions">
-          <a href="#" class="btn-form btn-cancel">
+          <a href="{% url 'view_websites' %}" class="btn-form btn-cancel">
             <i class="mdi mdi-close"></i>
             Cancel
           </a>
@@ -699,17 +2146,115 @@
             Create Website
           </button>
         </div>
-
-        
       </form>
     </div>
   </div>
-</div>
+</div> {% endcomment %}
 
-{% comment %} <script src="https://cdn.ckeditor.com/ckeditor5/39.0.0/classic/ckeditor.js"></script> {% endcomment %}
+{% comment %} <script>
+document.addEventListener('DOMContentLoaded', function () {
+  const videosInput = document.getElementById('videos');
+  const videosCount = document.getElementById('videosCount');
+  const videoPreviewContainer = document.getElementById('videoPreviewContainer');
+
+  function extractYouTubeId(url) {
+    try {
+      const urlObj = new URL(url.trim());
+      if (urlObj.hostname.includes('youtube.com') && urlObj.searchParams.get('v')) {
+        return urlObj.searchParams.get('v');
+      }
+      if (urlObj.hostname.includes('youtu.be')) {
+        return urlObj.pathname.substring(1);
+      }
+    } catch (error) {
+      return null;
+    }
+    return null;
+  }
+
+  function updateVideoPreview() {
+    const lines = videosInput.value.split('\n').map(line => line.trim()).filter(line => line !== "");
+    videoPreviewContainer.innerHTML = ''; // clear
+    let validCount = 0;
+
+    lines.forEach(url => {
+      const videoId = extractYouTubeId(url);
+      if (videoId) {
+        validCount++;
+
+        const iframe = document.createElement('iframe');
+        iframe.src = `https://www.youtube.com/embed/${videoId}`;
+        iframe.width = "300";
+        iframe.height = "180";
+        iframe.style.borderRadius = "12px";
+        iframe.style.margin = "10px";
+        iframe.allowFullscreen = true;
+
+        videoPreviewContainer.appendChild(iframe);
+      }
+    });
+
+    videosCount.innerText = `${validCount} video${validCount !== 1 ? 's' : ''} detected`;
+  }
+
+  videosInput.addEventListener('input', updateVideoPreview);
+});
+</script>
+
+<!-- ADD THIS CSS TO YOUR STYLE BLOCK -->
+<style>
+  .video-preview-container {
+    margin-top: 20px;
+    padding: 20px;
+    background: #f0f4ff;
+    border-radius: 10px;
+    border: 2px solid #667eea;
+    animation: fadeIn 0.3s ease;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .video-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 15px;
+  }
+
+  @media (max-width: 768px) {
+    .video-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style> {% endcomment %}
+{% comment %} 
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
-    // Initialize CKEditor
+  // Add this code in your existing script section (after the other character count setup)
+
+// Character count for videos field
+const videosInput = document.getElementById('videos');
+
+if (videosInput) {
+  videosInput.addEventListener('input', function() {
+    updateCharacterCount(this, document.getElementById('videosCount'), 5000);
+  });
+}
+
+// Optional: Video URL validation helper
+function validateVideoURL(url) {
+  const youtubeRegex = /^(https?:\/\/)?(www\.)?(youtube|youtu|youtube-nocookie)\.(com|be)\//;
+  const vimeoRegex = /^(https?:\/\/)?(www\.)?vimeo\.com\//;
+  const iframeRegex = /<iframe[\s\S]*?src=["']([^"']+)["'][\s\S]*?<\/iframe>/;
+  
+  return youtubeRegex.test(url) || vimeoRegex.test(url) || iframeRegex.test(url);
+}
+</script> {% endcomment %}
+{% comment %} <script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Initialize CKEditor
+  if (typeof ClassicEditor !== 'undefined') {
     ClassicEditor
       .create(document.querySelector('#add_description'), {
         toolbar: [
@@ -728,305 +2273,220 @@
       .catch(error => {
         console.error(error);
       });
+  }
 
-    // Character count functionality
-    function updateCharacterCount(element, countElement, maxLength) {
-      const currentLength = element.value.length;
-      countElement.textContent = `${currentLength}/${maxLength} characters`;
-      
-      if (currentLength > maxLength * 0.9) {
-        countElement.classList.add('warning');
-        countElement.classList.remove('error');
-      } else if (currentLength > maxLength) {
-        countElement.classList.add('error');
-        countElement.classList.remove('warning');
+  // Character count functionality
+  function updateCharacterCount(element, countElement, maxLength) {
+    const currentLength = element.value.length;
+    countElement.textContent = currentLength + '/' + maxLength + ' characters';
+    
+    if (currentLength > maxLength * 0.9) {
+      countElement.classList.add('warning');
+      countElement.classList.remove('error');
+    } else if (currentLength > maxLength) {
+      countElement.classList.add('error');
+      countElement.classList.remove('warning');
+    } else {
+      countElement.classList.remove('warning', 'error');
+    }
+  }
+
+  // Setup character counters
+  const mainTitleInput = document.getElementById('main_title');
+  const nameInput = document.getElementById('name');
+  const nameInput1 = document.getElementById('add_title');
+  const slugInput = document.getElementById('slug');
+  const metaTitleInput = document.getElementById('meta_title');
+  const metaDescriptionInput = document.getElementById('meta_description');
+  const descriptionInput = document.getElementById('description');
+
+  mainTitleInput.addEventListener('input', function() {
+    updateCharacterCount(this, document.getElementById('mainTitleCount'), 50);
+  });
+
+  nameInput1.addEventListener('input', function() {
+    updateCharacterCount(this, document.getElementById('addCount'), 100);
+  });
+
+  slugInput.addEventListener('input', function() {
+    updateCharacterCount(this, document.getElementById('slugCount'), 100);
+  });
+
+  metaTitleInput.addEventListener('input', function() {
+    updateCharacterCount(this, document.getElementById('metaTitleCount'), 60);
+  });
+
+  metaDescriptionInput.addEventListener('input', function() {
+    updateCharacterCount(this, document.getElementById('metaDescriptionCount'), 160);
+  });
+
+  descriptionInput.addEventListener('input', function() {
+    updateCharacterCount(this, document.getElementById('descriptionCount'), 1000);
+  });
+
+  // FIX 1: Auto-generate slug from Website Name as user types
+  nameInput.addEventListener('input', function() {
+    updateCharacterCount(this, document.getElementById('nameCount'), 100);
+    
+    // Generate slug automatically
+    const slug = this.value
+      .toLowerCase()
+      .trim()
+      .replace(/[^\w\s-]/g, '')
+      .replace(/[\s_-]+/g, '-')
+      .replace(/^-+|-+$/g, '');
+    
+    slugInput.value = slug;
+    updateCharacterCount(slugInput, document.getElementById('slugCount'), 100);
+  });
+
+  // FIX 2: FAQ functionality - Add and Remove
+  const faqContainer = document.getElementById('faq-container');
+  const addFAQButton = document.getElementById('add-faq');
+  let faqCount = 1;
+
+  // Function to update FAQ numbers and remove buttons
+  function updateFAQNumbers() {
+    const allFAQs = faqContainer.querySelectorAll('.faq-item');
+    allFAQs.forEach(function(faq, index) {
+      faq.querySelector('.service-number').textContent = 'FAQ #' + (index + 1);
+      const removeBtn = faq.querySelector('.remove-faq-btn');
+      if (allFAQs.length === 1) {
+        removeBtn.style.display = 'none';
       } else {
-        countElement.classList.remove('warning', 'error');
+        removeBtn.style.display = 'inline-flex';
+      }
+    });
+  }
+
+  // Add new FAQ
+  addFAQButton.addEventListener('click', function(e) {
+    e.preventDefault();
+    faqCount++;
+    
+    const firstFAQ = faqContainer.querySelector('.faq-item');
+    const newFAQ = firstFAQ.cloneNode(true);
+    
+    // Clear input values
+    newFAQ.querySelectorAll('input, textarea').forEach(function(input) {
+      input.value = '';
+    });
+    
+    // Add to container
+    faqContainer.appendChild(newFAQ);
+    
+    // Update numbers
+    updateFAQNumbers();
+  });
+
+  // Remove FAQ using event delegation
+  faqContainer.addEventListener('click', function(e) {
+    if (e.target.closest('.remove-faq-btn')) {
+      e.preventDefault();
+      const allFAQs = faqContainer.querySelectorAll('.faq-item');
+      if (allFAQs.length > 1) {
+        e.target.closest('.faq-item').remove();
+        updateFAQNumbers();
       }
     }
-
-    // Setup character counters
-    const mainTitleInput = document.getElementById('main_title');
-
-    const nameInput = document.getElementById('name');
-    const nameInput1 = document.getElementById('add_title');
-    const slugInput = document.getElementById('slug');
-    const metaTitleInput = document.getElementById('meta_title');
-    const metaDescriptionInput = document.getElementById('meta_description');
-    const descriptionInput = document.getElementById('description');
-
-    mainTitleInput.addEventListener('input', function() {
-      updateCharacterCount(this, document.getElementById('mainTitleCount'), 50);
-    });
-
-    nameInput.addEventListener('input', function() {
-      updateCharacterCount(this, document.getElementById('nameCount'), 100);
-    });
-    nameInput1.addEventListener('input', function() {
-      updateCharacterCount(this, document.getElementById('addCount'), 100);
-    });
-
-    slugInput.addEventListener('input', function() {
-      updateCharacterCount(this, document.getElementById('slugCount'), 100);
-    });
-
-    metaTitleInput.addEventListener('input', function() {
-      updateCharacterCount(this, document.getElementById('metaTitleCount'), 60);
-    });
-
-    metaDescriptionInput.addEventListener('input', function() {
-      updateCharacterCount(this, document.getElementById('metaDescriptionCount'), 160);
-    });
-
-    descriptionInput.addEventListener('input', function() {
-      updateCharacterCount(this, document.getElementById('descriptionCount'), 1000);
-    });
-
-    // Auto-generate slug from name
-    nameInput.addEventListener('blur', function() {
-      if (this.value && !slugInput.value) {
-        const slug = this.value
-          .toLowerCase()
-          .trim()
-          .replace(/[^\w\s-]/g, '')
-          .replace(/[\s_-]+/g, '-')
-          .replace(/^-+|-+$/g, '');
-        slugInput.value = slug;
-        updateCharacterCount(slugInput, document.getElementById('slugCount'), 100);
-      }
-    });
-
-    // ========== FAQ Section ==========
-const faqContainer = document.getElementById('faq-container');
-const addFAQButton = document.getElementById('add-faq');
-
-// Function to renumber FAQs after adding/removing
-function renumberFAQs() {
-  faqContainer.querySelectorAll('.service-group').forEach((faq, index) => {
-    faq.querySelector('.service-number').textContent = `FAQ #${index + 1}`;
   });
-}
 
-// Function to handle FAQ removal (delegated event)
-function removeFAQ(button) {
-  const faqGroups = faqContainer.querySelectorAll('.service-group');
-  if (faqGroups.length > 1) {
-    button.closest('.service-group').remove();
-    renumberFAQs();
-  } else {
-    alert("At least one FAQ section must remain.");
+  // FIX 3: Image preview functionality
+  const imageInput = document.getElementById('image');
+  const fileInputCustom = document.getElementById('fileInputCustom');
+  const imagePreview = document.getElementById('imagePreview');
+  const previewImage = document.getElementById('previewImage');
+  const previewInfo = document.getElementById('previewInfo');
+
+  function resetImagePreview() {
+    imageInput.value = '';
+    imagePreview.classList.remove('show');
+    previewImage.src = '';
+    fileInputCustom.classList.remove('has-file');
+    fileInputCustom.innerHTML = '<i class="mdi mdi-cloud-upload" style="font-size: 24px; margin-bottom: 8px;"></i><div>Click to browse or drag & drop website image</div><small>Supports: JPG, PNG, WebP (Max: 5MB)</small>';
   }
-}
 
-// Add new FAQ
-addFAQButton.addEventListener('click', () => {
-  const faqGroups = faqContainer.querySelectorAll('.service-group');
-  const newFAQ = faqGroups[0].cloneNode(true);
-
-  // Reset inputs
-  newFAQ.querySelectorAll('input, textarea').forEach(input => input.value = '');
-
-  // Show remove button
-  newFAQ.querySelector('.btn-remove-service').style.display = 'inline-flex';
-
-  // Append to container
-  faqContainer.appendChild(newFAQ);
-
-  // Renumber all FAQs
-  renumberFAQs();
-});
-
-// Use event delegation so dynamically added buttons also work
-faqContainer.addEventListener('click', function (event) {
-  if (event.target.closest('.btn-remove-service')) {
-    removeFAQ(event.target.closest('.btn-remove-service'));
-  }
-});
-    // ========== End FAQ Section ==========
+  imageInput.addEventListener('change', function(e) {
+    const file = e.target.files[0];
     
-
-    // Image preview functionality
-    const imageInput = document.getElementById('image');
-    const fileInputCustom = document.getElementById('fileInputCustom');
-    const imagePreview = document.getElementById('imagePreview');
-    const previewImage = document.getElementById('previewImage');
-    const previewInfo = document.getElementById('previewInfo');
-
-    imageInput.addEventListener('change', function(e) {
-      const file = e.target.files[0];
-      
-      if (file) {
-        // Validate file type
-        if (!file.type.match('image.*')) {
-          alert('Please select a valid image file (JPEG, PNG, WebP, etc.)');
-          resetImagePreview();
-          return;
-        }
-        
-        // Validate file size (max 5MB)
-        if (file.size > 5 * 1024 * 1024) {
-          alert('Image size should be less than 5MB');
-          resetImagePreview();
-          return;
-        }
-        
-        const reader = new FileReader();
-        
-        reader.onload = function(e) {
-          // Update preview
-          previewImage.src = e.target.result;
-          imagePreview.classList.add('show');
-          
-          // Get image dimensions for preview info
-          const img = new Image();
-          img.onload = function() {
-            previewInfo.innerHTML = `
-              <div>Dimensions: ${img.width} × ${img.height}px</div>
-              <div>Size: ${(file.size / 1024).toFixed(2)} KB</div>
-              <div>Type: ${file.type}</div>
-            `;
-          };
-          img.src = e.target.result;
-          
-          // Update file input display
-          fileInputCustom.classList.add('has-file');
-          fileInputCustom.innerHTML = `
-            <i class="mdi mdi-check-circle" style="color: #27ae60; font-size: 24px; margin-bottom: 8px;"></i>
-            <div>${file.name}</div>
-            <small>${(file.size / 1024 / 1024).toFixed(2)} MB</small>
-          `;
-        };
-        
-        reader.onerror = function() {
-          alert('Error reading the image file. Please try again.');
-          resetImagePreview();
-        };
-        
-        reader.readAsDataURL(file);
-      } else {
+    if (file) {
+      // Validate file type
+      if (!file.type.match('image.*')) {
+        alert('Please select a valid image file (JPEG, PNG, WebP, etc.)');
         resetImagePreview();
+        return;
       }
-    });
-
-    function resetImagePreview() {
-      imageInput.value = '';
-      imagePreview.classList.remove('show');
-      fileInputCustom.classList.remove('has-file');
-      fileInputCustom.innerHTML = `
-        <i class="mdi mdi-cloud-upload" style="font-size: 24px; margin-bottom: 8px;"></i>
-        <div>Click to browse or drag & drop website image</div>
-        <small>Supports: JPG, PNG, WebP (Max: 5MB)</small>
-      `;
-    }
-
-    // Drag and drop functionality
-    fileInputCustom.addEventListener('dragover', function(e) {
-      e.preventDefault();
-      this.style.borderColor = '#3498db';
-      this.style.background = '#e3f2fd';
-    });
-
-    fileInputCustom.addEventListener('dragleave', function(e) {
-      e.preventDefault();
-      if (!fileInputCustom.classList.contains('has-file')) {
-        this.style.borderColor = '#e9ecef';
-        this.style.background = '#f8f9fa';
-      }
-    });
-
-    fileInputCustom.addEventListener('drop', function(e) {
-      e.preventDefault();
-      const files = e.dataTransfer.files;
-      if (files.length > 0) {
-        imageInput.files = files;
-        imageInput.dispatchEvent(new Event('change'));
-      }
-    });
-
-    // Services functionality
-    let serviceCount = 1;
-
-    document.getElementById('add-service').addEventListener('click', function() {
-      serviceCount++;
-      const container = document.getElementById('services-container');
-      const div = document.createElement('div');
-      div.classList.add('service-group');
-      div.innerHTML = `
-        <div class="service-header">
-          <span class="service-number">Service #${serviceCount}</span>
-          <button type="button" class="btn-remove-service" onclick="removeService(this)">
-            <i class="mdi mdi-delete"></i>
-            Remove
-          </button>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Service Name</label>
-          <input 
-            type="text" 
-            class="form-control" 
-            name="service_heading[]" 
-            placeholder="Enter service name"
-            maxlength="100"
-          >
-          <div class="character-count">0/100 characters</div>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Service Description</label>
-          <textarea 
-            class="form-control" 
-            name="service_description[]" 
-            rows="3" 
-            placeholder="Describe this service"
-            maxlength="1000"
-          ></textarea>
-          <div class="character-count">0/1000 characters</div>
-        </div>
-      `;
-      container.appendChild(div);
-
-      // Add character count functionality to new inputs
-      const newInputs = div.querySelectorAll('input[type="text"], textarea');
-      newInputs.forEach(input => {
-        const countElement = input.parentElement.querySelector('.character-count');
-        const maxLength = input.getAttribute('maxlength');
-        
-        input.addEventListener('input', function() {
-          updateCharacterCount(this, countElement, parseInt(maxLength));
-        });
-      });
-    });
-
-    // Add character count to initial service inputs
-    const initialInputs = document.querySelectorAll('#services-container input[type="text"], #services-container textarea');
-    initialInputs.forEach(input => {
-      const countElement = input.parentElement.querySelector('.character-count');
-      const maxLength = input.getAttribute('maxlength');
       
-      input.addEventListener('input', function() {
-        updateCharacterCount(this, countElement, parseInt(maxLength));
-      });
-    });
+      // Validate file size (max 5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        alert('Image size should be less than 5MB');
+        resetImagePreview();
+        return;
+      }
+      
+      const reader = new FileReader();
+      
+      reader.onload = function(e) {
+        // Set preview image source
+        previewImage.src = e.target.result;
+        
+        // Show preview immediately
+        imagePreview.classList.add('show');
+        
+        // Update file input display
+        fileInputCustom.classList.add('has-file');
+        fileInputCustom.innerHTML = '<i class="mdi mdi-check-circle" style="color: #27ae60; font-size: 24px; margin-bottom: 8px;"></i><div>' + file.name + '</div><small>' + (file.size / 1024 / 1024).toFixed(2) + ' MB</small>';
+        
+        // Load image to get dimensions
+        const img = new Image();
+        img.onload = function() {
+          previewInfo.innerHTML = '<div>Dimensions: ' + img.width + ' × ' + img.height + 'px</div><div>Size: ' + (file.size / 1024).toFixed(2) + ' KB</div><div>Type: ' + file.type + '</div>';
+        };
+        img.src = e.target.result;
+      };
+      
+      reader.onerror = function() {
+        alert('Error reading the image file. Please try again.');
+        resetImagePreview();
+      };
+      
+      reader.readAsDataURL(file);
+    } else {
+      resetImagePreview();
+    }
   });
 
-  function removeService(button) {
-    const serviceGroup = button.closest('.service-group');
-    serviceGroup.remove();
-    
-    // Update service numbers
-    const services = document.querySelectorAll('.service-group');
-    services.forEach((service, index) => {
-      const numberElement = service.querySelector('.service-number');
-      numberElement.textContent = `Service #${index + 1}`;
-    });
-  }
+  // Drag and drop functionality
+  fileInputCustom.addEventListener('dragover', function(e) {
+    e.preventDefault();
+    this.style.borderColor = '#3498db';
+    this.style.background = '#e3f2fd';
+  });
+
+  fileInputCustom.addEventListener('dragleave', function(e) {
+    e.preventDefault();
+    if (!fileInputCustom.classList.contains('has-file')) {
+      this.style.borderColor = '#e9ecef';
+      this.style.background = '#f8f9fa';
+    }
+  });
+
+  fileInputCustom.addEventListener('drop', function(e) {
+    e.preventDefault();
+    const files = e.dataTransfer.files;
+    if (files.length > 0) {
+      imageInput.files = files;
+      const event = new Event('change', { bubbles: true });
+      imageInput.dispatchEvent(event);
+    }
+  });
 
   // Form validation
   document.getElementById('websiteForm').addEventListener('submit', function(e) {
     let isValid = true;
     
-    // Basic validation
     const requiredFields = this.querySelectorAll('[required]');
-    requiredFields.forEach(field => {
+    requiredFields.forEach(function(field) {
       if (!field.value.trim()) {
         isValid = false;
         field.style.borderColor = '#e74c3c';
@@ -1040,5 +2500,8 @@ faqContainer.addEventListener('click', function (event) {
       alert('Please fill in all required fields.');
     }
   });
+});
 </script>
+ {% endcomment %}
+
 {% endblock %}

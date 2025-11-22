@@ -27,11 +27,10 @@ SECRET_KEY = os.environ.get("SECRET_KEY", "local-dev-key")
 
 DEBUG = os.getenv("DEBUG", "False") == "True"
 
-# DEBUG = True
+
 
 
 ALLOWED_HOSTS = ["vynzora-5.onrender.com", "localhost", "127.0.0.1"]
-
 
 
 # Application definition

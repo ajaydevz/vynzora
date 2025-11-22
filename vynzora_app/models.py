@@ -42,6 +42,7 @@ class Website(models.Model):
     main_title = models.CharField(max_length=200, blank=True, null=True)
     meta_description = models.TextField()
     image = models.ImageField(upload_to="website_images/", blank=True, null=True)
+    videos = models.TextField(blank=True, null=True, help_text="Add video URLs separated by commas or paste iframe embed codes")
     created_date = models.DateTimeField(default=now, blank=True, null=True)
     add_description = models.TextField()
     add_title = models.CharField(max_length=200, blank=True, null=True)
@@ -78,6 +79,9 @@ class Services(models.Model):
     description = models.TextField()
     image = models.ImageField(upload_to="services/")
     created_at = models.DateTimeField(auto_now_add=True)
+    meta_title = models.CharField(max_length=70, blank=True, null=True)
+    meta_description = models.CharField(max_length=160, blank=True, null=True)
+
 
     def save(self, *args, **kwargs):
         if not self.slug:

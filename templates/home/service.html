@@ -219,7 +219,7 @@
                      <h4 class="tp-sidebar-rc-post-title">
                         <a class="underline-black" href="{% url 'service_detail' other.slug  %}">{{ other.name }}</a>
                      </h4>
-                     <span class="tp-sidebar-rc-post-dates">{{ other.created_at|date }}</span>
+                     {% comment %} <span class="tp-sidebar-rc-post-dates">{{ other.created_at|date }}</span> {% endcomment %}
                      {% if not forloop.last %}
                      <span class="tp-sidebar-rc-border d-block mt-5">
                         {% comment %} <svg viewBox="0 0 364 6" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -231,12 +231,14 @@
                   {% endfor %}
                </div>
 
+             
+
                
 
                <div class="tp-sidebar-banner bg-position" data-background="assets/img/blog/postbox/bg.jpg">
                   <img class="mb-25" src="assets/img/blog/postbox/user.png" alt="">
                   <h4 class="tp-text-common-black fs-25 mb-65">Ready to optimize your business strategy?</h4>
-                  <a href="{% url 'contact' %}" class="tp-btn-sm d-inline-block tp-left-right fw-500 tp-ff-heading fs-15 text-uppercase tp-text-common-white tp-bg-theme-primary tp-round-36">
+                  <a href="{% url 'contact' %}" class="tp-btn-ai tp-btn-switch-2-animation  p-relative hover-text-white d-inline-block text-uppercase tp-text-common-blacks lh-1 fs-16 fw-700 tp-ff-dm">
                      <span class="mr10 td-text d-inline-block mr-5">Let's Talk</span>
                      <span class="tp-arrow-angle">
                         <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">

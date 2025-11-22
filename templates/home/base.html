@@ -275,14 +275,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
             <div class="tp-offcanvas-content d-none d-xl-block">
                 <h3 class="tp-offcanvas-title">Hello There!</h3>
-                <p>Explore our latest projects and creative works.</p>
+                <p>Explore our website..</p>
             </div>
 
             <div class="tp-offcanvas-menu d-xl-none">
                 <nav></nav>
             </div>
 
-            <div class="tp-offcanvas-gallery d-none d-xl-block">
+            {% comment %} <div class="tp-offcanvas-gallery d-none d-xl-block">
                     <div class="row gx-2">
                          {% for project in projects %}
                         <div class="col-md-3 col-3">
@@ -294,7 +294,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         </div>
                        {% endfor %}
                     </div>
-                </div>
+                </div> {% endcomment %}
 
             <div class="tp-offcanvas-contact">
                     <h3 class="tp-offcanvas-title sm">Information</h3>
@@ -313,7 +313,7 @@ Kochi, Kerala 683104, India</a>
                 </div>
 
             <div class="tp-offcanvas-social">
-                <h3 class="tp-offcanvas-title sm">Follow Us</h3>
+                {% comment %} <h3 class="tp-offcanvas-title sm">Follow Us</h3> {% endcomment %}
                 <ul>
                         <li>
                             <a href="https://www.instagram.com/vynzora/?hl=en">
@@ -344,6 +344,17 @@ Kochi, Kerala 683104, India</a>
     </svg>
   </a>
 </li>
+  <li>
+                                <a href="https://www.facebook.com/profile.php?id=61566425547531" target="_blank" rel="noopener noreferrer">
+                                    <i class="fa-brands fa-facebook"></i>
+                                </a>
+                            </li>
+                            
+                            <li>
+                                <a href="https://wa.me/918590627934" target="_blank" rel="noopener noreferrer">
+                                    <i class="fa-brands fa-whatsapp"></i>
+                                </a>
+                            <li>
 
                        
                     </ul>
@@ -396,11 +407,12 @@ Kochi, Kerala 683104, India</a>
                                                         <a href="{% url "about" %}">Our Story</a>
                                                     </li>
                                                     <li>
-                                                        <a href="{% url 'team' %}">Team</a>
+                                                        <a href="{% url 'partners' %}">Our Partners</a>
                                                     </li>
                                                     <li>
-                                                        <a href="{% url 'partners' %}">Partners</a>
+                                                        <a href="{% url 'team' %}">Team</a>
                                                     </li>
+                                                   
                                                     
                                                 </ul>
                                             </li>
@@ -458,13 +470,38 @@ Kochi, Kerala 683104, India</a>
 
 <li class="has-dropdown">
      {% if career_job_count > 0 %}
-        <span class="hiring-badges">HIRE</span>
+        <span class="hiring-badges">HIRING</span>
         {% endif %}
     <a href="{% url 'submit_application' %}" class="career-nav-link">
         Career
        
     </a>
 </li>
+
+ <style>
+                                    .tp-btn-ai {
+    color: white; /* default text color */
+    text-decoration: none; /* optional, remove underline */
+}
+
+/* Keep the color white even when hovered */
+.tp-btn-ai:hover {
+    color: white;
+}
+
+/* Keep the color white when focused (after click) */
+.tp-btn-ai:focus {
+    color: white;
+    outline: none; /* removes default focus outline if you want */
+}
+
+/* Keep the color white when active (during click) */
+.tp-btn-ai:active {
+    color: white;
+}
+
+</style>
+                               
 
 <!-- Add this CSS in your <style> section or in your main.css file -->
 <style>
@@ -661,6 +698,295 @@ Kochi, Kerala 683104, India</a>
         </button>
     </div>
 </form>
+
+{% comment %} <style>
+    /* Fix footer link hover issue */
+footer a,
+.tp-offcanvas-social a {
+    color: #ffffffff !important; /* normal white */
+    transition: 0.3s ease;
+}
+
+footer a:hover,
+.tp-offcanvas-social a:hover {
+    color: #00c8ff !important; /* light blue that doesn't hide icons */
+}
+
+/* Ensure SVG icons follow the new hover color */
+footer a svg path,
+.tp-offcanvas-social a svg path {
+    fill: currentColor !important;
+    stroke: currentColor !important;
+}
+
+</style> {% endcomment %}
+
+{% comment %} <style>
+    /* Base styling */
+footer a,
+.tp-offcanvas-social a {
+    color: inherit;
+    transition: 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+}
+
+/* Icons follow text color */
+footer a svg path,
+.tp-offcanvas-social a svg path {
+    stroke: currentColor !important;
+    fill: currentColor !important;
+}
+
+/* -------------------------------
+   DARK MODE
+-------------------------------- */
+footer.dark,
+.tp-offcanvas.dark {
+    color: #ffffff;   /* default */
+}
+
+footer.dark a:hover,
+.tp-offcanvas.dark a:hover {
+    color: #00c8ff; /* visible bright hover on dark background */
+}
+
+/* -------------------------------
+   LIGHT MODE
+-------------------------------- */
+footer.light,
+.tp-offcanvas.light {
+    color: #000000;  /* default */
+}
+
+footer.light a:hover,
+.tp-offcanvas.light a:hover {
+    color: #0077b6; /* darker hover shade so visible on white */
+}
+
+</style> {% endcomment %}
+{% comment %} <style>
+    /* =====================================================
+   FOOTER & OFFCANVAS (SIDEBAR) ICON FIX
+   ===================================================== */
+
+/* Base styling for all links */
+footer a,
+.tp-offcanvas-social a {
+    color: inherit;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+    gap: 0;
+}
+
+/* SVG inheritance */
+footer a svg,
+.tp-offcanvas-social a svg {
+    color: inherit;
+    transition: all 0.3s ease;
+}
+
+/* SVG path & stroke inheritance */
+footer a svg path,
+footer a svg circle,
+footer a svg rect,
+footer a svg line,
+.tp-offcanvas-social a svg path,
+.tp-offcanvas-social a svg circle,
+.tp-offcanvas-social a svg rect,
+.tp-offcanvas-social a svg line {
+    stroke: currentColor !important;
+    fill: currentColor !important;
+    transition: all 0.3s ease;
+}
+
+/* Icon sizing */
+footer a svg,
+.tp-offcanvas-social a svg {
+    width: 1.1em;
+    height: 1.1em;
+}
+
+/* =====================================================
+   FOOTER (Dark Background - Black)
+   ===================================================== */
+
+footer a {
+    color: #ffffff;
+}
+
+footer a:hover {
+    color: #00c8ff;
+}
+
+footer a:hover svg path,
+footer a:hover svg circle,
+footer a:hover svg rect,
+footer a:hover svg line {
+    stroke: #00c8ff !important;
+    fill: #00c8ff !important;
+}
+
+/* Footer social links list */
+.tp-footer-wd-social {
+    display: flex;
+    gap: 0.8rem;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-top: 0.5rem;
+}
+
+.tp-footer-wd-social a {
+    color: #ffffff;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.tp-footer-wd-social a:hover {
+    color: #00c8ff;
+    transform: translateY(-2px);
+}
+
+.tp-footer-wd-social a svg {
+    stroke: currentColor !important;
+    fill: currentColor !important;
+}
+
+.tp-footer-wd-social a i {
+    color: currentColor;
+}
+
+/* =====================================================
+   OFFCANVAS / SIDEBAR (Light/White Background)
+   ===================================================== */
+
+.tp-offcanvas-social {
+    background-color: #ffffff;
+}
+
+.tp-offcanvas-social a {
+    color: #000000;
+}
+
+.tp-offcanvas-social a:hover {
+    color: #0077b6;
+}
+
+.tp-offcanvas-social a:hover svg path,
+.tp-offcanvas-social a:hover svg circle,
+.tp-offcanvas-social a:hover svg rect,
+.tp-offcanvas-social a:hover svg line {
+    stroke: #0077b6 !important;
+    fill: #0077b6 !important;
+}
+
+/* Offcanvas contact links */
+.tp-offcanvas-contact a {
+    color: #000000;
+}
+
+.tp-offcanvas-contact a:hover {
+    color: #0077b6;
+}
+
+/* =====================================================
+   ICON LIST STYLING (for <i> tags with Font Awesome)
+   ===================================================== */
+
+/* Footer FA icons */
+footer .fa-brands,
+footer .fa-light,
+footer .fa-sharp {
+    color: currentColor;
+    transition: all 0.3s ease;
+}
+
+footer a:hover .fa-brands,
+footer a:hover .fa-light,
+footer a:hover .fa-sharp {
+    color: #00c8ff;
+}
+
+/* Offcanvas FA icons */
+.tp-offcanvas-social .fa-brands,
+.tp-offcanvas-social .fa-light,
+.tp-offcanvas-social .fa-sharp {
+    color: currentColor !important;
+    transition: all 0.3s ease;
+}
+
+.tp-offcanvas-social a:hover .fa-brands,
+.tp-offcanvas-social a:hover .fa-light,
+.tp-offcanvas-social a:hover .fa-sharp {
+    color: #0077b6 !important;
+}
+
+/* =====================================================
+   OFFCANVAS SOCIAL LIST (Compact layout)
+   ===================================================== */
+
+.tp-offcanvas-social ul {
+    list-style: none;
+    padding: 0;
+    margin: 0.8rem 0 0 0;
+    display: flex;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+}
+
+.tp-offcanvas-social ul li {
+    margin: 0;
+    padding: 0;
+}
+
+.tp-offcanvas-social ul li a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #0b2143ff;
+    transition: all 0.3s ease;
+}
+
+.tp-offcanvas-social ul li a:hover {
+    color: #0077b6;
+    transform: translateY(-2px);
+}
+
+.tp-offcanvas-social ul li a svg {
+    stroke: currentColor !important;
+    fill: currentColor !important;
+}
+
+.tp-offcanvas-social ul li a i {
+    color: currentColor !important;
+    font-size: 1.1rem;
+}
+
+/* =====================================================
+   RESPONSIVE ADJUSTMENTS
+   ===================================================== */
+
+@media (max-width: 768px) {
+    .tp-footer-wd-social {
+        gap: 0.6rem;
+    }
+
+    .tp-offcanvas-social ul {
+        gap: 0.5rem;
+    }
+
+    footer a svg,
+    .tp-offcanvas-social a svg {
+        width: 1rem;
+        height: 1rem;
+    }
+}
+</style> {% endcomment %}
+
 
             <p class="verify-note">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1055,7 +1381,17 @@ document.head.appendChild(style);
 }
 
         </style>
+        <style>
+            .tp-footer-wd-social a {
+    color: #fff; 
+    transition: 0.3s ease;
+}
 
+.tp-footer-wd-social a:hover {
+    color: #9be8ff !important; /* Lighter hover shade */
+}
+
+        </style>
         <!-- Footer Bottom -->
         <div class="tp-footer-cst-bottom">
             <div class="container-fluid container-1524">

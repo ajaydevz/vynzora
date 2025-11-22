@@ -22,6 +22,7 @@ def partners(request):
     """Partners page view"""
     # Get all client logos for partners section
     client_logos = Client_Logo.objects.all()
+    services = Services.objects.all()
     
     # Get testimonials
     reviews = ClientReview.objects.all()
@@ -30,7 +31,7 @@ def partners(request):
     footer_services = Services.objects.all()[:5]
     
     # Get career job count for hiring badge
-    career_job_count = Career_Model.objects.all()
+    active_jobs = Career_Model.objects.filter(post_end_date__gte=timezone.now()).count()
     
     # Get projects for offcanvas
     projects = ProjectModel.objects.all()
@@ -39,11 +40,12 @@ def partners(request):
         'client_logos': client_logos,
         'reviews': reviews,
         'footer_services': footer_services,
-        'career_job_count': career_job_count,
+        'career_job_count': active_jobs,
         'projects': projects,
+        'services':services
     }
     
-    return render(request, 'home/partners.html', context)
+    return render(request, 'home/partne.html', context)
 
 
 # @require_http_methods(["GET"])
@@ -382,6 +384,9 @@ def service_api_detail(request, pk):
             'name': service.name,
             'description': service.description,
             'image': service.image.url if service.image else None,
+            'meta_title': service.meta_title,
+            'meta_description': service.meta_description,
+            
             'offers': [
                 {
                     'id': offer.id,
@@ -682,7 +687,8 @@ def index_redirect(request):
 
 def verify_certificate(request):
     footer_services = Services.objects.all()[:5]
-    services = Services.objects.all()  
+    services = Services.objects.all()
+    active_jobs = Career_Model.objects.filter(post_end_date__gte=timezone.now()).count()
     
     previous_url = request.META.get('HTTP_REFERER') or '/'
     
@@ -697,6 +703,8 @@ def verify_certificate(request):
                 'certificate': certificate,
                 'services':services,
                 'footer_services':footer_services,
+                'career_job_count': active_jobs
+            
             })
         except Certificates.DoesNotExist:
             messages.error(request, f"No certificate found with ID: {id1}. Please check and try again.")
@@ -1455,6 +1463,8 @@ def delete_certificates(request,id):
 def category_website_detail(request, category_slug, website_slug):
     category = get_object_or_404(Category, slug=category_slug)
     
+    client_logos = Client_Logo.objects.all()
+    
     # Ensure the category slug is correct
     correct_slug = slugify(category.name)
     if category.slug != correct_slug:
@@ -1462,6 +1472,43 @@ def category_website_detail(request, category_slug, website_slug):
 
     # Fetch website correctly
     website = get_object_or_404(Website, slug=website_slug, category=category)
+    
+        
+    
+    # video_url = website.videos.strip() if website.videos else None
+    # print("RAW VIDEO VALUE FROM DB:", repr(video_url)) 
+    
+    # video_url = None
+    # if website.videos and website.videos.strip():
+    #     # Split by newlines and get first non-empty line
+    #     video_lines = [line.strip() for line in website.videos.split('\n') if line.strip()]
+    #     if video_lines:
+    #         video_url = video_lines[0]
+    
+    # print("EXTRACTED VIDEO URL:", video_url)
+    
+    # # Extract YouTube video ID
+    # video_id = None
+    # if video_url:
+    #     video_id = extract_youtube_id(video_url)
+    #     print("EXTRACTED VIDEO ID:", video_id)
+    
+    video_id = None
+    video_url = None
+    
+    if website.videos:
+        # Get first line of videos
+        video_lines = [line.strip() for line in website.videos.split('\n') if line.strip()]
+        if video_lines:
+            video_url = video_lines[0]
+            video_id = extract_youtube_id(video_url)
+            
+            print(f"DEBUG - Raw video from DB: {website.videos[:100]}")
+            print(f"DEBUG - First video line: {video_url}")
+            print(f"DEBUG - Extracted video ID: {video_id}")
+
+
+
     
     # Retrieve all required data
     services = Services.objects.all()
@@ -1479,14 +1526,55 @@ def category_website_detail(request, category_slug, website_slug):
             'website': website, 
             'faqs': faqs, 
             'services': services, 
+            'video_url': video_url,
+            'client_logos':client_logos,
+            'video_id': video_id,
             'service': services,  # Added for navbar dropdown
             'technologies': technologies,
             'blogs': blogs,
             'testimonials': testimonials
         }
     )
+    
+import re 
 
-
+def extract_youtube_id(url):
+    """
+    Extract YouTube video ID from various URL formats
+    Handles: youtube.com, youtu.be, youtube.com/embed
+    """
+    if not url:
+        return None
+    
+    url = url.strip()
+    
+    # Remove any whitespace
+    url = url.replace(' ', '')
+    
+    # Pattern 1: youtube.com/watch?v=XXXXX
+    pattern1 = r'(?:https?:\/\/)?(?:www\.)?youtube\.com\/watch\?v=([a-zA-Z0-9_-]{11})'
+    match = re.search(pattern1, url)
+    if match:
+        return match.group(1)
+    
+    # Pattern 2: youtu.be/XXXXX
+    pattern2 = r'(?:https?:\/\/)?(?:www\.)?youtu\.be\/([a-zA-Z0-9_-]{11})'
+    match = re.search(pattern2, url)
+    if match:
+        return match.group(1)
+    
+    # Pattern 3: youtube.com/embed/XXXXX
+    pattern3 = r'(?:https?:\/\/)?(?:www\.)?youtube\.com\/embed\/([a-zA-Z0-9_-]{11})'
+    match = re.search(pattern3, url)
+    if match:
+        return match.group(1)
+    
+    # Pattern 4: Just the video ID (11 characters)
+    if len(url) == 11 and re.match(r'^[a-zA-Z0-9_-]{11}$', url):
+        return url
+    
+    print(f"DEBUG: Could not extract video ID from: {url}")
+    return None
 
 # addd Catgeoory
 @login_required(login_url='user_login')
@@ -1559,6 +1647,8 @@ def add_website(request):
         add_description = request.POST.get("add_description")
         add_title = request.POST.get("add_title")
         image = request.FILES.get("image")
+        videos = request.POST.get("videos") 
+
 
         # Ensure unique slug
         base_slug = slug
@@ -1577,7 +1667,8 @@ def add_website(request):
             description=description,
             add_description=add_description,
             image=image,
-            add_title=add_title
+            add_title=add_title,
+            videos=videos
         )
     
         # Handle FAQs
@@ -1625,6 +1716,7 @@ def website_api_detail(request, pk):
             'add_title': website.add_title or '',
             'add_description': website.add_description or '',
             'image': website.image.url if website.image else None,
+            'videos': website.videos or '',
             'public_url': website.get_public_url(request), 
             'faqs': [
                 {
@@ -1658,10 +1750,15 @@ def update_website(request, website_id):
         website.description = request.POST.get('description')
         website.add_title = request.POST.get('add_title')
         website.add_description = request.POST.get('add_description')
+        website.videos = request.POST.get('videos')
 
         # Handle image upload
         if 'image' in request.FILES:
             website.image = request.FILES['image']
+            
+        # if 'videos' in request.FILES:
+        #     website.videos = request.FILES['videos']
+
 
         website.save()
 

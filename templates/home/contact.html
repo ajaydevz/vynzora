@@ -34,8 +34,9 @@
                   <div class="tp-contact-us-form-wrapper">
                      <div class="row">
                         <div class="col-lg-6">
+                          
                            <div class="tp-contact-us-map p-relative">
-                              <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d193596.26002818075!2d-74.1443121872927!3d40.69728463485858!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c24fa5d33f083b%3A0xc80b8f06e177fe62!2sNew%20York%2C%20NY%2C%20USA!5e0!3m2!1sen!2sbd!4v1745055504744!5m2!1sen!2sbd" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                              <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d125721.84185794959!2d76.23691348906246!3d10.032733490223974!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3b080f497a4c2cb3%3A0x6bf8e9d65478ce18!2sVynzora%20Pvt.%20Ltd.!5e0!3m2!1sen!2sin!4v1763631476856!5m2!1sen!2sin" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                            </div>
                         </div>
                         <div class="col-lg-6">
@@ -263,7 +264,7 @@
                   </div>
                </div>
             </div> {% endcomment %}
-            <div class="tp-contact-us-info-area pb-120">
+{% comment %} <div class="tp-contact-us-info-area pb-120">
    <div class="container">
       <div class="row justify-content-center">
 
@@ -322,6 +323,208 @@
    max-width: 100%;
    height: auto;
    object-fit: cover;
+}
+
+</style> {% endcomment %}
+
+            <div class="tp-contact-us-info-area pb-120">
+   <div class="container">
+      <div class="row justify-content-center">
+
+         <!-- Card 1 -->
+         <div class="col-xl-10 col-lg-10 col-md-12 mb-40">
+            <div class="tp-contact-horizontal-card d-flex align-items-center">
+               
+               <!-- Left: Image -->
+               <div class="contact-img-wrap">
+                  <img src="{% static 'assets/img/about/vynora.webp' %}" alt="">
+               </div>
+
+               <!-- Right: Details -->
+               <div class="contact-info-wrap">
+                  <h4 class="tp-contact-us-info-title">Kalamassery</h4>
+                  <p class="contact-address">
+   <strong>Address:</strong><br>
+   5/257A8, FACT Kalamassery<br>
+   Kochi, Kerala 683104, India
+</p>
+
+<style>
+   .contact-address {
+    margin-top: 15px;
+    font-size: 15px;
+    line-height: 1.45;
+    color: #333;
+}
+
+.contact-address strong {
+    font-weight: 600;
+    display: inline-block;
+    margin-bottom: 2px;
+}
+
+</style>
+                  <a href="mailto:support@vynzora.com">support@vynzora.com</a>
+                  <a href="tel:+9176001726">(+91) 76001726</a>
+
+                  {% comment %} <div class="tp-contact-us-btn mt-20">
+                     <a href="#" class="tp-btn-xl w-100 d-inline-block lh-0 tp-round-26 fs-15 
+                     tp-bg-common-black text-uppercase ls-0 tp-btn-switch-animation 
+                     tp-text-common-white hover-text-white tp-ff-heading fw-500">
+                        <span class="d-flex align-items-center justify-content-center">
+                           <span class="btn-text">View Location</span>
+                        </span>
+                     </a>
+                  </div> {% endcomment %}
+               </div>
+
+            </div>
+         </div>
+
+         <!-- Card 2 -->
+         <div class="col-xl-10 col-lg-10 col-md-12 mb-40">
+            <div class="tp-contact-horizontal-card d-flex align-items-center">
+
+               <!-- Left: Image -->
+               <div class="contact-img-wrap">
+                  <img src="{% static 'assets/img/about/vynzora2.webp' %}" alt="">
+               </div>
+
+               <!-- Right: Details -->
+               <div class="contact-info-wrap">
+                  <h4 class="tp-contact-us-info-title">Kadavanthra</h4>
+                           <p class="contact-address">
+   <strong>Address:</strong><br>
+   5/257A8, FACT Kalamassery<br>
+   Kochi, Kerala 683104, India
+</p>
+
+                  <a href="mailto:support@vynzora.com">support@vynzora.com</a>
+                  <a href="tel:+9176001726">(+91) 76001726</a>
+
+                  {% comment %} <div class="tp-contact-us-btn mt-20">
+                     <a href="#" class="tp-btn-xl w-100 d-inline-block lh-0 tp-round-26 fs-15 
+                     tp-bg-common-black text-uppercase ls-0 tp-btn-switch-animation 
+                     tp-text-common-white hover-text-white tp-ff-heading fw-500">
+                        <span class="d-flex align-items-center justify-content-center">
+                           <span class="btn-text">View Location</span>
+                        </span>
+                     </a>
+                  </div> {% endcomment %}
+                   {% comment %} <div class="whatsapp-section">
+    <a href="https://wa.me/919999999999" class="whatsapp-btn" target="_blank">
+        <i class="fab fa-whatsapp"></i>
+        <span>Chat on WhatsApp</span>
+    </a>
+</div>
+</div>
+<style>
+   .whatsapp-section {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.whatsapp-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 28px;
+    background: #25D366;
+    color: #fff;
+    border-radius: 50px;
+    font-size: 18px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: 0.3s ease;
+}
+
+.whatsapp-btn i {
+    font-size: 26px;
+}
+
+.whatsapp-btn:hover {
+    background: #1ebe5d;
+    transform: translateY(-2px);
+}
+
+</style>
+
+ {% endcomment %}
+
+               </div>
+
+            </div>
+         </div>
+
+      </div>
+   </div>
+</div>
+
+<style>
+   .tp-contact-horizontal-card {
+    background: #fff;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+    padding: 0;
+    display: flex;
+}
+
+.contact-img-wrap {
+    width: 60%;
+    height: 350px; /* Increased height */
+    overflow: hidden;
+}
+
+.contact-img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.contact-info-wrap {
+    width: 40%;
+    padding: 35px;
+    text-align: left;
+}
+
+.contact-info-wrap a {
+    display: block;
+    margin-bottom: 5px;
+    color: #000;
+    font-size: 16px;
+}
+
+/* Button Fix */
+.tp-contact-us-btn a {
+    background: #0a0f29;        /* dark navy blue */
+    color: #fff !important;
+    border-radius: 30px;
+    padding: 16px 20px;
+    font-weight: 600;
+    text-align: center;
+    transition: all 0.3s ease;
+    display: block;
+}
+
+.tp-contact-us-btn a:hover {
+    background: #1a234a;        /* lighter navy blue hover */
+    color: #fff !important;
+    transform: translateY(-2px);
+}
+
+/* Responsive */
+@media(max-width: 991px) {
+    .tp-contact-horizontal-card {
+        flex-direction: column;
+    }
+    .contact-img-wrap,
+    .contact-info-wrap {
+        width: 100%;
+    }
+    .contact-img-wrap {
+        height: 260px;
+    }
 }
 
 </style>
