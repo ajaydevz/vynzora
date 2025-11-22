@@ -29,7 +29,6 @@ DEBUG = os.getenv("DEBUG", "False") == "True"
 
 
 
-
 ALLOWED_HOSTS = ["vynzora-5.onrender.com", "localhost", "127.0.0.1"]
 
 

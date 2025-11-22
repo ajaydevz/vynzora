@@ -9346,7 +9346,7 @@ body.tp-magic-cursor #magic-cursor {
 /* Below 575px (mobile) */
 @media (max-width: 575px) {
   .tp-footer-ai-bigtitle {
-    font-size: 80px;
+    font-size: 70px;
   }
 }
 
