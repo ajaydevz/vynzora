@@ -459,6 +459,7 @@
     <div class="blog-card-body">
       <form class="forms-sample" method="POST" enctype="multipart/form-data" id="blogForm" action="{% url 'add_blog_details' %}">
         {% csrf_token %}
+        {{ form.media }}
         
         <div class="form-group">
           <label class="form-label">
@@ -551,7 +552,7 @@
           {% endif %}
         </div>
 
-        <div class="form-group">
+        {% comment %} <div class="form-group">
           <label class="form-label">
             Blog Description<span class="required">*</span>
           </label>
@@ -569,7 +570,22 @@
               {{ form.description.errors.0 }}
             </div>
           {% endif %}
-        </div>
+        </div> {% endcomment %}
+        <div class="form-group">
+  <label class="form-label">
+    Blog Description<span class="required">*</span>
+  </label>
+  
+  {{ form.description }} <!-- CKEditor renders here -->
+
+  {% if form.description.errors %}
+    <div class="error-message">
+      <i class="mdi mdi-alert-circle"></i>
+      {{ form.description.errors.0 }}
+    </div>
+  {% endif %}
+</div>
+    
 
         <div class="form-group">
           <label class="form-label">
@@ -620,6 +636,13 @@
     </div>
   </div>
 </div>
+
+<style>
+  .ck-editor__editable {
+  min-height: 250px !important;
+  border-radius: 10px;
+}
+</style>
 
 <script>
   document.addEventListener('DOMContentLoaded', function() {

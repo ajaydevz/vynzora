@@ -49,7 +49,7 @@ urlpatterns = [
     path('view-candidate-details/', views.view_candidate_details, name='view_candidate_details'),
     path('delete-candidate-certificates/<int:id>/', views.delete_candidate_certificates, name='delete_candidate_certificates'),
 
-    path('blog/', views.blog, name='blog'),
+    path('blogs/', views.blog, name='blogs'),
     path('blog/<slug:slug>/', views.blog_details, name='blog_details'),
 
     # Admin Side

@@ -4,6 +4,9 @@ from ckeditor.fields import RichTextField
 from django.db import models
 from django.core.exceptions import ValidationError
 from django.utils import timezone
+from ckeditor_uploader.fields import RichTextUploadingField
+
+
 
 
 class Category(models.Model):
@@ -217,7 +220,7 @@ class Blog(models.Model):
     meta_title = models.CharField(max_length=200, help_text="SEO-friendly title for the blog")
     meta_description = models.TextField(help_text="SEO-friendly description for the blog")
     name = models.CharField(max_length=200,blank=True, null=True)
-    description = models.TextField()
+    description = RichTextUploadingField()
     image = models.ImageField(upload_to='blog_images/',blank=True, null=True)
     created_date = models.DateTimeField(default=now,blank=True, null=True)
 

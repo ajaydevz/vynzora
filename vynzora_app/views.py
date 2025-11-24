@@ -28,7 +28,7 @@ def partners(request):
     reviews = ClientReview.objects.all()
     
     # Get services for footer
-    footer_services = Services.objects.all()[:5]
+    footer_services = Services.objects.order_by("?")[:4]
     
     # Get career job count for hiring badge
     active_jobs = Career_Model.objects.filter(post_end_date__gte=timezone.now()).count()
@@ -105,7 +105,7 @@ def service_detail(request,  slug):
     offers = getattr(service, 'offers', None)  # if offers is a related_name
     other_services = Services.objects.exclude(id=service.id)[:7]
     process_steps = service.process_steps.all().order_by('id')
-    footer_services = Services.objects.all()[:5]
+    footer_services = Services.objects.order_by("?")[:4]
     active_jobs = Career_Model.objects.filter(post_end_date__gte=timezone.now()).count()
     
     context = {
@@ -686,7 +686,7 @@ def index_redirect(request):
 #         return None
 
 def verify_certificate(request):
-    footer_services = Services.objects.all()[:5]
+    footer_services = Services.objects.order_by("?")[:4]
     services = Services.objects.all()
     active_jobs = Career_Model.objects.filter(post_end_date__gte=timezone.now()).count()
     
@@ -713,11 +713,13 @@ def verify_certificate(request):
     return redirect(previous_url)
 
 def about(request):
-    # technologies = Technologies.objects.all()
+    technologies = Technologies.objects.all()
     client_logos = Client_Logo.objects.all()
     services = Services.objects.all()   
-    footer_services = Services.objects.all()[:5]
+    footer_services = Services.objects.order_by("?")[:4]
     active_jobs = Career_Model.objects.filter(post_end_date__gte=timezone.now()).count()
+    reviews = ClientReview.objects.all() 
+    
     # team_members = Team.objects.all()
     # if request.method == 'POST':
     #     id1 = request.POST.get('id1')
@@ -728,7 +730,7 @@ def about(request):
     #         messages.error(request, ("Certificate not found for the provided ID!!!"))
     #         return redirect('about')
     # return render(request, 'about.html',{'technologies': technologies, 'client_logos' : client_logos, 'team_members':team_members})
-    return render(request,'home/about.html',{'client_logos': client_logos,'services':services,'footer_services':footer_services,'career_job_count': active_jobs})
+    return render(request,'home/about.html',{'reviews':reviews,'technologies': technologies,'client_logos': client_logos,'services':services,'footer_services':footer_services,'career_job_count': active_jobs})
 
 # def contact(request):
 #     if request.method == 'POST':
@@ -747,7 +749,7 @@ def about(request):
 def contact(request):
     
     services = Services.objects.all()   
-    footer_services = Services.objects.all()[:5]
+    footer_services = Services.objects.order_by("?")[:4]
     active_jobs = Career_Model.objects.filter(post_end_date__gte=timezone.now()).count()
     
     if request.method == 'POST':
@@ -800,7 +802,7 @@ def contact(request):
 def portfolio(request):
     projects = ProjectModel.objects.all()
     services = Services.objects.all()   
-    footer_services = Services.objects.all()[:5]
+    footer_services = Services.objects.order_by("?")[:4]
     active_jobs = Career_Model.objects.filter(post_end_date__gte=timezone.now()).count()
     # return render(request,'portfolio.html', {'projects':projects})
     return render(request,'home/works.html',{'projects':projects,'services':services,'footer_services':footer_services,'career_job_count': active_jobs})
@@ -838,7 +840,7 @@ def career_submit_application(request):
     job_positions = Career_Model.objects.filter(post_end_date__gte=timezone.now())
     careers = Career_Model.objects.filter(post_end_date__gte=timezone.now())
     services = Services.objects.all()  
-    footer_services = Services.objects.all()[:5] 
+    footer_services = Services.objects.order_by("?")[:4]
     active_jobs = Career_Model.objects.filter(post_end_date__gte=timezone.now()).count()
     
     if request.method == 'POST':
@@ -929,7 +931,7 @@ def blog(request):
     blogs = Blog.objects.all().order_by('-created_date')
     services = Services.objects.all() 
     paginator = Paginator(blogs, 6)  # Show 6 blogs per page
-    footer_services = Services.objects.all()[:5]
+    footer_services = Services.objects.order_by("?")[:4]
     active_jobs = Career_Model.objects.filter(post_end_date__gte=timezone.now()).count()
 
     page_number = request.GET.get('page')
@@ -941,7 +943,7 @@ def blog_details(request, slug):
     blog = get_object_or_404(Blog, slug=slug)  # Get blog by slug
     services = Services.objects.all() 
     recent_posts = Blog.objects.exclude(id=blog.id).order_by('-created_date')[:4]  # Use blog.id instead of blog_id
-    footer_services = Services.objects.all()[:5]
+    footer_services = Services.objects.order_by("?")[:4]
     active_jobs = Career_Model.objects.filter(post_end_date__gte=timezone.now()).count()
     
     return render(request, 'home/blog_details.html', {'blog': blog,'recent_posts':recent_posts, 'services':services,'footer_services':footer_services,'career_job_count': active_jobs})
@@ -1329,7 +1331,7 @@ def delete_team(request,id):
 def index_team(request):
     team_members = Team.objects.all()
     services = Services.objects.all()   
-    footer_services = Services.objects.all()[:5]
+    footer_services = Services.objects.order_by("?")[:4]
     active_jobs = Career_Model.objects.filter(post_end_date__gte=timezone.now()).count()
     
     return render(request, 'home/team.html', {'team_members': team_members,'services':services,'footer_services':footer_services,'career_job_count': active_jobs})

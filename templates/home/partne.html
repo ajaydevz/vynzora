@@ -678,9 +678,412 @@
                   </div> {% endcomment %}
                </div>
             </section>
+            <style>
+                .tp-partner-grid {
+            padding: 120px 20px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        }
 
-            <!-- Partner Grid Section -->
-            <section class="tp-partner-grid">
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .tp-partner-grid-header {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+
+        .tp-partner-grid-subtitle {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 18px;
+            font-weight: 500;
+            letter-spacing: -0.4px;
+            color: #3b82f6;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+
+        .tp-partner-grid-subtitle::before,
+        .tp-partner-grid-subtitle::after {
+            content: '/';
+            color: #3b82f6;
+            font-weight: 600;
+        }
+
+        .tp-partner-grid-title {
+            font-size: 56px;
+            font-weight: 600;
+            letter-spacing: -0.4px;
+            color: #1a1a2e;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .tp-partner-grid-desc {
+            font-size: 20px;
+            font-weight: 400;
+            color: #64748b;
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* Horizontal Partner Cards */
+        .tp-partner-card {
+            background: #fff;
+            border-radius: 24px;
+            padding: 0;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid #e2e8f0;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-bottom: 40px;
+            display: flex;
+            flex-direction: row;
+            align-items: stretch;
+            min-height: 320px;
+        }
+
+        .tp-partner-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #023e9eff 0%, #290088ff 50%, #102a72ff 100%);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.5s ease;
+        }
+
+        .tp-partner-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .tp-partner-card:hover {
+            transform: translateY(-12px);
+            box-shadow: 0 30px 60px rgba(59, 130, 246, 0.15);
+            border-color: transparent;
+        }
+
+        .tp-partner-card-left {
+            flex: 0 0 280px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 40px;
+            position: relative;
+        }
+
+        .tp-partner-card-left::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 20%;
+            bottom: 20%;
+            width: 1px;
+            background: linear-gradient(180deg, transparent 0%, #e2e8f0 50%, transparent 100%);
+        }
+
+        .tp-partner-card-icon {
+            max-width: 180px;
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+            transition: transform 0.5s ease;
+        }
+
+        .tp-partner-card:hover .tp-partner-card-icon {
+            transform: scale(1.05);
+        }
+
+        .tp-partner-card-right {
+            flex: 1;
+            padding: 45px 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .tp-partner-card-title {
+            font-size: 32px;
+            font-weight: 600;
+            letter-spacing: -0.4px;
+            color: #1a1a2e;
+            margin-bottom: 18px;
+            line-height: 1.2;
+        }
+
+        .tp-partner-card-desc {
+            font-size: 17px;
+            font-weight: 400;
+            color: #64748b;
+            line-height: 1.7;
+            margin-bottom: 30px;
+        }
+
+        .tp-partner-features {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        .tp-partner-feature {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 15px;
+            font-weight: 500;
+            color: #475569;
+        }
+
+        .tp-partner-feature-icon {
+            width: 24px;
+            height: 24px;
+            background: linear-gradient(135deg, #023e9eff 0%, #130041ff 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .tp-partner-feature-icon svg {
+            width: 12px;
+            height: 12px;
+        }
+
+        /* Alternating card style */
+        .tp-partner-card:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+
+        .tp-partner-card:nth-child(even) .tp-partner-card-left::after {
+            right: auto;
+            left: 0;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .tp-partner-grid-title {
+                font-size: 42px;
+            }
+
+            .tp-partner-card {
+                flex-direction: column !important;
+                min-height: auto;
+            }
+
+            .tp-partner-card-left {
+                flex: 0 0 auto;
+                padding: 40px;
+            }
+
+            .tp-partner-card-left::after {
+                display: none;
+            }
+
+            .tp-partner-card-right {
+                padding: 35px 40px 45px;
+            }
+
+            .tp-partner-features {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .tp-partner-grid {
+                padding: 80px 20px;
+            }
+
+            .tp-partner-grid-title {
+                font-size: 36px;
+            }
+
+            .tp-partner-grid-desc {
+                font-size: 18px;
+            }
+
+            .tp-partner-card-title {
+                font-size: 26px;
+            }
+
+            .tp-partner-card-desc {
+                font-size: 16px;
+            }
+
+            .tp-partner-card-left {
+                padding: 30px;
+            }
+
+            .tp-partner-card-right {
+                padding: 30px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .tp-partner-grid-title {
+                font-size: 32px;
+            }
+
+            .tp-partner-card-title {
+                font-size: 24px;
+            }
+        }
+    </style>
+     <section class="tp-partner-grid">
+        <div class="container">
+            <div class="tp-partner-grid-header">
+                 <span class="tp-partner-hero-subtitle">/ Our Partnership /</span>
+                <h2 class="tp-partner-grid-title">Strategic Cloud Partnerships</h2>
+                <p class="tp-partner-grid-desc">
+                    We partner with industry leaders to deliver cutting-edge solutions tailored to your business needs.
+                </p>
+            </div>
+
+            <!-- AWS Card -->
+            <div class="tp-partner-card">
+                <div class="tp-partner-card-left">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/9/93/Amazon_Web_Services_Logo.svg" 
+                         alt="AWS" 
+                         class="tp-partner-card-icon">
+                </div>
+                <div class="tp-partner-card-right">
+                    <h3 class="tp-partner-card-title">Amazon Web Services</h3>
+                    <p class="tp-partner-card-desc">
+                        Industry-leading cloud computing platform offering compute, storage, and database solutions with 200+ services for scalable, secure infrastructure.
+                    </p>
+                    <div class="tp-partner-features">
+                        <div class="tp-partner-feature">
+                            <span class="tp-partner-feature-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                            </span>
+                            EC2 & Compute Services
+                        </div>
+                        <div class="tp-partner-feature">
+                            <span class="tp-partner-feature-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                            </span>
+                            S3 Storage Solutions
+                        </div>
+                        <div class="tp-partner-feature">
+                            <span class="tp-partner-feature-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                            </span>
+                            Database & Analytics
+                        </div>
+                        <div class="tp-partner-feature">
+                            <span class="tp-partner-feature-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                            </span>
+                            Database & Analytics
+                        </div>
+                        <div class="tp-partner-feature">
+                            <span class="tp-partner-feature-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                            </span>
+                            Security & Compliance
+                        </div>
+                        <div class="tp-partner-feature">
+                            <span class="tp-partner-feature-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                            </span>
+                            Security & Compliance
+                        </div>
+               
+                        
+                    </div>
+                </div>
+            </div>
+
+            <!-- Shopify Card -->
+            <div class="tp-partner-card">
+                <div class="tp-partner-card-left">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/0/0e/Shopify_logo_2018.svg" 
+                         alt="Shopify" 
+                         class="tp-partner-card-icon">
+                </div>
+                <div class="tp-partner-card-right">
+                    <h3 class="tp-partner-card-title">Shopify Plus</h3>
+                    <p class="tp-partner-card-desc">
+                        Enterprise-grade e-commerce platform empowering businesses to build, grow, and scale their online stores globally with powerful tools and integrations.
+                    </p>
+                    <div class="tp-partner-features">
+                        <div class="tp-partner-feature">
+                            <span class="tp-partner-feature-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                            </span>
+                            E-commerce Platform
+                        </div>
+                        <div class="tp-partner-feature">
+                            <span class="tp-partner-feature-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                            </span>
+                            Multi-channel Selling
+                        </div>
+                        <div class="tp-partner-feature">
+                            <span class="tp-partner-feature-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                            </span>
+                            Payment Solutions
+                        </div>
+                        <div class="tp-partner-feature">
+                            <span class="tp-partner-feature-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                            </span>
+                            Payment Solutions
+                        </div>
+                        <div class="tp-partner-feature">
+                            <span class="tp-partner-feature-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                            </span>
+                            App Ecosystem
+                        </div>
+                        <div class="tp-partner-feature">
+                            <span class="tp-partner-feature-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                            </span>
+                            App Ecosystem
+                        </div>
+                        
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+           
+            {% comment %} <section class="tp-partner-grid">
                <div class="container">
                   <div class="tp-partner-grid-header">
                      <span class="tp-partner-grid-subtitle">Our Partnerships</span>
@@ -800,9 +1203,7 @@
                                  App Ecosystem
                               </div>
                            </div>
-                           {% comment %} <div class="tp-partner-cta">
-                              <a href="{% url 'contact' %}">Learn More</a>
-                           </div> {% endcomment %}
+                          
                             <div class="tp-partner-cta">
    <a href="{% url 'contact' %}" class="tp-btn-ai tp-btn-switch-2-animation p-relative hover-text-white d-inline-block text-uppercase tp-text-common-blacks lh-1 fs-16 fw-700 tp-ff-dm">
       <span class="d-flex align-items-center justify-content-center">
@@ -824,7 +1225,10 @@
                      </div>
                   </div>
                </div>
-            </section>
+            </section> {% endcomment %}
+            <!-- Benefits Section -->
+
+
 
             <div class="tp-service-area tp-bg-common-black pt-110 pb-100">
                <div class="container">

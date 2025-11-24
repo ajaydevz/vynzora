@@ -9,6 +9,7 @@
     <meta name="description" content="Vynzoraa - Professional Digital Agency Portfolio showcasing our creative work and innovative solutions">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Place favicon.ico in the root directory -->
    
 
@@ -310,6 +311,8 @@ document.addEventListener('DOMContentLoaded', function() {
 Kochi, Kerala 683104, India</a>
                         </li>
                     </ul>
+
+                    
                 </div>
 
             <div class="tp-offcanvas-social">
@@ -450,7 +453,7 @@ Kochi, Kerala 683104, India</a>
                                             </li>
 
                                             <li class="has-dropdown">
-                                                <a href="{% url 'blog' %}">
+                                                <a href="{% url 'blogs' %}">
                                                     blogs
                                     
                                                 </a>
@@ -473,7 +476,7 @@ Kochi, Kerala 683104, India</a>
         <span class="hiring-badges">HIRING</span>
         {% endif %}
     <a href="{% url 'submit_application' %}" class="career-nav-link">
-        Career
+        Careers
        
     </a>
 </li>
@@ -1252,7 +1255,7 @@ document.head.appendChild(style);
                             {% comment %} <li><a href="{% url 'submit_application' %}">Career</a></li>
                             <span class="hiring-badge">Hiring</span> {% endcomment %}
                             <li >
-    <a href="{% url 'submit_application' %}">Career</a>
+    <a href="{% url 'submit_application' %}">Careers</a>
     {% if career_job_count > 0 %}
         <span style="background-color: darkgreen; color: #fff;">Hiring</span>
     {% endif %}

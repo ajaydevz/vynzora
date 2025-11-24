@@ -1,6 +1,17 @@
 
 {% extends "home/base.html" %}
 {% load static %}
+
+{% block meta_title %}
+{{ service.meta_title }} - Our Services | Your Company Name
+{% endblock %}
+
+{% block meta_description %}
+{{ service.meta_description|truncatechars:160 }}
+{% endblock %}
+
+
+
 {% block content %}
 
             <!-- tp-service-hero-area-start -->
@@ -186,7 +197,7 @@
                <h2 class="fs-50 fs-sm-40 fs-xs-30 lh-120-per mb-55">{{ service.name }}</h2>
                <div class="tp-blog-details-link-wrap mb-25">
                   <div class="tp-blog-details-dates mr-20 mb-10">
-                     <span>Special Service</span>
+                     <span>{{ service.name }}</span>
                      <span class="borders"></span>
                      {% comment %} <span>{{ service.created_at|date }}</span> {% endcomment %}
                   </div>
@@ -235,9 +246,9 @@
 
                
 
-               <div class="tp-sidebar-banner bg-position" data-background="assets/img/blog/postbox/bg.jpg">
+               <div class="tp-sidebar-banner bg-position" data-background="{% static 'assets/img/blog/postbox/bgs.jpg' %}"  style="border-radius: 20px; overflow: hidden;">
                   <img class="mb-25" src="assets/img/blog/postbox/user.png" alt="">
-                  <h4 class="tp-text-common-black fs-25 mb-65">Ready to optimize your business strategy?</h4>
+                  <h4 class="tp-text-common-white fs-25 mb-65">Ready to optimize your business strategy?</h4>
                   <a href="{% url 'contact' %}" class="tp-btn-ai tp-btn-switch-2-animation  p-relative hover-text-white d-inline-block text-uppercase tp-text-common-blacks lh-1 fs-16 fw-700 tp-ff-dm">
                      <span class="mr10 td-text d-inline-block mr-5">Let's Talk</span>
                      <span class="tp-arrow-angle">

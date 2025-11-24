@@ -67,7 +67,7 @@
                <h2 class="fs-50 fs-sm-40 fs-xs-30 lh-120-per mb-55">{{ blog.name }}</h2>
                <div class="tp-blog-details-link-wrap mb-25">
                   <div class="tp-blog-details-dates mr-20 mb-10">
-                     <span>Special Edition</span>
+                     {% comment %} <span>Special Edition</span> {% endcomment %}
                      <span class="borders"></span>
                      <span>{{blog.created_date|date}}</span>
                   </div>
@@ -80,7 +80,7 @@
                   </div>
                </div>
                <div class="tp-blog-details-content mb-70">
-                  <p class="fs-18 lh-150-per">{{blog.description}}</p>
+                  <p class="fs-18 lh-150-per">{{blog.description|safe}}</p>
                   
                   {% comment %}
                   <div class="tp-service-details-content mt-55">
@@ -293,7 +293,7 @@
 
     {% for recent in recent_posts %}
     <div class="tp-sidebar-rc-post mb-15">
-        <a href="#" class="tp-sidebar-rc-post-tag mb-15">Special Edition</a>
+        {% comment %} <a href="#" class="tp-sidebar-rc-post-tag mb-15">Special Edition</a> {% endcomment %}
         <h4 class="tp-sidebar-rc-post-title">
             <a class="underline-black" href="{% url 'blog_details' slug=recent.slug %}">{{ recent.name }}</a>
         </h4>
@@ -354,9 +354,9 @@
                </div>
                {% endcomment %}
                
-               <div class="tp-sidebar-banner bg-position" data-background="assets/img/blog/postbox/bg.jpg">
+               <div class="tp-sidebar-banner bg-position" data-background="{% static 'assets/img/blog/postbox/bgs.jpg' %}"  style="border-radius: 20px; overflow: hidden;">
                   <img class="mb-25" src="assets/img/blog/postbox/user.png" alt="">
-                  <h4 class="tp-text-common-black fs-25 mb-65">Ready to optimize your marketing funnel for growth?</h4>
+                  <h4 class="tp-text-common-white fs-25 mb-65">Ready to optimize your marketing funnel for growth?</h4>
                   {% comment %} <a href="contact-light.html" class="tp-btn-sm d-inline-block tp-left-right fw-500 tp-ff-heading fs-15 text-uppercase tp-text-common-white tp-bg-theme-primary tp-round-36">
                      <span class="mr10 td-text d-inline-block mr-5">Let's Talk</span>
                      <span class="tp-arrow-angle">
@@ -366,17 +366,14 @@
                         </svg>
                      </span>
                   </a> {% endcomment %}
-                  <a href="{% url 'contact' %}" 
-   class="tp-btn-sm d-inline-block tp-left-right fw-500 tp-ff-heading fs-15 text-uppercase tp-text-common-white tp-bg-theme-primary tp-round-36 lets-talk-btn">
-   <span class="mr10 td-text d-inline-block mr-5">Let's Talk</span>
-   <span class="tp-arrow-angle">
-      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-         <path fill-rule="evenodd" clip-rule="evenodd"
-            d="M2.41379 3.30208C5.97452 3.05821 10.6092 1.55558 14 0C12.4438 3.39014 10.9406 8.02425 10.6973 11.585L8.35765 6.59331L1.14783 13.8037C1.02165 13.9295 0.850656 14.0001 0.672431 14C0.539461 14 0.409486 13.9605 0.298934 13.8866C0.188382 13.8128 0.102217 13.7077 0.0513353 13.5849C0.000453949 13.462 -0.0128613 13.3269 0.013072 13.1965C0.0390053 13.066 0.103024 12.9462 0.197034 12.8522L7.40683 5.64241L2.41379 3.30208Z" 
-            fill="currentColor" />
-      </svg>
-   </span>
-</a>
+                 <a href="{% url 'contact' %}" class="tp-btn-ai tp-btn-switch-2-animation  p-relative hover-text-white d-inline-block text-uppercase tp-text-common-blacks lh-1 fs-16 fw-700 tp-ff-dm">
+                     <span class="mr10 td-text d-inline-block mr-5">Let's Talk</span>
+                     <span class="tp-arrow-angle">
+                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                           <path fill-rule="evenodd" clip-rule="evenodd" d="M2.41379 3.30208C5.97452 3.05821 10.6092 1.55558 14 0C12.4438 3.39014 10.9406 8.02425 10.6973 11.585L8.35765 6.59331L1.14783 13.8037C1.02165 13.9295 0.850656 14.0001 0.672431 14C0.539461 14 0.409486 13.9605 0.298934 13.8866C0.188382 13.8128 0.102217 13.7077 0.0513353 13.5849C0.000453949 13.462 -0.0128613 13.3269 0.013072 13.1965C0.0390053 13.066 0.103024 12.9462 0.197034 12.8522L7.40683 5.64241L2.41379 3.30208Z" fill="currentColor"/>
+                        </svg>
+                     </span>
+                  </a>
 
                </div>
             </div>

@@ -25,9 +25,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get("SECRET_KEY", "local-dev-key")
 
-DEBUG = os.getenv("DEBUG", "False") == "True"
+# DEBUG = os.getenv("DEBUG", "False") == "True"
 
-# DEBUG = True
+DEBUG = True
 
 ALLOWED_HOSTS = ["vynzora-5.onrender.com", "localhost", "127.0.0.1"]
 
@@ -46,8 +46,19 @@ INSTALLED_APPS = [
     'vynzora_app',
     'cloudinary',
     'cloudinary_storage',
+    'ckeditor',
+    'ckeditor_uploader',
 
 ]
+
+CKEDITOR_UPLOAD_PATH = "uploads/"
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': 'full',
+        'height': 300,
+        'width': '100%',
+    }
+}
 
 SITE_ID = 1
 SITE_DOMAIN = "https://vynzora.com"

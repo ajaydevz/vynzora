@@ -793,7 +793,7 @@ Kochi, Kerala 683104, India</a>
                                                 </a>
                                                                                             </li>
                                              <li class="has-dropdown">
-                                                <a href="{% url 'blog' %}">
+                                                <a href="{% url 'blogs' %}">
                                                     Blogs
                                     
                                         
@@ -809,7 +809,7 @@ Kochi, Kerala 683104, India</a>
         <span class="hiring-badges">HIRING</span>
         {% endif %}
     <a href="{% url 'submit_application' %}" class="career-nav-link">
-        Career
+        Careers
        
     </a>
 </li>
@@ -1672,7 +1672,12 @@ document.addEventListener('DOMContentLoaded', function() {
                                         </div>
                                         <div class="col-lg-5 col-md-5">
                                             <div class="tp-hero-ai-dec tp-bg-common-white tp-round-32 mb-30">
-                                                <h3 class="tp-hero-ai-dec-title ls-m-3 tp-ff-playfair fw-400 ls-m-4 tp-text-common-black-5 mb-25">ai</h3>
+                                                <h3 class="tp-hero-ai-dec-title ls-m-3 tp-ff-playfair fw-400 ls-m-4 tp-text-common-black-5 mb-25">VZ</h3> 
+                                                 {% comment %} <div class="tp-hero-icon mb-0">
+        <img src="{% static 'assets/img/blog/postbox/vz.png' %}" 
+             alt="VZ Logo" 
+             style="width: 180px; height: 180px; object-fit: contain; display: inline-block;">
+    </div> {% endcomment %}
                                                 <p class="opacity-8 mb-50 tp-ff-dm fw-500 lh-140-per fs-22 ls-m-2 tp-text-common-black-5">Tired of Being Invisible Online?<br>We Help You Stand Out! Get a Free Digital Growth Plan</p>
                                                 <a href="{% url 'about' %}" class="tp-btn-ai tp-btn-switch-2-animation  p-relative hover-text-white d-inline-block text-uppercase tp-text-common-blacks lh-1 fs-16 fw-700 tp-ff-dm">
                                                     <span class="d-flex align-items-center justify-content-center">
@@ -2479,7 +2484,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     </h2>
                     <div class="tp_fade_anim" data-delay=".4">
                         <p class="tp-about-ai-para tp-ff-dm mb-55 fw-400 fs-22 ls-m-2 lh-150-per tp-text-common-black-6">
-                            From strategy to deployment, we fuse cutting-edge technology with creative thinking to craft digital products that learn adapt.
+                            From strategy to deployment, we build intelligent digital products that learn, adapt, and evolve. With creativity, engineering, and AI-driven innovation, we craft solutions that enhance user experience, streamline operations, and drive growth keeping your digital presence future-ready.
                         </p>
                     </div>
                     <div class="tp_fade_anim" data-delay=".6" data-fade-from="bottom" data-ease="bounce">
@@ -2651,7 +2656,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         </span>
                         <div>
                             <div class="tp-testimonial-it-icon d-flex align-items-center">
-                                <span class="tp-ff-inter fw-600 fs-16 lh-1 ls-m-4 text-uppercase tp-text-common-black-1 mr-10">4.9/5</span>
+                                <span class="tp-ff-inter fw-600 fs-16 lh-1 ls-m-4 text-uppercase tp-text-common-black-1 mr-10">5/5</span>
                                 <div class="tp-testimonial-it-star lh-1">
                                     <i class="fa-solid fa-star-sharp"></i>
                                     <i class="fa-solid fa-star-sharp"></i>
@@ -2660,7 +2665,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                     <i class="fa-solid fa-star-sharp"></i>
                                 </div>
                             </div>
-                            <span class="tp-ff-inter fw-500 fs-13 ls-m-1 tp-text-common-black-1 lh-1">Based on 24 reviews on Clutch</span>
+                            <span class="tp-ff-inter fw-500 fs-13 ls-m-1 tp-text-common-black-1 lh-1">Based on 25 reviews on Google</span>
                         </div>
                     </div>
                 </div>
@@ -3599,7 +3604,7 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
             <div class="col-lg-4">
                 <div class="tp-service-ai-btn mb-40 text-lg-end tp_fade_anim" data-delay=".5" data-fade-from="top" data-ease="bounce">
-                    <a href="{% url 'blog' %}" class="tp-btn-ai tp-btn-switch-2-animation p-relative hover-text-white d-inline-block text-uppercase tp-text-common-blacks lh-1 fs-16 fw-700 tp-ff-dm">
+                    <a href="{% url 'blogs' %}" class="tp-btn-ai tp-btn-switch-2-animation p-relative hover-text-white d-inline-block text-uppercase tp-text-common-blacks lh-1 fs-16 fw-700 tp-ff-dm">
                         <span class="d-flex align-items-center justify-content-center">
                             <span class="btn-text">See All Blog</span>
                             <span class="btn-icon">
@@ -3648,7 +3653,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     <h4 class="tp-blog-ai-title tp-ff-jakarta fs-24 fs-md-22 lh-140-per ls-m-4 tp-text-grey-5">
                         <a href="{% url 'blog_details' blog.slug %}" class="underline-white">{{ blog.name }}</a>
                     </h4>
-                    <p class="tp-text-grey-5 mt-2" style="min-height: 60px;">{{ blog.description|truncatewords:15 }}</p>
+                    <p class="tp-text-grey-5 mt-2" style="min-height: 60px;">{{ blog.description|safe|truncatewords:15 }}</p>
                 </div>
 
                 <div class="tp-blog-ai-btn d-flex justify-content-between mt-auto pt-3">
@@ -3825,7 +3830,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             </li>
                             <li class="has-dropdown">
                                 <a href="{% url 'submit_application' %}" class="career-nav-link">
-                                    Career
+                                    Careers
                                     {% if career_job_count > 0 %}
                                     <span class="hiring-badge">Hiring</span>
                                     {% endif %}

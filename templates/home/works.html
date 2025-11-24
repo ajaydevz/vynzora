@@ -118,7 +118,7 @@
                 </div>
             </div>
             <div class="col-lg-4">
-                <div class="tp-portfolio-para">
+                {% comment %} <div class="tp-portfolio-para">
                     <p class="fs-18 tp-text-grey-1 lh-28">
                         We pride ourselves on delivering innovative, impactful, and results-driven projects that exceed expectations.
                     </p>
@@ -127,9 +127,51 @@
                         <span>Behance</span>
                         <span>GitHub</span>
                     </div>
-                </div>
+                </div> {% endcomment %}
+                <div class="tp-portfolio-simple text-center">
+    <p class="fs-18 tp-text-grey-1 lh-28 mb-3" style="color:black;">
+        We pride ourselves on delivering innovative, impactful, and results-driven projects that exceed expectations.
+    </p>
+    <div class="tp-portfolio-icons">
+       
+       
+        <i class="fab fa-node-js" title="Node.js"></i>
+        <i class="fab fa-python" title="Python/Django"></i>
+        <i class="fab fa-github" title="GitHub"></i>
+        <i class="fab fa-js-square" title="JavaScript"></i>
+        <i class="fab fa-html5" title="HTML5"></i>
+        <i class="fab fa-css3-alt" title="CSS3"></i>
+    </div>
+</div>
             </div>
         </div>
+
+        <style>
+.tp-portfolio-icons {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    margin-top: 10px;
+}
+
+.tp-portfolio-icons i {
+    color: #001f3f; /* dark navy */
+    font-size: 28px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.tp-portfolio-icons i:hover {
+    color: #00145bff; /* hover cyan */
+    transform: scale(1.2);
+}
+
+@media (max-width: 768px) {
+    .tp-portfolio-icons i {
+        font-size: 24px;
+    }
+}
+</style>
         
         <div class="row gx-50">
             {% for p in projects %}
