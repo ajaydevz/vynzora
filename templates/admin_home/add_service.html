@@ -479,7 +479,7 @@
     </div>
 
     <div class="form-body">
-      <form method="POST" enctype="multipart/form-data" id="serviceForm">
+      <form method="POST" enctype="multipart/form-data" id="serviceForm"  novalidate>
         {% csrf_token %}
         
         <!-- Basic Information Section -->
@@ -1158,4 +1158,47 @@
     });
   });
 </script>
+
+
+<script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
+
+<script>
+  // Initialize CKEditor and store the instance
+    let descriptionEditor;
+
+    // Initialize CKEditor
+    ClassicEditor
+        .create(document.querySelector('#description'), {
+            toolbar: [
+                'heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList',
+                '|', 'insertTable', 'blockQuote', 'undo', 'redo', 'imageUpload'
+            ]
+        })
+        .then(editor => {
+            descriptionEditor = editor;
+
+            // Base64 image upload adapter
+            editor.plugins.get('FileRepository').createUploadAdapter = loader => {
+                return {
+                    upload: () => loader.file.then(file => new Promise((resolve, reject) => {
+                        const reader = new FileReader();
+                        reader.onload = () => resolve({ default: reader.result });
+                        reader.onerror = error => reject(error);
+                        reader.readAsDataURL(file);
+                    })),
+                    abort: () => {}
+                };
+            };
+
+            console.log('CKEditor initialized successfully');
+        })
+        .catch(error => {
+            console.error('CKEditor initialization error:', error);
+        });
+</script>
+
+
+
+
+
 {% endblock %}

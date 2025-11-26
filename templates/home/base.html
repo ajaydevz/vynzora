@@ -1298,14 +1298,15 @@ document.head.appendChild(style);
                 <div class="col-lg-3 col-md-6 col-sm-6">
                     <div class="tp-footer-widget-form tp-footer-cst-widget-form tp-footer-wd-widget-form mb-40">
                         <h3 class="tp-footer-widget-title tp-ff-dm fs-27 fw-600 mb-35 tp_fade_anim" data-delay=".9" style="color: #fff;">Newsletter</h3>
-                        <form class="p-relative mb-30 tp_fade_anim" data-delay=".9" action="#">
-                            <input class="tp-input" type="text" placeholder="Email Address" aria-label="Email Address">
-                            <button class="tp-button" type="submit" aria-label="Subscribe">
-                            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M6.56328 13.2091V16.6876C6.56385 16.8058 6.60161 16.9208 6.6712 17.0164C6.74079 17.1119 6.83868 17.1832 6.95102 17.22C7.06335 17.2569 7.18443 17.2574 7.2971 17.2216C7.40976 17.1858 7.50831 17.1155 7.57878 17.0206L9.61353 14.2516L6.56328 13.2091ZM17.7645 0.104306C17.68 0.044121 17.5805 0.00848417 17.477 0.00133654C17.3735 -0.00581108 17.27 0.015809 17.178 0.0638058L0.303026 8.87631C0.205932 8.92762 0.125932 9.00617 0.0728436 9.1023C0.019755 9.19843 -0.00411253 9.30798 0.00417016 9.41748C0.0124529 9.52699 0.0525254 9.6317 0.11947 9.71875C0.186415 9.80581 0.277319 9.87143 0.381026 9.90756L5.07228 11.5111L15.063 2.96856L7.33203 12.2828L15.1943 14.9701C15.2723 14.9963 15.3551 15.0051 15.4369 14.996C15.5187 14.9868 15.5975 14.9599 15.6678 14.9171C15.7381 14.8743 15.7982 14.8167 15.8439 14.7482C15.8896 14.6798 15.9197 14.6021 15.9323 14.5208L17.9948 0.645806C18.01 0.543093 17.9966 0.438159 17.956 0.342598C17.9154 0.247038 17.8491 0.164569 17.7645 0.104306Z" fill="#F3F1F2" />
-                            </svg>
-                            </button>
-                        </form>
+                      <form class="p-relative mb-30" method="POST" action="{% url 'subscribe_newsletter' %}">
+    {% csrf_token %}
+    <input class="tp-input" type="email" name="email" placeholder="Email Address" required>
+    <button class="tp-button" type="submit" aria-label="Subscribe">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+            <path d="M6.56328..." fill="#F3F1F2"/>
+        </svg>
+    </button>
+</form>
                         {% comment %} <div class="tp-footer-wd-social">
                             <div class="tp_fade_anim d-inline-block" data-delay=".3" data-fade-from="top" data-ease="bounce">
                             <a href="#" aria-label="Dribbble"><i class="fa-brands fa-dribbble"></i></a>

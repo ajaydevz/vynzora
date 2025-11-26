@@ -16,7 +16,26 @@ from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.views.decorators.http import require_http_methods
 import json
+from .models import Newsletter
 
+def subscribe_newsletter(request):
+    if request.method == "POST":
+        email = request.POST.get("email")
+
+        if not email:
+            messages.error(request, "Email is required.")
+            return redirect(request.META.get('HTTP_REFERER'))
+
+        # Prevent duplicates
+        if Newsletter.objects.filter(email=email).exists():
+            messages.warning(request, "You are already subscribed!")
+            return redirect(request.META.get('HTTP_REFERER'))
+
+        Newsletter.objects.create(email=email)
+        messages.success(request, "Subscribed successfully!")
+        return redirect(request.META.get('HTTP_REFERER'))
+
+    return redirect("/")
 
 def partners(request):
     """Partners page view"""
@@ -581,6 +600,8 @@ def service_update(request, pk):
             ServiceFAQ.objects.filter(service=service).exclude(id__in=faqs_to_keep).delete()
         else:
             ServiceFAQ.objects.filter(service=service).delete()
+            
+        messages.success(request, 'Service updated successfully!')
         
         return JsonResponse({
             'success': True,
@@ -591,6 +612,9 @@ def service_update(request, pk):
         import traceback
         print(f"Error updating service: {str(e)}")
         print(traceback.format_exc())
+        
+        messages.error(request, f'Error updating service: {str(e)}')
+        
         return JsonResponse({
             'success': False,
             'message': f'An error occurred: {str(e)}'
@@ -652,7 +676,7 @@ def index(request):
     # projects = projects[:6] 
     cat = Category.objects.all()
     projects = ProjectModel.objects.all()
-    blogs = Blog.objects.all()
+    blogs = Blog.objects.all()[:3]
     services = Services.objects.all()   
     active_jobs = Career_Model.objects.filter(post_end_date__gte=timezone.now()).count()
     active_banner = PromotionalBanner.objects.filter(
@@ -1084,6 +1108,7 @@ def contact_view(request):
 def delete_contact(request,id):
     contact = ContactModel.objects.get(id=id)
     contact.delete()
+    messages.success(request,'Contact message deleted successfully!')
     return redirect('contact_view')
 
 
@@ -1142,6 +1167,7 @@ def add_clients_logo(request):
         form = Client_Logo_Form(request.POST, request.FILES)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Client logo added successfully!')
             return redirect('view_clients_logo') 
     else:
         form = Client_Logo_Form()
@@ -1160,6 +1186,7 @@ def update_clients_logo(request,id):
         form = Client_Logo_Form(request.POST, request.FILES, instance=logos)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Client logo updated successfully!')
             return redirect('view_clients_logo')
     else:
         form = Client_Logo_Form(instance=logos)
@@ -1169,6 +1196,7 @@ def update_clients_logo(request,id):
 def delete_clients_logo(request,id):
     logos = Client_Logo.objects.get(id=id)
     logos.delete()
+    messages.success(request, 'Client logo deleted successfully!')
     return redirect('view_clients_logo')
 
 
@@ -1180,6 +1208,7 @@ def add_technologies(request):
         form = TechnologiesForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Technology added successfully!')
             return redirect('view_technologies') 
     else:
         form = TechnologiesForm()
@@ -1198,6 +1227,7 @@ def update_technologies(request,id):
         form = TechnologiesForm(request.POST, request.FILES, instance=logos)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Technology updated successfully!')
             return redirect('view_technologies')
     else:
         form = TechnologiesForm(instance=logos)
@@ -1207,6 +1237,7 @@ def update_technologies(request,id):
 def delete_technologies(request,id):
     logos = Technologies.objects.get(id=id)
     logos.delete()
+    messages.success(request, 'Technology deleted successfully!')
     return redirect('view_technologies')
 
 
@@ -1217,6 +1248,7 @@ def add_blog_details(request):
         form = BlogForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Blog added successfully!')
             return redirect('view_blog_details') 
     else:
         form = BlogForm()
@@ -1237,6 +1269,7 @@ def update_blog_details(request, id):
         form = BlogForm(request.POST, request.FILES, instance=blog)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Blog updated successfully!')
             return redirect('view_blog_details')
     else:
         form = BlogForm(instance=blog)
@@ -1246,6 +1279,7 @@ def update_blog_details(request, id):
 def delete_blog_details(request,id):
     blogs = Blog.objects.get(id=id)
     blogs.delete()
+    messages.success(request, 'Blog deleted successfully!')
     return redirect('view_blog_details')
 
 from django.http import JsonResponse
@@ -1360,6 +1394,7 @@ def add_project(request):
         form = ProjectModelForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Project added successfully!')
             return redirect('view_projects')
         else:
             # Debug: show errors
@@ -1385,6 +1420,7 @@ def update_projects(request, id):
                 projects.project_image.delete() 
                 projects.project_image = None 
             form.save()
+            messages.success(request, 'Project updated successfully!')
             return redirect('view_projects')
     else:
         form = ProjectModelForm(instance=projects)
@@ -1394,6 +1430,7 @@ def update_projects(request, id):
 def delete_projects(request,id):
     projects = ProjectModel.objects.get(id=id)
     projects.delete()
+    messages.success(request, 'Project deleted successfully!')
     return redirect('view_projects')
 
 
@@ -1404,6 +1441,7 @@ def add_certificates(request):
         form = CertificatesForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Certificate added successfully!')
             return redirect('view_certificates') 
     else:
         form = CertificatesForm()
@@ -1423,6 +1461,7 @@ def update_certificates(request,id):
         form = CertificatesForm(request.POST, request.FILES, instance=certificates)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Certificate updated successfully!')
             return redirect('view_certificates')
     else:
         form = CertificatesForm(instance=certificates)
@@ -1433,6 +1472,7 @@ def update_certificates(request,id):
 def delete_certificates(request,id):
     certificates = Certificates.objects.get(id=id)
     certificates.delete()
+    messages.success(request, 'Certificate deleted successfully!')
     return redirect('view_certificates')
 
 
@@ -1516,7 +1556,7 @@ def category_website_detail(request, category_slug, website_slug):
     services = Services.objects.all()
     faqs = website.faqs.all()
     technologies = Technologies.objects.all()
-    blogs = Blog.objects.all()
+    blogs = Blog.objects.all()[:3]
     testimonials = ClientReview.objects.all()
     
 
@@ -1585,6 +1625,7 @@ def add_category(request):
         form = CategoryForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Category added successfully!')
             return redirect('view_category') 
     else:
         form = CategoryForm()
@@ -1614,6 +1655,7 @@ def update_category(request, id):
             updated_category.save()
 
             # Redirect all related website URLs
+            messages.success(request, 'Category updated successfully!')
             return redirect('view_category')
 
     else:
@@ -1626,6 +1668,7 @@ def update_category(request, id):
 def delete_category(request, category_id):
     category = get_object_or_404(Category, id=category_id)  # ✅ Fetch category properly
     category.delete()
+    messages.success(request, 'Category deleted successfully!')
     return redirect("view_category")
 
 
@@ -1680,6 +1723,8 @@ def add_website(request):
         for question, answer in zip(faq_questions, faq_answers):
             if question.strip() and answer.strip():
                 WebsiteFAQ.objects.create(website=website, question=question, answer=answer)
+                
+        messages.success(request, "Website added successfully!")
 
         return redirect('view_websites')
 
@@ -1821,6 +1866,8 @@ def update_website(request, website_id):
             WebsiteFAQ.objects.filter(website=website).exclude(id__in=faqs_to_keep).delete()
         else:
             WebsiteFAQ.objects.filter(website=website).delete()
+            
+        messages.success(request, 'Website updated successfully!')
 
         return JsonResponse({
             'success': True,
@@ -1841,6 +1888,7 @@ def update_website(request, website_id):
 def delete_website(request, website_id):
     website = get_object_or_404(Website, id=website_id)
     website.delete()
+    messages.success(request, 'Website deleted successfully!')
     return redirect('view_websites')
 
 
@@ -1851,6 +1899,7 @@ def add_job_details(request):
         form = CareerForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Job details added successfully!')
             return redirect('view_job_details') 
     else:
         form = CareerForm()
@@ -1882,6 +1931,7 @@ def update_job_details(request, id):
         form = CareerForm(request.POST, request.FILES, instance=job)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Job details updated successfully!')
             return redirect('view_job_details')
     return redirect('view_job_details')
 
@@ -1891,6 +1941,7 @@ def update_job_details(request, id):
 def delete_job_details(request,id):
     job_details = Career_Model.objects.get(id=id)
     job_details.delete()
+    messages.success(request, 'Job details deleted successfully!')
     return redirect('view_job_details')
 
 @login_required(login_url='user_login')
@@ -1903,6 +1954,7 @@ def view_candidate_details(request):
 def delete_candidate_certificates(request, id):
     candidate = get_object_or_404(Candidate, id=id)
     candidate.delete()
+    messages.success(request, 'Candidate certificate deleted successfully!')
     return redirect('view_candidate_details')
 
 

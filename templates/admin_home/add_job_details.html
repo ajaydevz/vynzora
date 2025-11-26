@@ -569,7 +569,8 @@
   </div>
 </div>
 
-<script src="https://cdn.ckeditor.com/ckeditor5/41.3.1/classic/ckeditor.js"></script>
+<script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
+
 <script>
   document.addEventListener('DOMContentLoaded', function() {
     const jobForm = document.getElementById('jobForm');
@@ -712,37 +713,38 @@
     postEndDate.addEventListener('change', validateDates);
 
     // Initialize CKEditor and store the instance
-    ClassicEditor
-      .create(document.querySelector('#jobDetails'), {
-        toolbar: {
-          items: [
-            'heading', '|',
-            'bold', 'italic', 'underline', 'strikethrough', '|',
-            'bulletedList', 'numberedList', '|',
-            'outdent', 'indent', '|',
-            'link', 'blockQuote', 'insertTable', '|',
-            'undo', 'redo'
-          ]
-        },
-        placeholder: 'Describe the job responsibilities, requirements, and benefits...',
-      })
-      .then(editor => {
-        editorInstance = editor; // Store the editor instance
-        console.log('CKEditor initialized successfully');
-        
-        // Optional: Sync on every change (for real-time updates)
-        editor.model.document.on('change:data', () => {
-          document.getElementById('jobDetails').value = editor.getData();
-        });
-      })
-      .catch(error => {
-        console.error('Error initializing CKEditor:', error);
-      });
+    let descriptionEditor;
 
-    // Focus on first input field
-    if (jobPosition) {
-      jobPosition.focus();
-    }
+    // Initialize CKEditor
+    ClassicEditor
+        .create(document.querySelector('#jobDetails'), {
+            toolbar: [
+                'heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList',
+                '|', 'insertTable', 'blockQuote', 'undo', 'redo', 'imageUpload'
+            ]
+        })
+        .then(editor => {
+            descriptionEditor = editor;
+
+            // Base64 image upload adapter
+            editor.plugins.get('FileRepository').createUploadAdapter = loader => {
+                return {
+                    upload: () => loader.file.then(file => new Promise((resolve, reject) => {
+                        const reader = new FileReader();
+                        reader.onload = () => resolve({ default: reader.result });
+                        reader.onerror = error => reject(error);
+                        reader.readAsDataURL(file);
+                    })),
+                    abort: () => {}
+                };
+            };
+
+            console.log('CKEditor initialized successfully');
+        })
+        .catch(error => {
+            console.error('CKEditor initialization error:', error);
+        });
   });
-</script>
+    </script>
+
 {% endblock %}

@@ -2,11 +2,33 @@ from django import forms
 from .models import ContactModel, ClientReview, Client_Logo, Technologies, Blog, Team, ProjectModel, Certificates, Category, Website, Career_Model, Candidate
 from .models import Services, ServiceOffer, ServiceProcessStep, ServiceFAQ
 from django.forms import inlineformset_factory
+from .models import Newsletter
+
+class NewsletterForm(forms.ModelForm):
+    class Meta:
+        model = Newsletter
+        fields = ['email']
 
 class ServiceForm(forms.ModelForm):
     class Meta:
         model = Services
         fields = ["name", "description", "image","meta_title", "meta_description"]
+        widgets = {
+            'description': forms.Textarea(attrs={
+                'id': 'description', 
+                'rows': 5, 
+                'class': 'form-control',
+                'required': False  # Remove browser validation
+            })
+        }
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Make fields required at Django level but not browser level
+        self.fields['description'].required = True
+        self.fields['name'].required = True
+        self.fields['meta_title'].required = True
+        self.fields['meta_description'].required = True
 
 
 OfferFormSet = inlineformset_factory(

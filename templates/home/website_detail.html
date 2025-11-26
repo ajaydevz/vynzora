@@ -1812,7 +1812,7 @@ function onPlayerError(event) {
                         </span>
                         <div>
                             <div class="tp-testimonial-it-icon d-flex align-items-center">
-                                <span class="tp-ff-inter fw-600 fs-16 lh-1 ls-m-4 text-uppercase tp-text-common-black-1 mr-10">4.9/5</span>
+                                <span class="tp-ff-inter fw-600 fs-16 lh-1 ls-m-4 text-uppercase tp-text-common-black-1 mr-10">5/5 </span>
                                 <div class="tp-testimonial-it-star lh-1">
                                     <i class="fa-solid fa-star-sharp"></i>
                                     <i class="fa-solid fa-star-sharp"></i>
@@ -1821,7 +1821,7 @@ function onPlayerError(event) {
                                     <i class="fa-solid fa-star-sharp"></i>
                                 </div>
                             </div>
-                            <span class="tp-ff-inter fw-500 fs-13 ls-m-1 tp-text-common-black-1 lh-1">Based on 24 reviews on Clutch</span>
+                            <span class="tp-ff-inter fw-500 fs-13 ls-m-1 tp-text-common-black-1 lh-1">Based on 24 reviews on Google</span>
                         </div>
                     </div>
                 </div>
@@ -2251,7 +2251,7 @@ function onPlayerError(event) {
                     <h4 class="tp-blog-ai-title tp-ff-jakarta fs-24 fs-md-22 lh-140-per ls-m-4 tp-text-grey-5">
                         <a href="{% url 'blog_details' blog.slug %}" class="underline-white">{{ blog.name }}</a>
                     </h4>
-                    <p class="tp-text-grey-5 mt-2" style="min-height: 60px;">{{ blog.description|truncatewords:15 }}</p>
+                    <p class="tp-text-grey-5 mt-2" style="min-height: 60px;">{{ blog.description|safe|truncatewords:15 }}</p>
                 </div>
 
                 <div class="tp-blog-ai-btn d-flex justify-content-between mt-auto pt-3">
@@ -2643,6 +2643,54 @@ function onPlayerError(event) {
     </div>
     <!-- tp-footer-area-end -->
 </footer>
+
+  <style>
+     /* Reduce overall padding */
+.tp-brand-area {
+  padding-top: 100px !important;   /* was larger before */
+  padding-bottom: 80px !important;
+}
+
+/* Subtitle spacing adjustment */
+.tp-section-title-area {
+  margin-bottom: 30px !important; /* reduced from 40px */
+}
+
+/* Brand card styling */
+.tp-brand-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 18px;
+  background-color: #fff;
+  border-radius: 10px;
+  min-height: 120px; /* previously 140px — now tighter */
+}
+
+/* Logo size increased slightly */
+.tp-brand-item img {
+  width: 165px;  /* previously 150px */
+  height: 95px;  /* previously 75px */
+  object-fit: contain;
+  transition: .3s ease;
+}
+
+/* Optional hover effect (clean + premium) */
+.tp-brand-item img:hover {
+  transform: scale(1.05);
+  opacity: .9;
+}
+
+/* Swiper alignment */
+.swiper-slide {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+            </style>
+
 
 <style>
 /* Footer Verification Form Styles */

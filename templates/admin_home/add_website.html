@@ -1219,6 +1219,46 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 </script>
+
+{% comment %} 
+<script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
+
+<script>
+  // Initialize CKEditor and store the instance
+    let descriptionEditor;
+
+    // Initialize CKEditor
+    ClassicEditor
+        .create(document.querySelector('#description'), {
+            toolbar: [
+                'heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList',
+                '|', 'insertTable', 'blockQuote', 'undo', 'redo', 'imageUpload'
+            ]
+        })
+        .then(editor => {
+            descriptionEditor = editor;
+
+            // Base64 image upload adapter
+            editor.plugins.get('FileRepository').createUploadAdapter = loader => {
+                return {
+                    upload: () => loader.file.then(file => new Promise((resolve, reject) => {
+                        const reader = new FileReader();
+                        reader.onload = () => resolve({ default: reader.result });
+                        reader.onerror = error => reject(error);
+                        reader.readAsDataURL(file);
+                    })),
+                    abort: () => {}
+                };
+            };
+
+            console.log('CKEditor initialized successfully');
+        })
+        .catch(error => {
+            console.error('CKEditor initialization error:', error);
+        });
+</script> {% endcomment %}
+
+
 {% comment %} <style>
   .add-website-container {
     max-width: 1000px;
@@ -2503,5 +2543,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
  {% endcomment %}
+
+
 
 {% endblock %}

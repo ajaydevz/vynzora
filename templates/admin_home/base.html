@@ -15,6 +15,174 @@
   <link rel="shortcut icon" href="{% static 'favicon.ico' %}">
 
   
+<style>
+/* CKEditor Toolbar Sticky Position Fix */
+.ck.ck-editor__top.ck-reset_all {
+    position: relative !important;
+    top: auto !important;
+    z-index: 10 !important;
+}
+
+.ck.ck-sticky-panel .ck-sticky-panel__content {
+    position: relative !important;
+    top: auto !important;
+}
+
+.ck.ck-toolbar {
+    position: relative !important;
+    top: auto !important;
+}
+
+.ck-editor {
+    position: relative !important;
+    overflow: visible !important;
+}
+
+.ck.ck-editor__main {
+    overflow: visible !important;
+}
+
+/* Make editable area auto-expanding */
+.ck-editor__editable_inline {
+    min-height: 250px !important;
+    height: auto !important;
+    overflow-y: visible !important;
+    overflow-x: hidden !important;
+    position: relative !important;
+    border-radius: 10px;
+}
+
+.ck-editor__top {
+    position: static !important;
+}
+
+.ck-sticky-panel {
+    position: static !important;
+}
+
+.ck.ck-editor {
+    z-index: 1 !important;
+}
+
+.ck.ck-balloon-panel {
+    z-index: 1000 !important;
+}
+
+/* CKEditor List Styles - Fix for bullets and numbers */
+.ck-editor__editable ul,
+.ck-editor__editable ol {
+    padding-left: 40px !important;
+}
+
+.ck-editor__editable ul {
+    list-style-type: disc !important;
+    list-style-position: outside !important;
+}
+
+.ck-editor__editable ol {
+    list-style-type: decimal !important;
+    list-style-position: outside !important;
+}
+
+.ck-editor__editable li {
+    display: list-item !important;
+    margin-left: 0 !important;
+    padding-left: 0 !important;
+}
+
+.ck-editor__editable ul li {
+    list-style-type: disc !important;
+}
+
+.ck-editor__editable ol li {
+    list-style-type: decimal !important;
+}
+
+/* Nested lists */
+.ck-editor__editable ul ul {
+    list-style-type: circle !important;
+}
+
+.ck-editor__editable ul ul ul {
+    list-style-type: square !important;
+}
+</style>
+
+<!-- Add this CSS in your existing <style> section -->
+<style>
+/* CKEditor in Modal Styling */
+#updateModal .ck.ck-editor {
+    position: relative !important;
+}
+
+#updateModal .ck.ck-editor__editable {
+    min-height: 250px;
+    max-height: 400px;
+    overflow-y: auto;
+    border: 1px solid #dee2e6;
+    border-radius: 0.375rem;
+    padding: 1rem;
+}
+
+/* Toolbar positioning fix */
+#updateModal .ck.ck-editor__top.ck-reset_all {
+    position: relative !important;
+    top: auto !important;
+    z-index: 10 !important;
+}
+
+#updateModal .ck.ck-sticky-panel .ck-sticky-panel__content {
+    position: relative !important;
+    top: auto !important;
+}
+
+#updateModal .ck.ck-toolbar {
+    position: relative !important;
+    top: auto !important;
+}
+
+/* CKEditor scrollbar styling */
+#updateModal .ck.ck-editor__editable::-webkit-scrollbar {
+    width: 8px;
+}
+
+#updateModal .ck.ck-editor__editable::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+#updateModal .ck.ck-editor__editable::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 10px;
+}
+
+#updateModal .ck.ck-editor__editable::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+}
+
+/* CKEditor List Styles */
+#updateModal .ck-editor__editable ul,
+#updateModal .ck-editor__editable ol {
+    padding-left: 40px !important;
+}
+
+#updateModal .ck-editor__editable ul {
+    list-style-type: disc !important;
+    list-style-position: outside !important;
+}
+
+#updateModal .ck-editor__editable ol {
+    list-style-type: decimal !important;
+    list-style-position: outside !important;
+}
+
+#updateModal .ck-editor__editable li {
+    display: list-item !important;
+    margin-left: 0 !important;
+    padding-left: 0 !important;
+}
+</style>
+
   
   <style>
     /* ============================================

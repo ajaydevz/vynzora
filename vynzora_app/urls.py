@@ -5,6 +5,8 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     
+    path("subscribe/", views.subscribe_newsletter, name="subscribe_newsletter"),
+    
     path('partners/', views.partners, name='partners'),
 
     # User Side

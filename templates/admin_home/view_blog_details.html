@@ -1106,22 +1106,31 @@
           <div class="character-count" id="updateMetaDescriptionCount">0/500 characters</div>
         </div>
 
-        <div class="form-group">
+        {% comment %} <div class="form-group">
   <label class="form-label">
     Blog Description<span class="required">*</span>
   </label>
   <textarea 
-    class="form-control auto-expand" 
+    class="form-control" 
     name="description" 
     id="updateDescription" 
     placeholder="Enter blog description..." 
     required
-    maxlength="5000"
-    rows="4"
-    data-min-rows="4"
   ></textarea>
   <div class="character-count" id="updateDescriptionCount">0/5000 characters</div>
+</div> {% endcomment %}
+        <div class="form-group">
+  <label class="form-label">
+    Blog Description<span class="required">*</span>
+  </label>
+  
+ <textarea class="form-control" name="description" id="updateDescription" placeholder="Enter blog description..." style="display: none;"></textarea>
+
+  
+  <div class="character-count" id="updateDescriptionCount">0/5000 characters</div>
 </div>
+  
+  
 
         <div class="current-image-wrapper" id="currentImageWrapper">
           <h4>Current Image</h4>
@@ -1173,7 +1182,7 @@
   </div>
 </div>
 
-<!-- Delete Modal -->
+<!-- Delete Modal --> 
 <div id="deleteModal" class="modal">
   <div class="modal-content">
     <div class="modal-header" style="background: linear-gradient(135deg, #e74c3c, #c0392b);">
@@ -1211,8 +1220,28 @@
   </div>
 </div>
 
+
+
+<!-- Replace the Blog Description form-group in your Update Modal with this -->
+{% comment %} <div class="form-group">
+  <label class="form-label">
+    Blog Description<span class="required">*</span>
+  </label>
+  <textarea 
+    class="form-control" 
+    name="description" 
+    id="updateDescription" 
+    placeholder="Enter blog description..." 
+    required
+  ></textarea>
+  <div class="character-count" id="updateDescriptionCount">0/5000 characters</div>
+</div> {% endcomment %}
+
+<!-- Replace your entire script section with this -->
+<script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
+
 <script>
-  // Search functionality
+  // Search functionality variables
   const searchInput = document.getElementById('searchInput');
   const clearSearch = document.getElementById('clearSearch');
   const blogsTableBody = document.getElementById('blogsTableBody');
@@ -1231,95 +1260,110 @@
   // State variables
   let currentBlogId = null;
   let originalImageUrl = null;
+  let updateCKEditor = null;
 
-  // Highlight text function
-  function highlightText(text, searchTerm) {
-    if (!searchTerm) return text;
+  // ============================================
+  // CKEditor Functions
+  // ============================================
+
+  function initializeUpdateCKEditor() {
+    const editorElement = document.querySelector('#updateDescription');
     
-    const regex = new RegExp(`(${searchTerm})`, 'gi');
-    return text.replace(regex, '<span class="highlight">$1</span>');
-  }
-
-  // Remove highlighting
-  function removeHighlighting() {
-    const highlightedElements = document.querySelectorAll('.highlight');
-    highlightedElements.forEach(el => {
-      const parent = el.parentNode;
-      parent.replaceChild(document.createTextNode(el.textContent), el);
-      parent.normalize();
-    });
-  }
-
-  // Search functionality
-  searchInput.addEventListener('input', function() {
-    const searchTerm = this.value.toLowerCase();
-    
-    if (searchTerm) {
-      clearSearch.classList.add('show');
-    } else {
-      clearSearch.classList.remove('show');
-      removeHighlighting();
+    if (!editorElement) {
+      console.error('Editor element not found');
+      return;
     }
 
-    const rows = blogsTableBody.getElementsByTagName('tr');
-    let visibleCount = 0;
-
-    Array.from(rows).forEach(row => {
-      const name = row.getAttribute('data-name').toLowerCase();
-      const slug = row.getAttribute('data-slug').toLowerCase();
-      const metaTitle = row.getAttribute('data-meta-title').toLowerCase();
-      const metaDescription = row.getAttribute('data-meta-description').toLowerCase();
-      const description = row.getAttribute('data-description').toLowerCase();
-      
-      if (name.includes(searchTerm) || slug.includes(searchTerm) || metaTitle.includes(searchTerm) || 
-          metaDescription.includes(searchTerm) || description.includes(searchTerm)) {
-        row.style.display = '';
-        visibleCount++;
-        
-        // Highlight matching text
-        const nameElement = row.querySelector('.blog-name');
-        const slugElements = row.querySelectorAll('.blog-slug-mobile, .blog-slug-desktop');
-        
-        if (nameElement) {
-          nameElement.innerHTML = highlightText(row.getAttribute('data-name'), searchTerm);
-        }
-        
-        slugElements.forEach(el => {
-          if (el) {
-            el.innerHTML = highlightText(row.getAttribute('data-slug'), searchTerm);
-          }
+    // Destroy existing instance if any
+    if (updateCKEditor) {
+      updateCKEditor.destroy()
+        .then(() => {
+          console.log('Previous editor destroyed');
+          createUpdateCKEditor();
+        })
+        .catch(error => {
+          console.error('Error destroying CKEditor:', error);
+          updateCKEditor = null;
+          createUpdateCKEditor();
         });
-
-        // Note: For meta title, meta description and description, we're not highlighting
-        // because they're truncated in the table view
-      } else {
-        row.style.display = 'none';
-      }
-    });
-
-    // Show/hide no results message
-    if (visibleCount === 0 && searchTerm) {
-      noResults.style.display = 'block';
-      blogsTableBody.parentElement.style.display = 'none';
     } else {
-      noResults.style.display = 'none';
-      blogsTableBody.parentElement.style.display = 'table';
+      createUpdateCKEditor();
     }
+  }
 
-    // Update count
-    blogsCount.textContent = `${visibleCount} Blog${visibleCount !== 1 ? 's' : ''}`;
-  });
+  function createUpdateCKEditor() {
+    ClassicEditor
+      .create(document.querySelector('#updateDescription'), {
+        toolbar: [
+          'heading', '|', 
+          'bold', 'italic', 'link', '|',
+          'bulletedList', 'numberedList', '|',
+          'blockQuote', 'insertTable', '|',
+          'undo', 'redo', 'imageUpload'
+        ],
+        placeholder: 'Enter blog description...'
+      })
+      .then(editor => {
+        updateCKEditor = editor;
+        console.log('CKEditor initialized successfully');
+        
+        // Base64 image upload support
+        editor.plugins.get('FileRepository').createUploadAdapter = loader => {
+          return {
+            upload: () => loader.file
+              .then(file => new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve({ default: reader.result });
+                reader.onerror = error => reject(error);
+                reader.readAsDataURL(file);
+              })),
+            abort: () => {}
+          };
+        };
+        
+        // Update character count on change
+        editor.model.document.on('change:data', () => {
+          updateCKEditorCharacterCount();
+        });
+      })
+      .catch(error => {
+        console.error('Error initializing CKEditor:', error);
+      });
+  }
 
-  clearSearch.addEventListener('click', function() {
-    searchInput.value = '';
-    searchInput.dispatchEvent(new Event('input'));
-    searchInput.focus();
-  });
+  function updateCKEditorCharacterCount() {
+    if (!updateCKEditor) return;
+    
+    const data = updateCKEditor.getData();
+    const textContent = data.replace(/<[^>]*>/g, '');
+    const currentLength = textContent.length;
+    const maxLength = 5000;
+    
+    const countElement = document.getElementById('updateDescriptionCount');
+    if (countElement) {
+      countElement.textContent = `${currentLength}/${maxLength} characters`;
+      
+      if (currentLength > maxLength * 0.9) {
+        countElement.classList.add('warning');
+        countElement.classList.remove('error');
+      } else if (currentLength > maxLength) {
+        countElement.classList.add('error');
+        countElement.classList.remove('warning');
+      } else {
+        countElement.classList.remove('warning', 'error');
+      }
+    }
+  }
 
-  // Modal functionality
+  // ============================================
+  // Modal Functions
+  // ============================================
+
   function openUpdateModal(id, name, slug, metaTitle, metaDescription, description, imageUrl) {
     currentBlogId = id;
     originalImageUrl = imageUrl;
+    
+    console.log('Opening update modal for blog ID:', id);
     
     // Set form action URL
     document.getElementById('updateForm').action = `{% url 'update_blog_details' 0 %}`.replace('0', id);
@@ -1329,14 +1373,12 @@
     document.getElementById('updateSlug').value = slug;
     document.getElementById('updateMetaTitle').value = metaTitle;
     document.getElementById('updateMetaDescription').value = metaDescription;
-    document.getElementById('updateDescription').value = description;
     
-    // Update character counts
+    // Update character counts for regular fields
     updateCharacterCount(document.getElementById('updateName'), document.getElementById('updateNameCount'), 200);
     updateCharacterCount(document.getElementById('updateSlug'), document.getElementById('updateSlugCount'), 200);
     updateCharacterCount(document.getElementById('updateMetaTitle'), document.getElementById('updateMetaTitleCount'), 200);
     updateCharacterCount(document.getElementById('updateMetaDescription'), document.getElementById('updateMetaDescriptionCount'), 500);
-    updateCharacterCount(document.getElementById('updateDescription'), document.getElementById('updateDescriptionCount'), 5000);
     
     // Handle image display
     if (imageUrl) {
@@ -1346,28 +1388,56 @@
       currentImageWrapper.style.display = 'none';
     }
     
-    // Reset file input and preview
+    // Reset file input
     resetImagePreview();
     
-    // Show modal
+    // Show modal first
     updateModal.classList.add('show');
     document.body.style.overflow = 'hidden';
+    
+    // Initialize CKEditor after a short delay to ensure modal is visible
+    setTimeout(() => {
+      initializeUpdateCKEditor();
+      
+      // Set description content after CKEditor is ready
+      setTimeout(() => {
+        if (updateCKEditor) {
+          updateCKEditor.setData(description);
+          console.log('Description set in CKEditor');
+          
+          // Update character count
+          setTimeout(() => {
+            updateCKEditorCharacterCount();
+          }, 100);
+        }
+      }, 500);
+    }, 200);
   }
 
   function closeUpdateModal() {
+    console.log('Closing update modal');
+    
     updateModal.classList.remove('show');
     document.body.style.overflow = 'auto';
     resetImagePreview();
+    
+    // Destroy CKEditor
+    if (updateCKEditor) {
+      updateCKEditor.destroy()
+        .then(() => {
+          updateCKEditor = null;
+          console.log('CKEditor destroyed');
+        })
+        .catch(error => {
+          console.error('Error destroying CKEditor:', error);
+          updateCKEditor = null;
+        });
+    }
   }
 
   function openDeleteModal(id, name) {
-    // Set form action URL
     document.getElementById('deleteForm').action = `{% url 'delete_blog_details' 0 %}`.replace('0', id);
-    
-    // Set blog name in confirmation message
     document.getElementById('deleteBlogName').textContent = name;
-    
-    // Show modal
     deleteModal.classList.add('show');
     document.body.style.overflow = 'hidden';
   }
@@ -1377,7 +1447,10 @@
     document.body.style.overflow = 'auto';
   }
 
-  // Character count functionality
+  // ============================================
+  // Character Count Functions
+  // ============================================
+
   function updateCharacterCount(element, countElement, maxLength) {
     const currentLength = element.value.length;
     countElement.textContent = `${currentLength}/${maxLength} characters`;
@@ -1393,20 +1466,21 @@
     }
   }
 
-  // Image preview functionality
+  // ============================================
+  // Image Preview Functions
+  // ============================================
+
   function setupImagePreview() {
     imageInput.addEventListener('change', function(e) {
       const file = e.target.files[0];
       
       if (file) {
-        // Validate file type
         if (!file.type.match('image.*')) {
           alert('Please select a valid image file (JPEG, PNG, GIF, etc.)');
           resetImagePreview();
           return;
         }
         
-        // Validate file size (max 5MB)
         if (file.size > 5 * 1024 * 1024) {
           alert('Image size should be less than 5MB');
           resetImagePreview();
@@ -1416,16 +1490,12 @@
         const reader = new FileReader();
         
         reader.onload = function(e) {
-          // Update image preview
           currentImage.src = e.target.result;
           currentImage.classList.add('preview-new');
           currentImageWrapper.style.display = 'block';
           currentImageWrapper.classList.add('has-new-image');
-          
-          // Show clear button
           imageActions.style.display = 'flex';
           
-          // Update file input display
           fileInputCustom.classList.add('has-file');
           fileInputCustom.innerHTML = `
             <i class="mdi mdi-check-circle" style="color: #27ae60;"></i>
@@ -1446,7 +1516,6 @@
       }
     });
 
-    // Drag and drop functionality
     fileInputCustom.addEventListener('dragover', function(e) {
       e.preventDefault();
       this.style.borderColor = '#3498db';
@@ -1496,31 +1565,101 @@
     resetImagePreview();
   }
 
-  // Close modals when clicking outside
-  window.addEventListener('click', function(event) {
-    if (event.target === updateModal) {
-      closeUpdateModal();
+  // ============================================
+  // Search Functions
+  // ============================================
+
+  function highlightText(text, searchTerm) {
+    if (!searchTerm) return text;
+    const regex = new RegExp(`(${searchTerm})`, 'gi');
+    return text.replace(regex, '<span class="highlight">$1</span>');
+  }
+
+  function removeHighlighting() {
+    const highlightedElements = document.querySelectorAll('.highlight');
+    highlightedElements.forEach(el => {
+      const parent = el.parentNode;
+      parent.replaceChild(document.createTextNode(el.textContent), el);
+      parent.normalize();
+    });
+  }
+
+  searchInput.addEventListener('input', function() {
+    const searchTerm = this.value.toLowerCase();
+    
+    if (searchTerm) {
+      clearSearch.classList.add('show');
+    } else {
+      clearSearch.classList.remove('show');
+      removeHighlighting();
     }
-    if (event.target === deleteModal) {
-      closeDeleteModal();
+
+    const rows = blogsTableBody.getElementsByTagName('tr');
+    let visibleCount = 0;
+
+    Array.from(rows).forEach(row => {
+      const name = row.getAttribute('data-name').toLowerCase();
+      const slug = row.getAttribute('data-slug').toLowerCase();
+      const metaTitle = row.getAttribute('data-meta-title').toLowerCase();
+      const metaDescription = row.getAttribute('data-meta-description').toLowerCase();
+      const description = row.getAttribute('data-description').toLowerCase();
+      
+      if (name.includes(searchTerm) || slug.includes(searchTerm) || metaTitle.includes(searchTerm) || 
+          metaDescription.includes(searchTerm) || description.includes(searchTerm)) {
+        row.style.display = '';
+        visibleCount++;
+        
+        const nameElement = row.querySelector('.blog-name');
+        const slugElements = row.querySelectorAll('.blog-slug-mobile, .blog-slug-desktop');
+        
+        if (nameElement) {
+          nameElement.innerHTML = highlightText(row.getAttribute('data-name'), searchTerm);
+        }
+        
+        slugElements.forEach(el => {
+          if (el) {
+            el.innerHTML = highlightText(row.getAttribute('data-slug'), searchTerm);
+          }
+        });
+      } else {
+        row.style.display = 'none';
+      }
+    });
+
+    if (visibleCount === 0 && searchTerm) {
+      noResults.style.display = 'block';
+      blogsTableBody.parentElement.style.display = 'none';
+    } else {
+      noResults.style.display = 'none';
+      blogsTableBody.parentElement.style.display = 'table';
     }
+
+    blogsCount.textContent = `${visibleCount} Blog${visibleCount !== 1 ? 's' : ''}`;
   });
 
-  // Close modals with Escape key
-  document.addEventListener('keydown', function(event) {
-    if (event.key === 'Escape') {
-      closeUpdateModal();
-      closeDeleteModal();
-    }
+  clearSearch.addEventListener('click', function() {
+    searchInput.value = '';
+    searchInput.dispatchEvent(new Event('input'));
+    searchInput.focus();
   });
 
-  // Form validation
+  // ============================================
+  // Form Validation
+  // ============================================
+
   document.getElementById('updateForm').addEventListener('submit', function(e) {
     const name = document.getElementById('updateName').value.trim();
     const slug = document.getElementById('updateSlug').value.trim();
     const metaTitle = document.getElementById('updateMetaTitle').value.trim();
     const metaDescription = document.getElementById('updateMetaDescription').value.trim();
-    const description = document.getElementById('updateDescription').value.trim();
+    
+    // Get description from CKEditor
+    let description = '';
+    if (updateCKEditor) {
+      description = updateCKEditor.getData().trim();
+    } else {
+      description = document.getElementById('updateDescription').value.trim();
+    }
     
     if (!name || !slug || !metaTitle || !metaDescription || !description) {
       e.preventDefault();
@@ -1552,13 +1691,13 @@
       return false;
     }
     
-    if (description.length > 5000) {
+    const textContent = description.replace(/<[^>]*>/g, '');
+    if (textContent.length > 5000) {
       e.preventDefault();
       alert('Blog description must be 5000 characters or less.');
       return false;
     }
     
-    // Validate file if selected
     if (imageInput.files.length > 0) {
       const file = imageInput.files[0];
       if (!file.type.match('image.*')) {
@@ -1574,26 +1713,47 @@
     }
   });
 
-  // Initialize page
+  // ============================================
+  // Modal Close Handlers
+  // ============================================
+
+  window.addEventListener('click', function(event) {
+    if (event.target === updateModal) {
+      closeUpdateModal();
+    }
+    if (event.target === deleteModal) {
+      closeDeleteModal();
+    }
+  });
+
+  document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') {
+      closeUpdateModal();
+      closeDeleteModal();
+    }
+  });
+
+  // ============================================
+  // Initialize on Page Load
+  // ============================================
+
   document.addEventListener('DOMContentLoaded', function() {
-    // Focus search input on page load
     searchInput.focus();
     
-    // Add loading animation to table rows
-    const rows = blogsTableBody.getElementsByTagName('tr');
-    Array.from(rows).forEach((row, index) => {
-      row.style.animationDelay = `${index * 0.1}s`;
-    });
+    if (blogsTableBody) {
+      const rows = blogsTableBody.getElementsByTagName('tr');
+      Array.from(rows).forEach((row, index) => {
+        row.style.animationDelay = `${index * 0.1}s`;
+      });
+    }
     
-    // Setup image preview functionality
     setupImagePreview();
     
-    // Setup character count listeners for update modal
+    // Setup character count listeners
     const updateName = document.getElementById('updateName');
     const updateSlug = document.getElementById('updateSlug');
     const updateMetaTitle = document.getElementById('updateMetaTitle');
     const updateMetaDescription = document.getElementById('updateMetaDescription');
-    const updateDescription = document.getElementById('updateDescription');
     
     if (updateName) {
       updateName.addEventListener('input', function() {
@@ -1618,127 +1778,8 @@
         updateCharacterCount(this, document.getElementById('updateMetaDescriptionCount'), 500);
       });
     }
-    
-    if (updateDescription) {
-      updateDescription.addEventListener('input', function() {
-        updateCharacterCount(this, document.getElementById('updateDescriptionCount'), 5000);
-      });
-    }
   });
 </script>
 
-<script>
-  // Auto-expanding textarea functionality
-function setupAutoExpandingTextarea() {
-  const textareas = document.querySelectorAll('.auto-expand');
-  
-  textareas.forEach(textarea => {
-    // Set initial height
-    const minRows = parseInt(textarea.getAttribute('data-min-rows')) || 4;
-    const lineHeight = parseInt(getComputedStyle(textarea).lineHeight);
-    textarea.style.height = (minRows * lineHeight) + 'px';
-    
-    // Auto-expand on input
-    textarea.addEventListener('input', function() {
-      // Reset height to auto to get the correct scrollHeight
-      this.style.height = 'auto';
-      
-      // Calculate new height
-      const newHeight = Math.max(this.scrollHeight, minRows * lineHeight);
-      this.style.height = newHeight + 'px';
-      
-      // Update character count
-      const countElement = document.getElementById(this.id + 'Count');
-      if (countElement) {
-        const currentLength = this.value.length;
-        const maxLength = parseInt(this.getAttribute('maxlength')) || 5000;
-        countElement.textContent = `${currentLength}/${maxLength} characters`;
-        
-        if (currentLength > maxLength * 0.9) {
-          countElement.classList.add('warning');
-          countElement.classList.remove('error');
-        } else if (currentLength > maxLength) {
-          countElement.classList.add('error');
-          countElement.classList.remove('warning');
-        } else {
-          countElement.classList.remove('warning', 'error');
-        }
-      }
-    });
-    
-    // Trigger input event to set initial height
-    textarea.dispatchEvent(new Event('input'));
-  });
-}
 
-// Add this CSS for smooth transitions
-const autoExpandStyles = `
-.auto-expand {
-  resize: none;
-  overflow-y: hidden;
-  transition: height 0.2s ease;
-  min-height: calc(4 * 1.5 * 14px); /* 4 rows * line-height * font-size */
-}
-
-.form-control:focus {
-  border-color: #3498db;
-  box-shadow: 0 0 0 4px rgba(52, 152, 219, 0.1);
-}
-`;
-
-// Add styles to document
-const styleSheet = document.createElement('style');
-styleSheet.textContent = autoExpandStyles;
-document.head.appendChild(styleSheet);
-
-// Initialize when DOM is loaded
-document.addEventListener('DOMContentLoaded', function() {
-  setupAutoExpandingTextarea();
-});
-
-// Also initialize when modal opens
-function openUpdateModal(id, name, slug, metaTitle, metaDescription, description, imageUrl) {
-  currentBlogId = id;
-  originalImageUrl = imageUrl;
-  
-  // Set form action URL
-  document.getElementById('updateForm').action = `{% url 'update_blog_details' 0 %}`.replace('0', id);
-  
-  // Populate form fields
-  document.getElementById('updateName').value = name;
-  document.getElementById('updateSlug').value = slug;
-  document.getElementById('updateMetaTitle').value = metaTitle;
-  document.getElementById('updateMetaDescription').value = metaDescription;
-  document.getElementById('updateDescription').value = description;
-  
-  // Update character counts
-  updateCharacterCount(document.getElementById('updateName'), document.getElementById('updateNameCount'), 200);
-  updateCharacterCount(document.getElementById('updateSlug'), document.getElementById('updateSlugCount'), 200);
-  updateCharacterCount(document.getElementById('updateMetaTitle'), document.getElementById('updateMetaTitleCount'), 200);
-  updateCharacterCount(document.getElementById('updateMetaDescription'), document.getElementById('updateMetaDescriptionCount'), 500);
-  
-  // Handle image display
-  if (imageUrl) {
-    currentImage.src = imageUrl;
-    currentImageWrapper.style.display = 'block';
-  } else {
-    currentImageWrapper.style.display = 'none';
-  }
-  
-  // Reset file input and preview
-  resetImagePreview();
-  
-  // Initialize auto-expand for description field
-  setTimeout(() => {
-    const descriptionField = document.getElementById('updateDescription');
-    if (descriptionField) {
-      descriptionField.dispatchEvent(new Event('input'));
-    }
-  }, 100);
-  
-  // Show modal
-  updateModal.classList.add('show');
-  document.body.style.overflow = 'hidden';
-}
-</script>
 {% endblock %}

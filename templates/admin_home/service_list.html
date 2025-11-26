@@ -393,17 +393,6 @@
     justify-content: center;
   }
 
-  .modal-content {
-    background: #fff;
-    border-radius: 16px;
-    max-width: 800px;
-    width: 90%;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-    animation: slideUp 0.3s ease;
-    max-height: 90vh;
-    overflow-y: auto;
-  }
-
   @keyframes slideUp {
     from {
       opacity: 0;
@@ -415,18 +404,97 @@
     }
   }
 
-  .modal-header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    padding: 25px 30px;
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border-radius: 16px 16px 0 0;
-    position: sticky;
-    top: 0;
-    z-index: 1;
-  }
+  /* Modal Content - Prevent content from overlapping header */
+.modal-content {
+  background: #fff;
+  border-radius: 16px;
+  max-width: 800px;
+  width: 90%;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  animation: slideUp 0.3s ease;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; /* Changed from overflow-y: auto */
+}
+
+/* Modal Header - Keep it sticky at the top */
+.modal-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 25px 30px;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 16px 16px 0 0;
+  position: sticky;
+  top: 0;
+  z-index: 100; /* Increased z-index */
+  flex-shrink: 0; /* Prevent header from shrinking */
+}
+
+/* Modal Body - Make this scrollable instead */
+.modal-body {
+  padding: 30px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  flex: 1;
+  position: relative;
+  z-index: 1; /* Lower than header */
+}
+
+/* CKEditor specific fixes */
+.ck.ck-editor {
+  position: relative;
+  z-index: 1; /* Ensure it stays below the header */
+}
+
+.ck.ck-editor__main {
+  position: relative;
+  z-index: 1;
+}
+
+.ck.ck-toolbar {
+  position: relative;
+  z-index: 1;
+}
+
+/* Ensure modal body scrollbar styling */
+.modal-body::-webkit-scrollbar {
+  width: 8px;
+}
+
+.modal-body::-webkit-scrollbar-track {
+  background: #f1f3f5;
+  border-radius: 10px;
+}
+
+.modal-body::-webkit-scrollbar-thumb {
+  background: #cbd5e0;
+  border-radius: 10px;
+}
+
+.modal-body::-webkit-scrollbar-thumb:hover {
+  background: #a0aec0;
+}
+
+/* Delete Modal - Apply same fix */
+.modal-content.delete-modal-content {
+  background: #fff;
+  max-width: 550px;
+  width: 95%;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+  animation: slideUp 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.delete-modal-body {
+  padding: 30px;
+  overflow-y: auto;
+  flex: 1;
+}
 
   .modal-header h3 {
     font-size: 20px;
@@ -457,9 +525,7 @@
     transform: rotate(90deg);
   }
 
-  .modal-body {
-    padding: 30px;
-  }
+ 
 
   /* Form Styles */
   .form-group {
@@ -1100,6 +1166,10 @@
           {% endfor %}
         </tbody>
       </table>
+      <div class="no-results" id="noResults" style="display: none;">
+    <i class="mdi mdi-magnify"></i>
+    <p>No services found matching your search.</p>
+</div>
       {% else %}
       <div class="empty-state">
         <i class="mdi mdi-briefcase-off"></i>
@@ -1114,6 +1184,111 @@
     </div>
   </div>
 </div>
+
+
+
+
+<script>
+// Search functionality for services page - Exact same structure as reference
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('searchInput');
+    const clearSearch = document.getElementById('clearSearch');
+    const serviceTableBody = document.getElementById('serviceTableBody');
+    const noResults = document.getElementById('noResults');
+    const serviceCount = document.getElementById('serviceCount');
+
+    // Highlight text function
+    function highlightText(text, searchTerm) {
+        if (!searchTerm) return text;
+        const regex = new RegExp(`(${searchTerm})`, 'gi');
+        return text.replace(regex, `<span class="highlight">$1</span>`);
+    }
+
+    // Remove highlighting
+    function removeHighlighting() {
+        const highlightedElements = document.querySelectorAll('.highlight');
+        highlightedElements.forEach(el => {
+            const parent = el.parentNode;
+            parent.replaceChild(document.createTextNode(el.textContent), el);
+            parent.normalize();
+        });
+    }
+
+    // Search functionality
+    if (searchInput) {
+        searchInput.addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase().trim();
+            
+            if (searchTerm) {
+                clearSearch.classList.add('show');
+            } else {
+                clearSearch.classList.remove('show');
+                removeHighlighting();
+            }
+
+            const rows = serviceTableBody.getElementsByTagName('tr');
+            let visibleCount = 0;
+
+            Array.from(rows).forEach(row => {
+                const name = row.getAttribute('data-name')?.toLowerCase() || '';
+                const description = row.getAttribute('data-description')?.toLowerCase() || '';
+                
+                if (name.includes(searchTerm) || description.includes(searchTerm)) {
+                    row.style.display = '';
+                    visibleCount++;
+                    
+                    // Highlight matching text in name
+                    const nameElement = row.querySelector('.service-name');
+                    if (nameElement && name.includes(searchTerm)) {
+                        nameElement.innerHTML = highlightText(row.getAttribute('data-name'), searchTerm);
+                    } else if (nameElement) {
+                        nameElement.textContent = row.getAttribute('data-name');
+                    }
+                    
+                    // Highlight matching text in description
+                    const descElement = row.querySelector('.service-description');
+                    if (descElement && description.includes(searchTerm)) {
+                        const fullDescription = row.getAttribute('data-description');
+                        descElement.innerHTML = highlightText(fullDescription, searchTerm);
+                    } else if (descElement) {
+                        const fullDescription = row.getAttribute('data-description');
+                        descElement.textContent = fullDescription.length > 100 ? 
+                            fullDescription.substring(0, 100) + '...' : fullDescription;
+                    }
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+
+            // Show/hide no results message - EXACTLY like reference
+            if (visibleCount === 0 && searchTerm) {
+                noResults.style.display = 'block';
+                serviceTableBody.style.display = 'none';
+            } else {
+                noResults.style.display = 'none';
+                serviceTableBody.style.display = '';
+            }
+
+            // Update count
+            if (serviceCount) {
+                serviceCount.textContent = `${visibleCount} Service${visibleCount !== 1 ? 's' : ''}`;
+            }
+        });
+
+        // Clear search functionality
+        if (clearSearch) {
+            clearSearch.addEventListener('click', function() {
+                searchInput.value = '';
+                searchInput.dispatchEvent(new Event('input'));
+                searchInput.focus();
+            });
+        }
+
+        // Focus search input on page load
+        searchInput.focus();
+    }
+});
+</script>
 
 <!-- Update Modal -->
 <div id="updateModal" class="modal">
@@ -1235,6 +1410,9 @@
     </div>
   </div>
 </div>
+
+
+
 
 <!-- Delete Modal -->
 {% comment %} <div id="deleteModal" class="modal">
@@ -1476,11 +1654,50 @@
 }
 
 </style>
-
+{% comment %} 
 <script>
 let currentServiceId = null;
 let offerCounter = 0;
 let faqCounter = 0;
+let descriptionEditor; // CKEditor instance
+
+// Initialize CKEditor
+function initCKEditor() {
+    const descriptionField = document.getElementById('updateDescription');
+    if (descriptionField) {
+        // Remove required attribute to prevent browser validation issues
+        descriptionField.removeAttribute('required');
+        
+        ClassicEditor
+            .create(descriptionField, {
+                toolbar: [
+                    'heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList',
+                    '|', 'insertTable', 'blockQuote', 'undo', 'redo'
+                ]
+            })
+            .then(editor => {
+                descriptionEditor = editor;
+                console.log('CKEditor initialized successfully');
+            })
+            .catch(error => {
+                console.error('CKEditor initialization error:', error);
+                // Fallback: if CKEditor fails, ensure the textarea is visible
+                descriptionField.style.display = 'block';
+            });
+    }
+}
+
+// Destroy CKEditor when modal closes
+function destroyCKEditor() {
+    if (descriptionEditor) {
+        descriptionEditor.destroy().then(() => {
+            descriptionEditor = null;
+            console.log('CKEditor destroyed successfully');
+        }).catch(error => {
+            console.error('Error destroying CKEditor:', error);
+        });
+    }
+}
 
 // Escape HTML
 function escapeHtml(text) {
@@ -1784,6 +2001,452 @@ window.addEventListener('click', (e) => {
     document.body.style.overflow = 'auto';
   }
 });
+</script> {% endcomment %}
+
+<script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
+
+<script>
+let currentServiceId = null;
+let offerCounter = 0;
+let faqCounter = 0;
+let descriptionEditor = null;
+
+// Initialize CKEditor
+function initCKEditor() {
+    const descriptionField = document.getElementById('updateDescription');
+    
+    // First, destroy any existing editor
+    if (descriptionEditor) {
+        descriptionEditor.destroy().catch(error => {
+            console.error('Error destroying previous CKEditor:', error);
+        });
+        descriptionEditor = null;
+    }
+    
+    if (descriptionField) {
+        // Remove required attribute to prevent browser validation issues
+        descriptionField.removeAttribute('required');
+        
+        // Make sure the textarea is visible for CKEditor
+        descriptionField.style.display = 'block';
+        descriptionField.style.visibility = 'visible';
+        
+        ClassicEditor
+            .create(descriptionField, {
+                toolbar: [
+                    'heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList',
+                    '|', 'insertTable', 'blockQuote', 'undo', 'redo'
+                ],
+                // Add these configurations for better modal integration
+                ui: {
+                    viewportOffset: { top: 50 }
+                }
+            })
+            .then(editor => {
+                descriptionEditor = editor;
+                console.log('CKEditor initialized successfully');
+                
+                // Force the editor to update its UI
+                setTimeout(() => {
+                    editor.ui.view.element.style.display = 'block';
+                    editor.ui.view.element.style.visibility = 'visible';
+                }, 100);
+            })
+            .catch(error => {
+                console.error('CKEditor initialization error:', error);
+                // Fallback: ensure textarea is usable
+                descriptionField.style.display = 'block';
+                descriptionField.style.visibility = 'visible';
+            });
+    }
+}
+
+// Destroy CKEditor when modal closes
+function destroyCKEditor() {
+    if (descriptionEditor) {
+        descriptionEditor.destroy().then(() => {
+            descriptionEditor = null;
+            console.log('CKEditor destroyed successfully');
+        }).catch(error => {
+            console.error('Error destroying CKEditor:', error);
+        });
+    }
+}
+
+// Escape HTML
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text || '';
+    return div.innerHTML;
+}
+
+// Show Alert
+function showAlert(message, type = 'success') {
+    const alert = document.getElementById('alertMessage');
+    alert.textContent = message;
+    alert.className = `alert-message alert-${type}`;
+    alert.style.display = 'block';
+    setTimeout(() => alert.style.display = 'none', 5000);
+}
+
+// Tab functionality
+function initTabs() {
+    document.querySelectorAll('.tab-button').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.tab-button').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            btn.classList.add('active');
+            document.getElementById(btn.dataset.tab).classList.add('active');
+        });
+    });
+}
+
+// Character count helper
+function updateCharCount(inputId, counterId, max) {
+    const input = document.getElementById(inputId);
+    const counter = document.getElementById(counterId);
+    if (input && counter) {
+        const count = input.value.length;
+        counter.textContent = `${count}/${max}`;
+        counter.classList.remove('warning', 'error');
+        if (count > max) {
+            counter.classList.add('error');
+        } else if (count > max - 20) {
+            counter.classList.add('warning');
+        }
+    }
+}
+
+// Add Offer
+function addOffer(data = {}) {
+    offerCounter++;
+    const html = `
+        <div class="formset-item" id="offer-${offerCounter}">
+            <div class="formset-header">
+                <div class="formset-title">
+                    <span class="formset-number">${offerCounter}</span>
+                    Offer ${offerCounter}
+                </div>
+                <button type="button" class="btn-remove-formset" onclick="removeOffer(${offerCounter})">
+                    <i class="mdi mdi-delete"></i> Remove
+                </button>
+            </div>
+            <input type="hidden" name="offers-${offerCounter}-id" value="${data.id || ''}">
+            <input type="hidden" name="offers-${offerCounter}-DELETE" value="">
+            <div class="form-group">
+                <label class="form-label">Title<span class="required">*</span></label>
+                <input type="text" class="form-control" name="offers-${offerCounter}-title" value="${escapeHtml(data.title || '')}" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Description<span class="required">*</span></label>
+                <textarea class="form-control" name="offers-${offerCounter}-description" rows="3" required>${escapeHtml(data.description || '')}</textarea>
+            </div>
+        </div>
+    `;
+    document.getElementById('offerFormset').insertAdjacentHTML('beforeend', html);
+}
+
+// Remove Offer
+function removeOffer(id) {
+    const item = document.getElementById(`offer-${id}`);
+    const deleteInput = item.querySelector('input[name$="-DELETE"]');
+    deleteInput.value = 'on';
+    item.classList.add('marked-for-deletion');
+    item.style.display = 'none';
+}
+
+// Add FAQ
+function addFaq(data = {}) {
+    const currentFaqs = document.querySelectorAll('#faqFormset .formset-item:not(.marked-for-deletion)').length;
+    if (currentFaqs >= 6) {
+        showAlert('Maximum 6 FAQs allowed', 'error');
+        return;
+    }
+    
+    faqCounter++;
+    const html = `
+        <div class="formset-item" id="faq-${faqCounter}">
+            <div class="formset-header">
+                <div class="formset-title">
+                    <span class="formset-number">${faqCounter}</span>
+                    FAQ ${faqCounter}
+                </div>
+                <button type="button" class="btn-remove-formset" onclick="removeFaq(${faqCounter})">
+                    <i class="mdi mdi-delete"></i> Remove
+                </button>
+            </div>
+            <input type="hidden" name="faqs-${faqCounter}-id" value="${data.id || ''}">
+            <input type="hidden" name="faqs-${faqCounter}-DELETE" value="">
+            <div class="form-group">
+                <label class="form-label">Question<span class="required">*</span></label>
+                <input type="text" class="form-control" name="faqs-${faqCounter}-question" value="${escapeHtml(data.question || '')}" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Answer<span class="required">*</span></label>
+                <textarea class="form-control" name="faqs-${faqCounter}-answer" rows="4" required>${escapeHtml(data.answer || '')}</textarea>
+            </div>
+        </div>
+    `;
+    document.getElementById('faqFormset').insertAdjacentHTML('beforeend', html);
+    
+    const addBtn = document.getElementById('addFaqBtn');
+    if (currentFaqs + 1 >= 6) {
+        addBtn.style.display = 'none';
+    }
+}
+
+// Remove FAQ
+function removeFaq(id) {
+    const item = document.getElementById(`faq-${id}`);
+    const deleteInput = item.querySelector('input[name$="-DELETE"]');
+    deleteInput.value = 'on';
+    item.classList.add('marked-for-deletion');
+    item.style.display = 'none';
+    
+    const currentFaqs = document.querySelectorAll('#faqFormset .formset-item:not(.marked-for-deletion)').length;
+    const addBtn = document.getElementById('addFaqBtn');
+    if (currentFaqs < 6) {
+        addBtn.style.display = 'inline-flex';
+    }
+}
+
+// Load Steps (Always 4)
+function loadSteps(steps) {
+    const container = document.getElementById('stepFormset');
+    container.innerHTML = '';
+    
+    // Always create exactly 4 steps (numbered 1-4)
+    for (let i = 1; i <= 4; i++) {
+        const step = steps[i - 1] || {};
+        const html = `
+            <div class="formset-item">
+                <div class="formset-header">
+                    <div class="formset-title">
+                        <span class="formset-number">${i}</span>
+                        Step ${i}
+                    </div>
+                </div>
+                <input type="hidden" name="steps-${i}-id" value="${step.id || ''}">
+                <div class="form-group">
+                    <label class="form-label">Step Title<span class="required">*</span></label>
+                    <input type="text" class="form-control" name="steps-${i}-title" value="${escapeHtml(step.title || '')}" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Tagline<span class="required">*</span></label>
+                    <input type="text" class="form-control" name="steps-${i}-tagline" value="${escapeHtml(step.tagline || '')}" required>
+                </div>
+            </div>
+        `;
+        container.insertAdjacentHTML('beforeend', html);
+    }
+}
+
+// Open Update Modal
+function openUpdateModal(serviceId) {
+    currentServiceId = serviceId;
+    
+    // Reset counters
+    offerCounter = 0;
+    faqCounter = 0;
+    document.getElementById('offerFormset').innerHTML = '';
+    document.getElementById('faqFormset').innerHTML = '';
+    document.getElementById('formErrors').style.display = 'none';
+    
+    // Load data
+    fetch(`/api/service/${serviceId}/`)
+        .then(res => {
+            if (!res.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return res.json();
+        })
+        .then(data => {
+            // Set basic fields first
+            document.getElementById('updateName').value = data.name || '';
+            
+            // Set description value in textarea
+            const descriptionField = document.getElementById('updateDescription');
+            descriptionField.value = data.description || '';
+            
+            // Set meta fields
+            document.getElementById('updateMetaTitle').value = data.meta_title || '';
+            document.getElementById('updateMetaDescription').value = data.meta_description || '';
+            
+            // Update character counters
+            updateCharCount('updateMetaTitle', 'metaTitleCount', 70);
+            updateCharCount('updateMetaDescription', 'metaDescCount', 160);
+            
+            // Handle image
+            const imageWrapper = document.getElementById('currentImageWrapper');
+            const imageEl = document.getElementById('currentImage');
+            if (data.image) {
+                imageEl.src = data.image;
+                imageWrapper.style.display = 'block';
+            } else {
+                imageWrapper.style.display = 'none';
+            }
+            
+            // Load offers
+            if (data.offers && Array.isArray(data.offers)) {
+                data.offers.forEach(offer => addOffer(offer));
+            }
+            
+            // Load steps (always 4)
+            if (data.steps && Array.isArray(data.steps)) {
+                loadSteps(data.steps);
+            }
+            
+            // Load FAQs
+            if (data.faqs && Array.isArray(data.faqs)) {
+                data.faqs.forEach(faq => addFaq(faq));
+            }
+            
+            // Update FAQ button visibility
+            const addBtn = document.getElementById('addFaqBtn');
+            if (data.faqs && data.faqs.length >= 6) {
+                addBtn.style.display = 'none';
+            } else {
+                addBtn.style.display = 'inline-flex';
+            }
+            
+            // Initialize tabs
+            initTabs();
+            
+            // Show modal first
+            document.getElementById('updateModal').classList.add('show');
+            document.body.style.overflow = 'hidden';
+            
+            // Initialize CKEditor AFTER modal is shown and content is loaded
+            setTimeout(() => {
+                initCKEditor();
+            }, 100);
+        })
+        .catch(err => {
+            console.error('Error loading service data:', err);
+            showAlert('Error loading service data', 'error');
+        });
+}
+
+// Close Update Modal
+function closeUpdateModal() {
+    destroyCKEditor();
+    document.getElementById('updateModal').classList.remove('show');
+    document.body.style.overflow = 'auto';
+    document.getElementById('imageInput').value = '';
+}
+
+// Submit Form
+document.getElementById('updateForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    // Validate CKEditor content
+    if (descriptionEditor) {
+        const descriptionContent = descriptionEditor.getData().trim();
+        if (!descriptionContent) {
+            showAlert('Please fill in the description field', 'error');
+            // Focus on the editor
+            descriptionEditor.editing.view.focus();
+            return false;
+        }
+        // Update the hidden textarea with CKEditor content
+        document.getElementById('updateDescription').value = descriptionContent;
+    } else {
+        // Fallback validation for textarea
+        const descriptionContent = document.getElementById('updateDescription').value.trim();
+        if (!descriptionContent) {
+            showAlert('Please fill in the description field', 'error');
+            document.getElementById('updateDescription').focus();
+            return false;
+        }
+    }
+    
+    const formData = new FormData(this);
+    formData.set('offers-TOTAL_FORMS', offerCounter);
+    formData.set('steps-TOTAL_FORMS', '4');
+    formData.set('faqs-TOTAL_FORMS', faqCounter);
+    
+    // Show loading state
+    const submitBtn = this.querySelector('.btn-submit');
+    const originalText = submitBtn.innerHTML;
+    submitBtn.innerHTML = '<i class="mdi mdi-loading mdi-spin"></i> Updating...';
+    submitBtn.disabled = true;
+    
+    fetch(`/edit/${currentServiceId}/`, {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest'
+        }
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
+           
+            closeUpdateModal();
+            // Reload after a short delay to show the success message
+            setTimeout(() => {
+                window.location.reload();
+            }, 1500);
+        } else {
+            document.getElementById('formErrors').textContent = data.message || 'An error occurred';
+            document.getElementById('formErrors').style.display = 'block';
+            // Reset button
+            submitBtn.innerHTML = originalText;
+            submitBtn.disabled = false;
+        }
+    })
+    .catch(err => {
+        console.error('Error updating service:', err);
+        showAlert('Error updating service', 'error');
+        // Reset button
+        submitBtn.innerHTML = originalText;
+        submitBtn.disabled = false;
+    });
+});
+
+// Delete Modal functions
+function openDeleteModal(id, name) {
+    document.getElementById('deleteForm').action = `/delete/${id}/`;
+    document.getElementById('deleteServiceName').textContent = name;
+    document.getElementById('deleteModal').classList.add('show');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeDeleteModal() {
+    document.getElementById('deleteModal').classList.remove('show');
+    document.body.style.overflow = 'auto';
+}
+
+// Close modals on outside click
+window.addEventListener('click', (e) => {
+    if (e.target.classList.contains('modal')) {
+        if (e.target.id === 'updateModal') {
+            closeUpdateModal();
+        } else {
+            e.target.classList.remove('show');
+            document.body.style.overflow = 'auto';
+        }
+    }
+});
+
+// Add event listeners for real-time character counting
+document.addEventListener('DOMContentLoaded', function() {
+    const metaTitle = document.getElementById('updateMetaTitle');
+    const metaDesc = document.getElementById('updateMetaDescription');
+    
+    if (metaTitle) {
+        metaTitle.addEventListener('input', () => updateCharCount('updateMetaTitle', 'metaTitleCount', 70));
+        // Initialize counter on page load
+        updateCharCount('updateMetaTitle', 'metaTitleCount', 70);
+    }
+    if (metaDesc) {
+        metaDesc.addEventListener('input', () => updateCharCount('updateMetaDescription', 'metaDescCount', 160));
+        // Initialize counter on page load
+        updateCharCount('updateMetaDescription', 'metaDescCount', 160);
+    }
+});
 </script>
+
+
 
 {% endblock %}

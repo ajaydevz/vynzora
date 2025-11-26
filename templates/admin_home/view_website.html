@@ -1297,6 +1297,10 @@
           {% endfor %}
         </tbody>
       </table>
+      <div class="no-results" id="noResults" style="display: none;">
+    <i class="mdi mdi-magnify"></i>
+    <p>No websites found matching your search.</p>
+</div>
       {% else %}
       <div class="empty-state">
         <i class="mdi mdi-web"></i>
@@ -1480,7 +1484,9 @@
         <div class="form-group">
           <label class="form-label">Description</label>
           <textarea class="form-control" name="description" id="updateDescription" rows="4"></textarea>
+           <div class="character-count" id="updateDescriptionCount">0/5000 characters</div>
         </div>
+
 
         <div class="form-group">
           <label class="form-label">Additional Title</label>
@@ -1664,6 +1670,11 @@
   color: #27ae60;
 }
 </style>
+
+
+<script>
+ 
+</script>
 
 <script>
 let currentWebsiteId = null;
@@ -1995,32 +2006,8 @@ window.addEventListener('click', (e) => {
   }
 });
 
-// Search functionality (keep as is)
-const searchInput = document.getElementById('searchInput');
-const clearSearch = document.getElementById('clearSearch');
 
-if (searchInput) {
-  searchInput.addEventListener('input', function() {
-    const query = this.value.toLowerCase().trim();
-    clearSearch.classList.toggle('show', query.length > 0);
-    
-    const rows = document.querySelectorAll('#websitesTableBody tr');
-    rows.forEach(row => {
-      const text = row.textContent.toLowerCase();
-      row.style.display = text.includes(query) ? '' : 'none';
-    });
-  });
-}
 
-if (clearSearch) {
-  clearSearch.addEventListener('click', function() {
-    searchInput.value = '';
-    this.classList.remove('show');
-    document.querySelectorAll('#websitesTableBody tr').forEach(row => {
-      row.style.display = '';
-    });
-  });
-}
 </script>
 
 
@@ -2592,6 +2579,131 @@ if (clearSearch) {
 }
 </script> {% endcomment %}
 
+
+<!-- Add this no-results div in your HTML (inside the table-wrapper, after the table) -->
+
+
+<script>
+// Search functionality for websites page - Exact same structure as reference
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('searchInput');
+    const clearSearch = document.getElementById('clearSearch');
+    const websitesTableBody = document.getElementById('websitesTableBody');
+    const noResults = document.getElementById('noResults');
+    const websitesCount = document.querySelector('.websites-count');
+
+    // Highlight text function
+    function highlightText(text, searchTerm) {
+        if (!searchTerm) return text;
+        const regex = new RegExp(`(${searchTerm})`, 'gi');
+        return text.replace(regex, `<span class="highlight">$1</span>`);
+    }
+
+    // Remove highlighting
+    function removeHighlighting() {
+        const highlightedElements = document.querySelectorAll('.highlight');
+        highlightedElements.forEach(el => {
+            const parent = el.parentNode;
+            parent.replaceChild(document.createTextNode(el.textContent), el);
+            parent.normalize();
+        });
+    }
+
+    // Search functionality
+    if (searchInput) {
+        searchInput.addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase().trim();
+            
+            if (searchTerm) {
+                clearSearch.classList.add('show');
+            } else {
+                clearSearch.classList.remove('show');
+                removeHighlighting();
+            }
+
+            const rows = websitesTableBody.getElementsByTagName('tr');
+            let visibleCount = 0;
+
+            Array.from(rows).forEach(row => {
+                const name = row.querySelector('.website-details h4')?.textContent.toLowerCase() || '';
+                const metaTitle = row.querySelector('.website-details p')?.textContent.toLowerCase() || '';
+                const category = row.querySelector('td:nth-child(2)')?.textContent.toLowerCase() || '';
+                const slug = row.querySelector('.slug-cell')?.textContent.toLowerCase() || '';
+                
+                if (name.includes(searchTerm) || metaTitle.includes(searchTerm) || 
+                    category.includes(searchTerm) || slug.includes(searchTerm)) {
+                    row.style.display = '';
+                    visibleCount++;
+                    
+                    // Highlight matching text in name
+                    const nameElement = row.querySelector('.website-details h4');
+                    if (nameElement && name.includes(searchTerm)) {
+                        const originalName = row.querySelector('.website-details h4').textContent;
+                        nameElement.innerHTML = highlightText(originalName, searchTerm);
+                    }
+                    
+                    // Highlight matching text in meta title
+                    const metaElement = row.querySelector('.website-details p');
+                    if (metaElement && metaTitle.includes(searchTerm)) {
+                        const originalMeta = row.querySelector('.website-details p').textContent;
+                        metaElement.innerHTML = highlightText(originalMeta, searchTerm);
+                    }
+                    
+                    // Highlight matching text in category
+                    const categoryElement = row.querySelector('td:nth-child(2)');
+                    if (categoryElement && category.includes(searchTerm)) {
+                        const originalCategory = row.querySelector('td:nth-child(2)').textContent;
+                        categoryElement.innerHTML = highlightText(originalCategory, searchTerm);
+                    }
+                    
+                    // Highlight matching text in slug
+                    const slugElement = row.querySelector('.slug-cell');
+                    if (slugElement && slug.includes(searchTerm)) {
+                        const originalSlug = row.querySelector('.slug-cell').textContent;
+                        slugElement.innerHTML = highlightText(originalSlug, searchTerm);
+                    }
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+
+            // Show/hide no results message - EXACTLY like reference
+            if (visibleCount === 0 && searchTerm) {
+                noResults.style.display = 'block';
+                websitesTableBody.style.display = 'none';
+            } else {
+                noResults.style.display = 'none';
+                websitesTableBody.style.display = '';
+            }
+
+            // Update count
+            if (websitesCount) {
+                websitesCount.textContent = `${visibleCount} Website${visibleCount !== 1 ? 's' : ''}`;
+            }
+        });
+
+        // Clear search functionality
+        if (clearSearch) {
+            clearSearch.addEventListener('click', function() {
+                searchInput.value = '';
+                searchInput.dispatchEvent(new Event('input'));
+                searchInput.focus();
+            });
+        }
+
+        // Focus search input on page load
+        searchInput.focus();
+        
+        // Add Enter key support to clear search
+        searchInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                searchInput.value = '';
+                searchInput.dispatchEvent(new Event('input'));
+            }
+        });
+    }
+});
+</script>
 
 
 <!-- Delete Modal -->

@@ -459,7 +459,7 @@
     <div class="blog-card-body">
       <form class="forms-sample" method="POST" enctype="multipart/form-data" id="blogForm" action="{% url 'add_blog_details' %}">
         {% csrf_token %}
-        {{ form.media }}
+      
         
         <div class="form-group">
           <label class="form-label">
@@ -553,31 +553,31 @@
         </div>
 
         {% comment %} <div class="form-group">
-          <label class="form-label">
-            Blog Description<span class="required">*</span>
-          </label>
-          <textarea 
-            class="form-control" 
-            name="description" 
-            id="blogDescription" 
-            rows="5" 
-            placeholder="Write your blog content here..."
-            required
-          >{{ form.description.value|default_if_none:'' }}</textarea>
-          {% if form.description.errors %}
-            <div class="error-message">
-              <i class="mdi mdi-alert-circle"></i>
-              {{ form.description.errors.0 }}
-            </div>
-          {% endif %}
-        </div> {% endcomment %}
-        <div class="form-group">
   <label class="form-label">
     Blog Description<span class="required">*</span>
   </label>
   
   {{ form.description }} <!-- CKEditor renders here -->
 
+  {% if form.description.errors %}
+    <div class="error-message">
+      <i class="mdi mdi-alert-circle"></i>
+      {{ form.description.errors.0 }}
+    </div>
+  {% endif %}
+</div> {% endcomment %}
+
+<div class="form-group">
+  <label class="form-label">
+    Blog Description<span class="required">*</span>
+  </label>
+  <textarea 
+    class="form-control" 
+    name="description" 
+    id="blogDescription" 
+    rows="5" 
+    placeholder="Write your blog content here..."
+  >{{ form.description.value|default_if_none:'' }}</textarea>
   {% if form.description.errors %}
     <div class="error-message">
       <i class="mdi mdi-alert-circle"></i>
@@ -637,12 +637,64 @@
   </div>
 </div>
 
-<style>
-  .ck-editor__editable {
-  min-height: 250px !important;
-  border-radius: 10px;
-}
-</style>
+
+<!-- Add this script at the bottom of your page, before closing </script> tag -->
+<script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    let descriptionEditor;
+
+    // Initialize CKEditor
+    ClassicEditor
+        .create(document.querySelector('#blogDescription'), {
+            toolbar: [
+                'heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList',
+                '|', 'insertTable', 'blockQuote', 'undo', 'redo', 'imageUpload'
+            ]
+        })
+        .then(editor => {
+            descriptionEditor = editor;
+
+            // Base64 image upload adapter
+            editor.plugins.get('FileRepository').createUploadAdapter = loader => {
+                return {
+                    upload: () => loader.file.then(file => new Promise((resolve, reject) => {
+                        const reader = new FileReader();
+                        reader.onload = () => resolve({ default: reader.result });
+                        reader.onerror = error => reject(error);
+                        reader.readAsDataURL(file);
+                    })),
+                    abort: () => {}
+                };
+            };
+
+            console.log('CKEditor initialized successfully');
+        })
+        .catch(error => {
+            console.error('CKEditor initialization error:', error);
+        });
+
+    // Update your form validation to include CKEditor content check
+    const blogForm = document.getElementById('blogForm');
+    
+    blogForm.addEventListener('submit', function(e) {
+        // Get CKEditor content
+        const editorContent = descriptionEditor ? descriptionEditor.getData().trim() : '';
+        const plainText = editorContent.replace(/<[^>]*>/g, '').trim();
+
+        if (!plainText) {
+            e.preventDefault();
+            alert('Please enter blog description content.');
+            document.getElementById('blogDescription').style.borderColor = '#e74c3c';
+            return false;
+        }
+
+        // Continue with rest of your validation...
+    });
+});
+</script>
+
 
 <script>
   document.addEventListener('DOMContentLoaded', function() {
