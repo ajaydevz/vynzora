@@ -3865,7 +3865,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     <h4 class="tp-blog-ai-title tp-ff-jakarta fs-24 fs-md-22 lh-140-per ls-m-4 tp-text-grey-5">
                         <a href="{% url 'blog_details' blog.slug %}" class="underline-white">{{ blog.name }}</a>
                     </h4>
-                    <p class="tp-text-grey-5 mt-2" style="min-height: 60px;">{{ blog.description|safe|truncatewords:15 }}</p>
+                    {% comment %} <p class="tp-text-grey-5 mt-2" style="min-height: 60px;">{{ blog.description|safe|truncatewords:15 }}</p> {% endcomment %}
                 </div>
 
                 <div class="tp-blog-ai-btn d-flex justify-content-between mt-auto pt-3">
