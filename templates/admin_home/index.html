@@ -664,7 +664,7 @@
             </div>
             <div class="activity-content flex-grow-1">
               <h4>{{ activity.title }}</h4>
-              <p>{{ activity.description }}</p>
+              <p>{{ activity.description|safe }}</p>
             </div>
             <div class="activity-time text-muted">{{ activity.time_ago }}</div>
           </li>

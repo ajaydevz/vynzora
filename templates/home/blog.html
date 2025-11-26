@@ -198,55 +198,99 @@
 
 
       <!-- PAGINATION -->
-      {% if blogs.paginator.count > 6 %}
-      <div class="d-flex justify-content-center align-items-center mt-4">
+    {% if blogs.paginator.count > 9 %}
+<div class="pagination-wrapper d-flex justify-content-center align-items-center mt-4">
 
-         {% if blogs.has_previous %}
-         <a href="?page={{ blogs.previous_page_number }}" class="tp-blog-pagenation-nav mr-3">
-            <svg width="25" height="10" viewBox="0 0 25 10">
-               <path d="M6.32 9.91L0.28 5.63..." fill="currentColor"/>
-            </svg>
-            Previous
-         </a>
-         {% endif %}
+    {% if blogs.has_previous %}
+    <a href="?page={{ blogs.previous_page_number }}" class="pagination-btn prev-btn">
+        <svg width="22" height="10" viewBox="0 0 25 10">
+            <path d="M6.32 9.91L0.28 5.63..." fill="currentColor"/>
+        </svg>
+        Previous
+    </a>
+    {% endif %}
 
-         <div class="tp-blog-pagenation mx-3">
-            <ul class="d-flex list-unstyled">
-               {% for num in blogs.paginator.page_range %}
-               {% if blogs.number == num %}
-               <li>
-                  <a href="?page={{ num }}" style="background:#111; color:#fff; padding:8px 12px; border-radius:6px;">
-                     {{ num }}
-                  </a>
-               </li>
-               {% else %}
-               <li>
-                  <a href="?page={{ num }}" style="color:white; opacity:.7; padding:8px 12px; border-radius:6px;">
-                     {{ num }}
-                  </a>
-               </li>
-               {% endif %}
-               {% endfor %}
-            </ul>
-         </div>
+    <ul class="pagination-numbers list-unstyled d-flex mx-3">
+        {% for num in blogs.paginator.page_range %}
+        <li>
+            <a href="?page={{ num }}" class="pagination-number {% if blogs.number == num %}active{% endif %}">
+                {{ num }}
+            </a>
+        </li>
+        {% endfor %}
+    </ul>
 
-         {% if blogs.has_next %}
-         <a href="?page={{ blogs.next_page_number }}" class="tp-blog-pagenation-nav ml-3">
-            NEXT
-            <svg width="25" height="10" viewBox="0 0 25 10">
-               <path d="M18.67 9.91L24.72..." fill="currentColor"/>
-            </svg>
-         </a>
-         {% endif %}
+    {% if blogs.has_next %}
+    <a href="?page={{ blogs.next_page_number }}" class="pagination-btn next-btn">
+        Next
+        <svg width="22" height="10" viewBox="0 0 25 10">
+            <path d="M18.67 9.91L24.72..." fill="currentColor"/>
+        </svg>
+    </a>
+    {% endif %}
 
-      </div>
-      {% endif %}
+</div>
+{% endif %}
+
 
    </div>
 </div>
 <!-- tp-blog-area-end -->
 
+<style>
+   /* Wrapper */
+.pagination-wrapper a {
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    color: #000;
+}
 
+/* Prev & Next Buttons */
+.pagination-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: #fff;
+    padding: 10px 16px;
+    border-radius: 6px;
+    border: 1px solid #000;
+    transition: all .25s ease;
+}
+
+.pagination-btn:hover {
+    background: #000;
+    color: #fff;
+}
+
+/* Page Numbers */
+.pagination-numbers li {
+    margin: 0 6px;
+}
+
+.pagination-number {
+    display: block;
+    padding: 8px 14px;
+    border-radius: 6px;
+    background: #fff;
+    color: #000;
+    border: 1px solid #000;
+    transition: all .25s ease;
+}
+
+.pagination-number:hover {
+    background: #000;
+    color: #fff;
+}
+
+/* Current Active Page */
+.pagination-number.active {
+    background: #000;
+    color: #fff;
+    border: 1px solid #000;
+}
+
+</style>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
    const carousel = document.getElementById('blogCarousel');

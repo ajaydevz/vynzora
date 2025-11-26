@@ -54,7 +54,7 @@
 }
 
 .toast.success {
-    background: #10b981;
+    background: #07bc0c;
 }
 
 .toast.error {
@@ -177,6 +177,217 @@ document.addEventListener('DOMContentLoaded', function() {
                 </svg>
             </div>
         </div>
+        
+        <style>
+            /*----------------------------------------*/
+/*  2.3 scrollToTop
+/*----------------------------------------*/
+.scrollToTop {
+  display: none;
+  height: 55px;
+  width: 55px;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #001a3d; /* Dark navy blue */
+  border-radius: 50%;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 26, 61, 0.4);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  cursor: pointer;
+  z-index: 999;
+  transition: 0.5s ease all;
+}
+
+@media only screen and (min-width: 768px) and (max-width: 991px), 
+       only screen and (min-width: 576px) and (max-width: 767px), 
+       (max-width: 574.98px) {
+  .scrollToTop {
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+  }
+  .scrollToTop .water {
+    border-radius: 50%;
+  }
+}
+
+.scrollToTop.active-progress {
+  display: block !important;
+}
+
+.scrollToTop:hover {
+  transform: translateY(-5px) scale(1.05);
+  box-shadow: 0 6px 20px rgba(0, 26, 61, 0.6);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  background-color: #000d29; /* Even darker navy on hover */
+}
+
+.scrollToTop .arrowUp {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 3;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-size: 24px;
+  transition: transform 0.3s ease;
+}
+
+@media only screen and (min-width: 768px) and (max-width: 991px), 
+       only screen and (min-width: 576px) and (max-width: 767px), 
+       (max-width: 574.98px) {
+  .scrollToTop .arrowUp {
+    font-size: 18px;
+  }
+  .scrollToTop .arrowUp i {
+    font-size: 16px;
+  }
+}
+
+.scrollToTop:hover .arrowUp {
+  transform: translateY(-3px);
+}
+
+.scrollToTop .arrowUp i {
+  font-size: 19px;
+}
+
+.scrollToTop .water {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  transform: translateY(100%);
+  background-color: #001a66 !important; /* Dark navy blue for water */
+  transition: all 0.3s ease;
+  border: 1px solid #001a66 !important;
+  border-radius: 50%;
+transform-origin: bottom;
+}
+
+.scrollToTop .water svg use {
+  margin-bottom: -1px;
+  position: relative;
+  bottom: -1px;
+  fill: #001a66 !important;
+}
+
+.scrollToTop-2 .water,
+.scrollToTop-3 .water,
+.scrollToTop-4 .water {
+  background-color: #001a66 !important;
+  border: 1px solid #001a66 !important;
+}
+
+.scrollToTop-2 .water svg use,
+.scrollToTop-3 .water svg use,
+.scrollToTop-4 .water svg use {
+  fill: #001a66 !important;
+}
+
+.scrollToTop .water_wave {
+  width: 200%;
+  position: absolute;
+  bottom: 0; /* ⬅ FIX: waves sit inside the circle */
+}
+
+
+.scrollToTop .water_wave_back {
+  right: 0;
+  fill: #001a66;
+  animation: wave-back 1.4s infinite linear;
+}
+
+.scrollToTop .water_wave_front {
+  left: 0;
+  fill: #002080;
+  margin-bottom: -1px;
+  animation: wave-front 0.7s infinite linear;
+}
+
+@keyframes wave-front {
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes wave-back {
+  100% {
+    transform: translateX(50%);
+  }
+}
+
+.tp-btn-lg:hover, 
+.tp-btn-cst:hover, 
+.tp-btn-ai:hover, 
+.tp-btn-gradian:hover, 
+.btn:hover, 
+.btn--primary:hover, 
+.read-more-btn:hover, 
+.apply-btn:hover, 
+.submit-btn:hover {
+  background-color: #001a3d !important;
+  border-color: #001a3d !important;
+}
+        </style>
+
+        <script>
+            // Scroll to Top with Water Effect - Works on ALL devices including desktop
+(function() {
+    'use strict';
+    
+    const scrollToTopBtn = document.querySelector('.scrollToTop');
+    
+    if (!scrollToTopBtn) return;
+    
+    const water = scrollToTopBtn.querySelector('.water');
+    
+    // Calculate scroll percentage and update water level
+    function updateWaterLevel() {
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        const scrollPercent = (scrollTop / docHeight) * 100;
+        
+        // Show button after scrolling 100px
+        if (scrollTop > 100) {
+            scrollToTopBtn.classList.add('active-progress');
+        } else {
+            scrollToTopBtn.classList.remove('active-progress');
+        }
+        
+        // Update water level based on scroll
+        if (water) {
+            const waterLevel = 100 - scrollPercent;
+            water.style.transform = `translateY(${waterLevel}%)`;
+        }
+    }
+    
+    // Smooth scroll to top
+    function scrollToTop(e) {
+        e.preventDefault();
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    }
+    
+    // Event listeners
+    window.addEventListener('scroll', updateWaterLevel, { passive: true });
+    window.addEventListener('load', updateWaterLevel);
+    scrollToTopBtn.addEventListener('click', scrollToTop);
+    
+    // Initial check
+    updateWaterLevel();
+})();
+        </script>
+        
         <!-- backtotop area end -->
         <!-- tp-offcanvus-area-start -->
         <div class="tp-offcanvas-area">
@@ -2024,7 +2235,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     <!-- tp-banner-area-start -->
                     <div class="tp-banner-ai-thumb section-triger">
                         <div class="box h-100">
-                            <img data-speed=".8" class="img-cover myimg" src="{% static 'assets/img/service/ai/three.jpg' %}" alt="">
+                            <img data-speed=".8" class="img-cover myimg" src="{% static 'assets/img/banner/ai/vyn1.jpg' %}" alt="">
                             <div class="uncover">
                                 <div class="uncover_slice"></div>
                                 <div class="uncover_slice"></div>
@@ -2137,7 +2348,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                                         <img src="{% static 'assets/img/service/ai/four.jpg' %}" alt="destinations">
                                                     </div>
                                                     <div class="tp-service-ai-content-2">
-                                                        <a href="#" class="tp-ff-jakarta fw-700 fs-28 hover-text-white tp-text-grey-5 underline-black">Consulting</a>
+                                                        <h6 class="tp-ff-jakarta fw-700 fs-28 hover-text-white tp-text-grey-5">Design</h6>
                                                     </div>
                                                 </div>
                                             </div>
@@ -2151,7 +2362,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                                         <img src="{% static 'assets/img/service/ai/two.jpg' %}" alt="destinations">
                                                     </div>
                                                     <div class="tp-service-ai-content-2">
-                                                        <a href="#" class="tp-ff-jakarta fw-700 fs-28 hover-text-white tp-text-grey-5 underline-black">Data Analytics</a>
+                                                        <h6 class="tp-ff-jakarta fw-700 fs-28 hover-text-white tp-text-grey-5">Develop</h6>
                                                     </div>
                                                 </div>
                                             </div>
@@ -2165,7 +2376,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                                         <img src="{% static 'assets/img/service/ai/three.jpg' %}" alt="destinations">
                                                     </div>
                                                     <div class="tp-service-ai-content-2">
-                                                        <a href="#" class="tp-ff-jakarta fw-700 fs-28 hover-text-white tp-text-grey-5 underline-black">AI Chatbots</a>
+                                                        <h6 class="tp-ff-jakarta fw-700 fs-28 hover-text-white tp-text-grey-5 ">Deliver</h6>
                                                     </div>
                                                 </div>
                                             </div>
@@ -2179,7 +2390,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                                         <img src="{% static 'assets/img/service/ai/five.jpg' %}" alt="destinations">
                                                     </div>
                                                     <div class="tp-service-ai-content-2">
-                                                        <a href="#" class="tp-ff-jakarta fw-700 fs-28 hover-text-white tp-text-grey-5 underline-black">AI Integration</a>
+                                                        <h6 class="tp-ff-jakarta fw-700 fs-28 hover-text-white tp-text-grey-5">Growth</h6>
                                                     </div>
                                                 </div>
                                             </div>

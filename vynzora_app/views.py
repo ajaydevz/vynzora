@@ -1003,6 +1003,36 @@ from .models import (
     ProjectModel, Team, Technologies, Blog, Certificates, ClientReview,
     ContactModel, Website, Career_Model, Candidate
 )
+from django.db.models import Q
+
+@login_required(login_url='user_login')
+def newsletter_list(request):
+    newsletters = Newsletter.objects.all().order_by('-subscribed_at')
+    
+    # Handle search
+    search_query = request.GET.get('search', '')
+    if search_query:
+        newsletters = newsletters.filter(
+            Q(email__icontains=search_query)
+        )
+    
+    context = {
+        'newsletters': newsletters,
+        'search_query': search_query,
+    }
+    return render(request, 'admin_home/newsletter_list.html', context)
+
+@login_required(login_url='user_login')
+def delete_newsletter(request, newsletter_id):
+    if request.method == 'POST':
+        newsletter = get_object_or_404(Newsletter, id=newsletter_id)
+        email = newsletter.email
+        newsletter.delete()
+        messages.success(request, f'Newsletter subscription for {email} has been deleted successfully.')
+        return redirect('newsletter_list')
+    
+    # If not POST, redirect back to newsletter list
+    return redirect('newsletter_list')
 
 @login_required(login_url='user_login')
 def dashboard(request):

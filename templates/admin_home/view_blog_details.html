@@ -974,7 +974,7 @@
               <div class="blog-text">{{ blog.meta_description|truncatewords:10 }}</div>
             </td>
             <td>
-              <div class="blog-text">{{ blog.description|striptags|truncatewords:10 }}</div>
+              <div class="blog-text">{{ blog.description|safe|striptags|truncatewords:10 }}</div>
             </td>
             <td>
               {% if blog.image %}

@@ -7,6 +7,10 @@ urlpatterns = [
     
     path("subscribe/", views.subscribe_newsletter, name="subscribe_newsletter"),
     
+    path('newsletters/', views.newsletter_list, name='newsletter_list'),
+    path('newsletters/delete/<int:newsletter_id>/', views.delete_newsletter, name='delete_newsletter'),
+
+    
     path('partners/', views.partners, name='partners'),
 
     # User Side

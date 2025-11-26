@@ -3725,6 +3725,8 @@ input[type=color] {
 /*----------------------------------------*/
 /*  2.3 scrollToTop
 /*----------------------------------------*/
+
+
 .scrollToTop {
   display: none !important;
   height: 55px;
@@ -3732,7 +3734,7 @@ input[type=color] {
   position: fixed;
   bottom: 20px;
   right: 20px;
-  background-color: #cbc6c6;
+  background-color: #c6c7cb;
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 4px 12px rgba(11, 29, 58, 0.3);

@@ -1233,6 +1233,19 @@ document.addEventListener('DOMContentLoaded', function() {
         </div>
       </li>
 
+      <li class="nav-item">
+  <a class="nav-link" data-bs-toggle="collapse" href="#newsletter" aria-expanded="false">
+    <i class="menu-icon mdi mdi-newspaper"></i>
+    <span class="menu-title">Newsletter</span>
+    <i class="menu-arrow"></i>
+  </a>
+  <div class="collapse" id="newsletter">
+    <ul class="nav flex-column sub-menu">
+      <li class="nav-item"><a class="nav-link" href="{% url 'newsletter_list' %}">View Subscribers</a></li>
+    </ul>
+  </div>
+</li>
+
       <li class="nav-item nav-category">Account</li>
       <li class="nav-item">
         <a class="nav-link" href="#" id="logoutBtn">

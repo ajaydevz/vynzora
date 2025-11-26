@@ -1,0 +1,1040 @@
+{% extends "admin_home/base.html" %}
+{% load static %}
+
+{% block content %}
+
+<style>
+  /* === Delete Modal Fix === */
+#deleteModal .modal-content {
+  max-width: 500px;
+  
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+  animation: fadeInUp 0.3s ease;
+}
+
+/* Header Styling */
+#deleteModal .modal-header {
+  background: linear-gradient(135deg, #e74c3c, #c0392b);
+  color: #fff;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#deleteModal .modal-header h3 {
+  font-size: 18px;
+  margin: 0;
+  font-weight: 600;
+}
+
+#deleteModal .modal-close {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 22px;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+#deleteModal .modal-close:hover {
+  transform: scale(1.1);
+  color: #ffdddd;
+}
+
+/* Body */
+#deleteModal .modal-body {
+  text-align: center;
+}
+
+#deleteModal .modal-body h4 {
+  font-size: 16px;
+  color: #2c3e50;
+  margin-bottom: 10px;
+}
+
+#deleteModal .modal-body p {
+  font-size: 13px;
+  color: #666;
+  margin-bottom: 0;
+}
+
+/* Buttons */
+#deleteModal .modal-actions {
+  display: flex;
+  justify-content: space-evenly;
+
+  gap: 10px;
+}
+
+#deleteModal .btn-modal {
+
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: all 0.3s ease;
+}
+
+#deleteModal .btn-cancel {
+  background: #ecf0f1;
+  color: #2c3e50;
+}
+
+#deleteModal .btn-cancel:hover {
+  background: #dcdde1;
+}
+
+#deleteModal .btn-confirm-delete {
+  background: linear-gradient(135deg, #e74c3c, #c0392b);
+  color: #fff;
+}
+
+#deleteModal .btn-confirm-delete:hover {
+  background: linear-gradient(135deg, #ff6b6b, #d32f2f);
+  transform: translateY(-2px);
+}
+
+/* Animation */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+</style>
+
+<style>
+  .newsletters-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    animation: fadeIn 0.5s ease;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+
+  .header-left h2 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 8px;
+  }
+
+  .header-left p {
+    color: #6c757d;
+    font-size: 14px;
+    margin: 0;
+  }
+
+  .header-right {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+  }
+
+  .search-box {
+    position: relative;
+    width: 300px;
+  }
+
+  .search-box input {
+    width: 100%;
+    padding: 12px 45px 12px 45px;
+    border: 2px solid #e9ecef;
+    border-radius: 10px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    background: #f8f9fa;
+  }
+
+  .search-box input:focus {
+    outline: none;
+    border-color: #3498db;
+    background: #fff;
+    box-shadow: 0 0 0 4px rgba(52, 152, 219, 0.1);
+  }
+
+  .search-box i {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #6c757d;
+    font-size: 18px;
+  }
+
+  .clear-search {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #6c757d;
+    cursor: pointer;
+    font-size: 18px;
+    display: none;
+    transition: color 0.3s ease;
+  }
+
+  .clear-search:hover {
+    color: #e74c3c;
+  }
+
+  .clear-search.show {
+    display: block;
+  }
+
+  .newsletters-card {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+  }
+
+  .newsletters-card-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 25px 30px;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .newsletters-card-header h3 {
+    font-size: 20px;
+    font-weight: 700;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .newsletter-count {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .table-wrapper {
+    overflow-x: auto;
+    max-height: 600px;
+    overflow-y: auto;
+  }
+
+  .newsletters-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .newsletters-table thead {
+    background: #f8f9fa;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+
+  .newsletters-table thead th {
+    padding: 18px 20px;
+    text-align: left;
+    font-size: 13px;
+    font-weight: 700;
+    color: #2c3e50;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 2px solid #e9ecef;
+  }
+
+  .newsletters-table tbody tr {
+    border-bottom: 1px solid #f1f3f5;
+    transition: all 0.3s ease;
+  }
+
+  .newsletters-table tbody tr:hover {
+    background: #f8f9fa;
+    transform: scale(1.01);
+  }
+
+  .newsletters-table tbody td {
+    padding: 20px;
+    font-size: 14px;
+    color: #495057;
+    vertical-align: middle;
+  }
+
+  .newsletter-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .newsletter-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 18px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .newsletter-details h4 {
+    font-size: 15px;
+    font-weight: 600;
+    color: #2c3e50;
+    margin: 0 0 4px 0;
+  }
+
+  .newsletter-email {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #495057;
+    font-weight: 500;
+    max-width: 250px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .newsletter-email i {
+    color: #e74c3c;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+
+  .newsletter-date {
+    color: #6c757d;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .newsletter-date i {
+    color: #3498db;
+    font-size: 16px;
+  }
+
+  .btn-action {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    text-decoration: none;
+  }
+
+  .btn-view {
+    background: #3498db;
+    color: white;
+  }
+
+  .btn-view:hover {
+    background: #2980b9;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+    color: white;
+  }
+
+  .btn-delete {
+    background: #e74c3c;
+    color: white;
+  }
+
+  .btn-delete:hover {
+    background: #c0392b;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(231, 76, 60, 0.3);
+  }
+
+  .action-buttons {
+    display: flex;
+    gap: 10px;
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 80px 20px;
+  }
+
+  .empty-state i {
+    font-size: 64px;
+    color: #cbd5e0;
+    margin-bottom: 20px;
+  }
+
+  .empty-state h3 {
+    font-size: 20px;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 10px;
+  }
+
+  .empty-state p {
+    font-size: 14px;
+    color: #6c757d;
+  }
+
+  .no-results {
+    text-align: center;
+    padding: 60px 20px;
+  }
+
+  .no-results i {
+    font-size: 48px;
+    color: #cbd5e0;
+    margin-bottom: 15px;
+  }
+
+  .no-results p {
+    font-size: 14px;
+    color: #6c757d;
+  }
+
+  .highlight {
+    background: #fff3cd;
+    padding: 2px 4px;
+    border-radius: 3px;
+    font-weight: 600;
+  }
+
+  /* Modal Styles */
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    animation: fadeIn 0.3s ease;
+  }
+
+  .modal.show {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .modal-content {
+    background: #fff;
+    border-radius: 16px;
+    max-width: 600px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    animation: slideUp 0.3s ease;
+  }
+
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(50px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .modal-header {
+    padding: 25px 30px;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .modal-header.delete-header {
+    background: linear-gradient(135deg, #e74c3c, #c0392b);
+  }
+
+  .modal-header.view-header {
+    background: linear-gradient(135deg, #3498db, #2980b9);
+  }
+
+  .modal-header h3 {
+    font-size: 20px;
+    font-weight: 700;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .modal-close {
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+  }
+
+  .modal-close:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: rotate(90deg);
+  }
+
+  .modal-body {
+    padding: 30px;
+  }
+
+  .delete-warning {
+    text-align: center;
+
+  }
+
+  .delete-warning i {
+    font-size: 64px;
+    color: #e74c3c;
+ 
+  }
+
+  .delete-warning h4 {
+    font-size: 20px;
+    font-weight: 700;
+    color: #2c3e50;
+  
+  }
+
+  .delete-warning p {
+    font-size: 14px;
+    color: #6c757d;
+ 
+  }
+
+  .delete-newsletter-email {
+    font-weight: 700;
+    color: #e74c3c;
+  }
+
+  .newsletter-detail-row {
+    display: flex;
+    gap: 15px;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 10px;
+    margin-bottom: 15px;
+  }
+
+  .newsletter-detail-row i {
+    font-size: 20px;
+    color: #667eea;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .newsletter-detail-content h5 {
+    font-size: 12px;
+    font-weight: 600;
+    color: #6c757d;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin: 0 0 5px 0;
+  }
+
+  .newsletter-detail-content p {
+    font-size: 14px;
+    color: #2c3e50;
+    margin: 0;
+    word-wrap: break-word;
+  }
+
+  .modal-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 30px;
+  }
+
+  .btn-modal {
+    flex: 1;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .btn-cancel {
+    background: #e9ecef;
+    color: #495057;
+  }
+
+  .btn-cancel:hover {
+    background: #dee2e6;
+  }
+
+  .btn-confirm-delete {
+    background: linear-gradient(135deg, #e74c3c, #c0392b);
+    color: white;
+  }
+
+  .btn-confirm-delete:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(231, 76, 60, 0.3);
+  }
+
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .page-header {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .header-right {
+      flex-direction: column;
+    }
+
+    .search-box {
+      width: 100%;
+    }
+
+    .newsletters-table thead th,
+    .newsletters-table tbody td {
+      padding: 12px;
+      font-size: 12px;
+    }
+
+    .newsletter-info {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .action-buttons {
+      flex-direction: column;
+      width: 100%;
+    }
+
+    .btn-action {
+      width: 100%;
+      justify-content: center;
+    }
+
+    .modal-content {
+      width: 95%;
+      margin: 10px;
+    }
+
+    .modal-body {
+      padding: 20px;
+    }
+  }
+
+  /* Scrollbar Styling */
+  .table-wrapper::-webkit-scrollbar,
+  .modal-content::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  .table-wrapper::-webkit-scrollbar-track,
+  .modal-content::-webkit-scrollbar-track {
+    background: #f1f3f5;
+    border-radius: 10px;
+  }
+
+  .table-wrapper::-webkit-scrollbar-thumb,
+  .modal-content::-webkit-scrollbar-thumb {
+    background: #cbd5e0;
+    border-radius: 10px;
+  }
+
+  .table-wrapper::-webkit-scrollbar-thumb:hover,
+  .modal-content::-webkit-scrollbar-thumb:hover {
+    background: #a0aec0;
+  }
+</style>
+
+<div class="newsletters-container">
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="header-left">
+      <h2>Newsletter Subscriptions</h2>
+      <p>View and manage newsletter subscribers</p>
+    </div>
+    <div class="header-right">
+      <form method="GET" action="{% url 'newsletter_list' %}" class="search-form">
+        <div class="search-box">
+          <i class="mdi mdi-magnify"></i>
+          <input 
+            type="text" 
+            name="search" 
+            id="searchInput" 
+            placeholder="Search by email..." 
+            autocomplete="off"
+            value="{{ search_query }}"
+          >
+          {% if search_query %}
+          <button type="button" class="clear-search show" id="clearSearch">
+            <i class="mdi mdi-close"></i>
+          </button>
+          {% else %}
+          <button type="button" class="clear-search" id="clearSearch">
+            <i class="mdi mdi-close"></i>
+          </button>
+          {% endif %}
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Messages Display -->
+ 
+
+  <!-- Newsletters Card -->
+  <div class="newsletters-card">
+    <div class="newsletters-card-header">
+      <h3>
+        <i class="mdi mdi-email-newsletter"></i>
+        All Newsletter Subscriptions
+      </h3>
+      <span class="newsletter-count" id="newsletterCount">{{ newsletters|length }} Subscriber{{ newsletters|length|pluralize }}</span>
+    </div>
+
+    <div class="table-wrapper">
+      {% if newsletters %}
+      <table class="newsletters-table">
+        <thead>
+          <tr>
+            <th>Email</th>
+            <th>Subscribed Date</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="newsletterTableBody">
+          {% for newsletter in newsletters %}
+          <tr data-email="{{ newsletter.email }}">
+            <td>
+              <div class="newsletter-info">
+                <div class="newsletter-avatar">
+                  {{ newsletter.email|first|upper }}
+                </div>
+                <div class="newsletter-details">
+                  <h4 class="newsletter-email-display">{{ newsletter.email }}</h4>
+                </div>
+              </div>
+            </td>
+            <td>
+              <div class="newsletter-date">
+                <i class="mdi mdi-calendar"></i>
+                <span>{{ newsletter.subscribed_at|date:"M d, Y" }}</span>
+              </div>
+            </td>
+            <td>
+              <div class="action-buttons">
+                <button 
+                  type="button" 
+                  class="btn-action btn-view" 
+                  onclick='openViewModal("{{ newsletter.email|escapejs }}", "{{ newsletter.subscribed_at|date:"M d, Y h:i A"|escapejs }}")'
+                >
+                  <i class="mdi mdi-eye"></i>
+                  View
+                </button>
+                <button 
+                  type="button" 
+                  class="btn-action btn-delete" 
+                  onclick="openDeleteModal({{ newsletter.id }}, '{{ newsletter.email|escapejs }}')"
+                >
+                  <i class="mdi mdi-delete"></i>
+                  Delete
+                </button>
+              </div>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <div class="no-results" id="noResults" style="display: none;">
+        <i class="mdi mdi-magnify"></i>
+        <p>No newsletter subscriptions found matching your search.</p>
+      </div>
+      {% else %}
+      <div class="empty-state">
+        <i class="mdi mdi-email-outline"></i>
+        <h3>No Newsletter Subscriptions Yet</h3>
+        <p>Subscribers will appear here</p>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<!-- View Newsletter Modal -->
+<div id="viewModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header view-header">
+      <h3>
+        <i class="mdi mdi-eye"></i>
+        Subscriber Details
+      </h3>
+      <button type="button" class="modal-close" onclick="closeViewModal()">
+        <i class="mdi mdi-close"></i>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="newsletter-detail-row">
+        <i class="mdi mdi-email"></i>
+        <div class="newsletter-detail-content">
+          <h5>Email Address</h5>
+          <p id="viewEmail"></p>
+        </div>
+      </div>
+
+      <div class="newsletter-detail-row">
+        <i class="mdi mdi-calendar"></i>
+        <div class="newsletter-detail-content">
+          <h5>Subscribed Date</h5>
+          <p id="viewDate"></p>
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button type="button" class="btn-modal btn-cancel" onclick="closeViewModal()">
+          <i class="mdi mdi-close"></i>
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Modal -->
+<div id="deleteModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header delete-header">
+      <h3>
+        <i class="mdi mdi-alert"></i>
+        Delete Subscription
+      </h3>
+      <button type="button" class="modal-close" onclick="closeDeleteModal()">
+        <i class="mdi mdi-close"></i>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="delete-warning">
+        <i class="mdi mdi-alert-circle-outline"></i>
+        <h4>Are you sure?</h4>
+        <p>You are about to delete the newsletter subscription for:</p>
+        <p class="delete-newsletter-email" id="deleteNewsletterEmail"></p>
+        <p style="margin-top: 15px;">This action cannot be undone.</p>
+      </div>
+
+      <form method="POST" id="deleteForm" action="">
+        {% csrf_token %}
+        <div class="modal-actions">
+          <button type="button" class="btn-modal btn-cancel" onclick="closeDeleteModal()">
+            <i class="mdi mdi-close"></i>
+            Cancel
+          </button>
+          <button type="submit" class="btn-modal btn-confirm-delete">
+            <i class="mdi mdi-delete"></i>
+            Yes, Delete
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Search functionality
+  const searchInput = document.getElementById('searchInput');
+  const clearSearch = document.getElementById('clearSearch');
+  const newsletterTableBody = document.getElementById('newsletterTableBody');
+  const noResults = document.getElementById('noResults');
+  const newsletterCount = document.getElementById('newsletterCount');
+
+  // Modal elements
+  const viewModal = document.getElementById('viewModal');
+  const deleteModal = document.getElementById('deleteModal');
+
+  // Highlight text function
+  function highlightText(text, searchTerm) {
+    if (!searchTerm) return text;
+    
+    const regex = new RegExp(`(${searchTerm})`, 'gi');
+    return text.replace(regex, '<span class="highlight">$1</span>');
+  }
+
+  // Remove highlighting
+  function removeHighlighting() {
+    const highlightedElements = document.querySelectorAll('.highlight');
+    highlightedElements.forEach(el => {
+      const parent = el.parentNode;
+      parent.replaceChild(document.createTextNode(el.textContent), el);
+      parent.normalize();
+    });
+  }
+
+  // Search functionality
+  if (searchInput && newsletterTableBody) {
+    searchInput.addEventListener('input', function() {
+      const searchTerm = this.value.toLowerCase();
+      
+      if (searchTerm) {
+        clearSearch.classList.add('show');
+      } else {
+        clearSearch.classList.remove('show');
+        removeHighlighting();
+      }
+
+      const rows = newsletterTableBody.getElementsByTagName('tr');
+      let visibleCount = 0;
+
+      Array.from(rows).forEach(row => {
+        const email = row.getAttribute('data-email').toLowerCase();
+        
+        if (email.includes(searchTerm)) {
+          row.style.display = '';
+          visibleCount++;
+          
+          // Highlight matching text
+          const emailElement = row.querySelector('.newsletter-email-display');
+          
+          if (emailElement) {
+            emailElement.innerHTML = highlightText(row.getAttribute('data-email'), searchTerm);
+          }
+        } else {
+          row.style.display = 'none';
+        }
+      });
+
+      // Show/hide no results message
+      if (visibleCount === 0 && searchTerm) {
+        noResults.style.display = 'block';
+        newsletterTableBody.parentElement.style.display = 'none';
+      } else {
+        noResults.style.display = 'none';
+        newsletterTableBody.parentElement.style.display = 'table';
+      }
+
+      // Update count
+      newsletterCount.textContent = `${visibleCount} Subscriber${visibleCount !== 1 ? 's' : ''}`;
+    });
+
+    clearSearch.addEventListener('click', function() {
+      searchInput.value = '';
+      searchInput.dispatchEvent(new Event('input'));
+      searchInput.focus();
+    });
+  }
+
+  // View Modal functionality
+  function openViewModal(email, date) {
+    document.getElementById('viewEmail').textContent = email || 'Unknown';
+    document.getElementById('viewDate').textContent = date || 'Unknown';
+    
+    viewModal.classList.add('show');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeViewModal() {
+    viewModal.classList.remove('show');
+    document.body.style.overflow = 'auto';
+  }
+
+  // Delete Modal functionality
+  function openDeleteModal(id, email) {
+    // Set form action URL
+    document.getElementById('deleteForm').action = `{% url 'delete_newsletter' 0 %}`.replace('0', id);
+    
+    // Set email in confirmation message
+    document.getElementById('deleteNewsletterEmail').textContent = email;
+    
+    // Show modal
+    deleteModal.classList.add('show');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeDeleteModal() {
+    deleteModal.classList.remove('show');
+    document.body.style.overflow = 'auto';
+  }
+
+  // Close modals when clicking outside
+  window.addEventListener('click', function(event) {
+    if (event.target === viewModal) {
+      closeViewModal();
+    }
+    if (event.target === deleteModal) {
+      closeDeleteModal();
+    }
+  });
+
+  // Close modals with Escape key
+  document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') {
+      closeViewModal();
+      closeDeleteModal();
+    }
+  });
+
+  // Initialize page
+  document.addEventListener('DOMContentLoaded', function() {
+    // Focus search input on page load if it has value
+    if (searchInput && searchInput.value) {
+      searchInput.focus();
+      searchInput.dispatchEvent(new Event('input'));
+    } else if (searchInput) {
+      searchInput.focus();
+    }
+    
+    // Add loading animation to table rows
+    if (newsletterTableBody) {
+      const rows = newsletterTableBody.getElementsByTagName('tr');
+      Array.from(rows).forEach((row, index) => {
+        row.style.animationDelay = `${index * 0.1}s`;
+      });
+    }
+  });
+</script>
+{% endblock %}
