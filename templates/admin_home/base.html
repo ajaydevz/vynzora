@@ -1246,6 +1246,37 @@ document.addEventListener('DOMContentLoaded', function() {
   </div>
 </li>
 
+<li class="nav-item nav-category">Training Management</li>
+
+<li class="nav-item">
+  <a class="nav-link" data-bs-toggle="collapse" href="#trainServices" aria-expanded="false">
+    <i class="menu-icon mdi mdi-train"></i>
+    <span class="menu-title">Train Services</span>
+    <i class="menu-arrow"></i>
+  </a>
+  <div class="collapse" id="trainServices">
+    <ul class="nav flex-column sub-menu">
+      <li class="nav-item"><a class="nav-link" href="{% url 'add_train_service' %}">Add Service</a></li>
+      <li class="nav-item"><a class="nav-link" href="{% url 'train_service_list' %}">View Services</a></li>
+    </ul>
+  </div>
+</li>
+
+<li class="nav-item">
+  <a class="nav-link" data-bs-toggle="collapse" href="#trainFaq" aria-expanded="false">
+    <i class="menu-icon mdi mdi-comment-question-outline"></i>
+    <span class="menu-title">Train FAQs</span>
+    <i class="menu-arrow"></i>
+  </a>
+  <div class="collapse" id="trainFaq">
+    <ul class="nav flex-column sub-menu">
+      <li class="nav-item"><a class="nav-link" href="{% url 'add_train_faq' %}">Add FAQ</a></li>
+      <li class="nav-item"><a class="nav-link" href="{% url 'train_faq_list' %}">View FAQs</a></li>
+    </ul>
+  </div>
+</li>
+
+
       <li class="nav-item nav-category">Account</li>
       <li class="nav-item">
         <a class="nav-link" href="#" id="logoutBtn">

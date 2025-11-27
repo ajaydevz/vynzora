@@ -1,0 +1,672 @@
+{% extends 'admin_home/base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+  .service-list-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    animation: fadeIn 0.5s ease;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+
+  .header-left h2 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 8px;
+  }
+
+  .header-left p {
+    color: #6c757d;
+    font-size: 14px;
+    margin: 0;
+  }
+
+  .header-right .btn-add {
+    padding: 12px 28px;
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+    text-decoration: none;
+  }
+
+  .btn-add:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(52, 152, 219, 0.3);
+  }
+
+  .btn-add i {
+    font-size: 20px;
+  }
+
+  .list-card {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+  }
+
+  .list-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 25px 30px;
+    color: white;
+  }
+
+  .list-header h3 {
+    font-size: 20px;
+    font-weight: 700;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .list-header h3 i {
+    font-size: 24px;
+  }
+
+  .list-body {
+    padding: 0;
+  }
+
+  .table-responsive {
+    overflow-x: auto;
+  }
+
+  .service-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .service-table thead {
+    background: #f8f9fa;
+  }
+
+  .service-table th {
+    padding: 18px 24px;
+    text-align: left;
+    font-size: 13px;
+    font-weight: 700;
+    color: #2c3e50;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 2px solid #e9ecef;
+  }
+
+  .service-table td {
+    padding: 20px 24px;
+    font-size: 14px;
+    color: #495057;
+    border-bottom: 1px solid #f1f3f5;
+  }
+
+  .service-table tbody tr {
+    transition: all 0.3s ease;
+  }
+
+  .service-table tbody tr:hover {
+    background: #f8f9fa;
+  }
+
+  .service-name {
+    font-weight: 600;
+    color: #2c3e50;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .service-name i {
+    font-size: 20px;
+    color: #3498db;
+  }
+
+  .slug-badge {
+    display: inline-block;
+    padding: 6px 12px;
+    background: #e8f4f8;
+    color: #2980b9;
+    border-radius: 6px;
+    font-size: 12px;
+    font-family: 'Courier New', monospace;
+    font-weight: 600;
+  }
+
+  .action-buttons {
+    display: flex;
+    gap: 8px;
+  }
+
+  .btn-action {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.3s ease;
+  }
+
+  .btn-edit {
+    background: #e3f2fd;
+    color: #1976d2;
+  }
+
+  .btn-edit:hover {
+    background: #1976d2;
+    color: white;
+    transform: translateY(-2px);
+  }
+
+  .btn-delete {
+    background: #ffebee;
+    color: #c62828;
+  }
+
+  .btn-delete:hover {
+    background: #c62828;
+    color: white;
+    transform: translateY(-2px);
+  }
+
+  .btn-action i {
+    font-size: 16px;
+  }
+
+  .empty-state {
+    padding: 80px 30px;
+    text-align: center;
+  }
+
+  .empty-state i {
+    font-size: 64px;
+    color: #cbd5e0;
+    margin-bottom: 20px;
+  }
+
+  .empty-state h3 {
+    font-size: 20px;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 10px;
+  }
+
+  .empty-state p {
+    color: #6c757d;
+    font-size: 14px;
+    margin-bottom: 25px;
+  }
+
+  /* Modal Styles */
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    animation: fadeIn 0.3s ease;
+  }
+
+  .modal.show {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  .modal-content {
+    background: white;
+    border-radius: 16px;
+    max-width: 500px;
+    width: 90%;
+    overflow: hidden;
+    animation: slideUp 0.3s ease;
+  }
+
+  @keyframes slideUp {
+    from { transform: translateY(50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+
+  .modal-header {
+    padding: 25px 30px;
+    border-bottom: 2px solid #f1f3f5;
+  }
+
+  .modal-header h3 {
+    font-size: 20px;
+    font-weight: 700;
+    color: #2c3e50;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .modal-header h3 i {
+    font-size: 24px;
+  }
+
+  .modal-body {
+    padding: 30px;
+  }
+
+  .form-group {
+    margin-bottom: 20px;
+  }
+
+  .form-label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 8px;
+  }
+
+  .form-control {
+    width: 100%;
+    padding: 12px 16px;
+    font-size: 14px;
+    border: 2px solid #e9ecef;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    background: #f8f9fa;
+  }
+
+  .form-control:focus {
+    outline: none;
+    border-color: #3498db;
+    background: #fff;
+    box-shadow: 0 0 0 4px rgba(52, 152, 219, 0.1);
+  }
+
+  .slug-preview {
+    margin-top: 10px;
+    padding: 10px 16px;
+    background: #e8f4f8;
+    border-radius: 8px;
+    font-size: 13px;
+    color: #2980b9;
+    font-family: 'Courier New', monospace;
+  }
+
+  .slug-preview i {
+    margin-right: 8px;
+  }
+
+  .modal-footer {
+    padding: 20px 30px;
+    border-top: 2px solid #f1f3f5;
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+  }
+
+  .btn-modal {
+    padding: 10px 24px;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .btn-cancel {
+    background: #e9ecef;
+    color: #495057;
+  }
+
+  .btn-cancel:hover {
+    background: #dee2e6;
+  }
+
+  .btn-confirm {
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    color: white;
+  }
+
+  .btn-confirm:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+  }
+
+  .btn-danger {
+    background: linear-gradient(135deg, #e74c3c, #c0392b);
+    color: white;
+  }
+
+  .btn-danger:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(231, 76, 60, 0.3);
+  }
+
+  .delete-warning {
+    padding: 20px;
+    background: #fff3cd;
+    border-left: 4px solid #ffc107;
+    border-radius: 8px;
+    margin-bottom: 20px;
+  }
+
+  .delete-warning p {
+    margin: 0;
+    color: #856404;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .delete-warning i {
+    font-size: 20px;
+  }
+
+  .delete-info {
+    margin-top: 15px;
+  }
+
+  .delete-info p {
+    margin: 8px 0;
+    color: #495057;
+    font-size: 14px;
+  }
+
+  .delete-info strong {
+    color: #2c3e50;
+  }
+
+  @media (max-width: 768px) {
+    .page-header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .service-table th,
+    .service-table td {
+      padding: 12px 16px;
+    }
+
+    .action-buttons {
+      flex-direction: column;
+      width: 100%;
+    }
+
+    .btn-action {
+      width: 100%;
+      justify-content: center;
+    }
+
+    .modal-content {
+      width: 95%;
+    }
+  }
+</style>
+
+<div class="service-list-container">
+  <div class="page-header">
+    <div class="header-left">
+      <h2>Train Services</h2>
+      <p>Manage your train services and their configurations</p>
+    </div>
+    <div class="header-right">
+      <a href="{% url 'add_train_service' %}" class="btn-add">
+        <i class="mdi mdi-plus-circle"></i>
+        Add New Service
+      </a>
+    </div>
+  </div>
+
+  <div class="list-card">
+    <div class="list-header">
+      <h3>
+        <i class="mdi mdi-train"></i>
+        All Train Services
+      </h3>
+    </div>
+
+    <div class="list-body">
+      {% if train_services %}
+      <div class="table-responsive">
+        <table class="service-table">
+          <thead>
+            <tr>
+              <th style="width: 80px;">#</th>
+              <th>Service Name</th>
+              <th style="width: 250px;">Slug</th>
+              <th style="width: 200px;">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for service in train_services %}
+            <tr>
+              <td>{{ forloop.counter }}</td>
+              <td>
+                <div class="service-name">
+                  <i class="mdi mdi-train"></i>
+                  {{ service.name }}
+                </div>
+              </td>
+              <td>
+                <span class="slug-badge">{{ service.slug }}</span>
+              </td>
+              <td>
+                <div class="action-buttons">
+                  <button class="btn-action btn-edit" onclick='openEditModal({{ service.id }}, "{{ service.name|escapejs }}")'>
+                    <i class="mdi mdi-pencil"></i>
+                    Edit
+                  </button>
+                  <button class="btn-action btn-delete" onclick='openDeleteModal({{ service.id }}, "{{ service.name|escapejs }}")'>
+                    <i class="mdi mdi-delete"></i>
+                    Delete
+                  </button>
+                </div>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% else %}
+      <div class="empty-state">
+       
+        <h3>No Train Services Found</h3>
+        <p>Get started by adding your first train service</p>
+        {% comment %} <a href="{% url 'add_train_service' %}" class="btn-add">
+          <i class="mdi mdi-plus-circle"></i>
+          Add Train Service
+        </a> {% endcomment %}
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<!-- Edit Modal -->
+<div id="editModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>
+        <i class="mdi mdi-pencil"></i>
+        Edit Train Service
+      </h3>
+    </div>
+    <form method="POST" id="editForm">
+      {% csrf_token %}
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label">Service Name</label>
+          <input type="text" class="form-control" name="name" id="editServiceName" required placeholder="Enter service name">
+        </div>
+        <div class="slug-preview">
+          <i class="mdi mdi-link-variant"></i>
+          <strong>Slug Preview:</strong> <span id="editSlugValue"></span>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-modal btn-cancel" onclick="closeEditModal()">
+          <i class="mdi mdi-close"></i>
+          Cancel
+        </button>
+        <button type="submit" class="btn-modal btn-confirm">
+          <i class="mdi mdi-check"></i>
+          Update Service
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Delete Modal -->
+<div id="deleteModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>
+        <i class="mdi mdi-alert-circle"></i>
+        Confirm Deletion
+      </h3>
+    </div>
+    <form method="POST" id="deleteForm">
+      {% csrf_token %}
+      <div class="modal-body">
+        <div class="delete-warning">
+          <p>
+            <i class="mdi mdi-alert"></i>
+            Are you sure you want to delete this train service?
+          </p>
+        </div>
+        <div class="delete-info">
+          <p><strong>Service:</strong> <span id="deleteServiceName"></span></p>
+          <p style="color: #6c757d; font-size: 13px; margin-top: 15px;">
+            <i class="mdi mdi-information"></i>
+            This action cannot be undone. All FAQs associated with this service may also be affected.
+          </p>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-modal btn-cancel" onclick="closeDeleteModal()">
+          <i class="mdi mdi-close"></i>
+          Cancel
+        </button>
+        <button type="submit" class="btn-modal btn-danger">
+          <i class="mdi mdi-delete"></i>
+          Delete Service
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+<script>
+  let currentEditId = null;
+  let currentDeleteId = null;
+
+  function generateSlug(text) {
+    return text
+      .toLowerCase()
+      .trim()
+      .replace(/[^\w\s-]/g, '')
+      .replace(/[\s_-]+/g, '-')
+      .replace(/^-+|-+$/g, '');
+  }
+
+  // Store Django URL templates as strings
+  const updateUrlTemplate = "{% url 'update_train_service' 0 %}";
+  const deleteUrlTemplate = "{% url 'delete_train_service' 0 %}";
+
+  function openEditModal(id, name) {
+    currentEditId = id;
+    document.getElementById('editServiceName').value = name;
+    document.getElementById('editSlugValue').textContent = generateSlug(name);
+
+    // Replace 0 with actual id
+    document.getElementById('editForm').action = updateUrlTemplate.replace('0', id);
+
+    document.getElementById('editModal').classList.add('show');
+  }
+
+  function closeEditModal() {
+    document.getElementById('editModal').classList.remove('show');
+    currentEditId = null;
+  }
+
+  document.getElementById('editServiceName').addEventListener('input', function() {
+    const slug = generateSlug(this.value);
+    document.getElementById('editSlugValue').textContent = slug || '(empty)';
+  });
+
+  document.getElementById('editForm').addEventListener('submit', function(e) {
+    const name = document.getElementById('editServiceName').value.trim();
+    if (!name) {
+      e.preventDefault();
+      alert('Please enter a service name');
+      return false;
+    }
+    if (name.length < 3) {
+      e.preventDefault();
+      alert('Service name must be at least 3 characters long');
+      return false;
+    }
+    const submitBtn = this.querySelector('[type="submit"]');
+    submitBtn.innerHTML = '<i class="mdi mdi-loading mdi-spin"></i> Updating...';
+    submitBtn.disabled = true;
+  });
+
+  function openDeleteModal(id, name) {
+    currentDeleteId = id;
+    document.getElementById('deleteServiceName').textContent = name;
+    document.getElementById('deleteForm').action = deleteUrlTemplate.replace('0', id);
+    document.getElementById('deleteModal').classList.add('show');
+  }
+
+  function closeDeleteModal() {
+    document.getElementById('deleteModal').classList.remove('show');
+    currentDeleteId = null;
+  }
+
+  window.onclick = function(event) {
+    if (event.target.classList.contains('modal')) {
+      event.target.classList.remove('show');
+    }
+  }
+
+  document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') {
+      closeEditModal();
+      closeDeleteModal();
+    }
+  });
+</script>
+
+
+{% endblock %}

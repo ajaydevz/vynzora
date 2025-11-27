@@ -1,88 +1,316 @@
+
 {% extends "home/base.html" %}
 {% load static %}
 {% block content %}
 
 <!-- tp-portfolio-area-start -->
-<div class="tp-portfolio-masonary-spacing tp-portfolio-area pb-60">
+<div class="tp-portfolio-masonary-spacing tp-portfolio-area pb-140">
     <div class="container">
-        <div class="row align-items-end pb-60 pre-header">
+        <div class="row align-items-end pb-120 pre-header">
             <div class="col-lg-8">
-                <div class="tp-portfolio-title-wrap mb-50">
+                <div class="tp-portfolio-title-wrap mb-105">
                     <h2 class="tp-portfolio-sectitle tp-ff-heading text-uppercase d-flex align-items-center">
                         Faqs <span class="borders ml-40"></span>
                     </h2>
                 </div>
             </div>
-            <div class="col-lg-4">
-                <div class="tp-portfolio-simple text-center">
-                    <p class="fs-18 tp-text-grey-1 lh-28 mb-3" style="color:black;">
-                        We pride ourselves on delivering innovative, impactful, and results-driven Faqs that exceed expectations.
-                    </p>
-                    {% comment %} <div class="tp-portfolio-icons">
-                        <i class="fab fa-node-js" title="Node.js"></i>
-                        <i class="fab fa-python" title="Python/Django"></i>
-                        <i class="fab fa-github" title="GitHub"></i>
-                        <i class="fab fa-js-square" title="JavaScript"></i>
-                        <i class="fab fa-html5" title="HTML5"></i>
-                        <i class="fab fa-css3-alt" title="CSS3"></i>
-                    </div> {% endcomment %}
-                </div>
+           
+        </div>
+
+        
+
+
+
+        {% comment %} <div class="tp-faq-area p-relative z-index-1 pt-155 pb-100">
+               <div class="container">
+                  <div class="row">
+                     <div class="col-lg-9 offset-lg-3">
+                        <div class="tp-faq-ai-title-wrap mb-50">
+                           <span class="text-anim tp-ff-dm fw-500 fs-18 ls-m-4 tp-text-common-black-1 mb-10 d-inline-block">/ FAQ /</span>
+                           <h2 class="text-anim tp-section-ai-title fs-72 fs-xl-65 fs-lg-55  fs-sm-45 fs-xs-40 fw-600 ls-m-4 tp-ff-dm tp-text-common-black-1">Explore Answers to<br> Our Most Asked Questions</h2>
+                        </div>
+                     </div>
+                     <div class="col-12">
+                        <div class="tp-faq-wrap tp-faq-cst-tab-content tp-faq-cst-tab-content-2 tp-faq-ai-tab-content">
+                           <div class="accordion mb-60" id="general_faqaccordion">
+                              <div class="accordion-item tp_fade_anim" data-delay=".3">
+                                 <h2 class="accordion-header p-relative" id="order_one">
+                                    <button class="tp-faq-btn" type="button" data-bs-toggle="collapse" data-bs-target="#order__collapse_one" aria-expanded="true" aria-controls="order__collapse_one">
+                                       <span class="tp-faq-ai-count">01</span>
+                                          What industries do you serve?
+                                       <span class="accordion-btn"></span>
+                                    </button>
+                                 </h2>
+                                 <div id="order__collapse_one" class="accordion-collapse collapse show" aria-labelledby="order_one" data-bs-parent="#general_faqaccordion">
+                                    <div class="accordion-body tp-faq-details-para">
+                                       <p>Partnering with this AI agency was one of the best decisions we’ve made. From the very first call,<br>
+                                          their team demonstrated deep technical knowledge and a strong understanding.</p>
+                                    </div>
+                                 </div>
+                              </div>
+                              <div class="accordion-item tp_fade_anim" data-delay=".3">
+                                 <h2 class="accordion-header p-relative" id="order_two">
+                                    <button class="collapsed tp-faq-btn" type="button" data-bs-toggle="collapse" data-bs-target="#order__collapse_two" aria-expanded="false" aria-controls="order__collapse_two">
+                                       <span class="tp-faq-ai-count">02</span>
+                                       How do you protect client data and privacy?
+                                       <span class="accordion-btn"></span>
+                                    </button>
+                                 </h2>
+                                 <div id="order__collapse_two" class="accordion-collapse collapse" aria-labelledby="order_two" data-bs-parent="#general_faqaccordion">
+                                    <div class="accordion-body tp-faq-details-para">
+                                       <p>Partnering with this AI agency was one of the best decisions we’ve made. From the very first call,<br>
+                                          their team demonstrated deep technical knowledge and a strong understanding.</p>
+                                    </div>
+                                 </div>
+                              </div>
+                              <div class="accordion-item tp_fade_anim" data-delay=".3">
+                                 <h2 class="accordion-header p-relative" id="order_three">
+                                    <button class="collapsed tp-faq-btn" type="button" data-bs-toggle="collapse" data-bs-target="#order__collapse_three" aria-expanded="false" aria-controls="order__collapse_three">
+                                       <span class="tp-faq-ai-count">03</span>
+                                       Do you provide support after the project is done?
+                                       <span class="accordion-btn"></span>
+                                    </button>
+                                 </h2>
+                                 <div id="order__collapse_three" class="accordion-collapse collapse" aria-labelledby="order_three" data-bs-parent="#general_faqaccordion">
+                                    <div class="accordion-body tp-faq-details-para">
+                                        <p>Partnering with this AI agency was one of the best decisions we’ve made. From the very first call,<br>
+                                          their team demonstrated deep technical knowledge and a strong understanding.</p>
+                                    </div>
+                                 </div>
+                              </div>
+                              <div class="accordion-item tp_fade_anim" data-delay=".3">
+                                 <h2 class="accordion-header p-relative" id="order_four">
+                                    <button class="collapsed tp-faq-btn" type="button" data-bs-toggle="collapse" data-bs-target="#order__collapse_four" aria-expanded="false" aria-controls="order__collapse_four">
+                                       <span class="tp-faq-ai-count">04</span>
+                                       How long does an average AI project take?
+                                       <span class="accordion-btn"></span>
+                                    </button>
+                                 </h2>
+                                 <div id="order__collapse_four" class="accordion-collapse collapse" aria-labelledby="order_four" data-bs-parent="#general_faqaccordion">
+                                    <div class="accordion-body tp-faq-details-para">
+                                        <p>Partnering with this AI agency was one of the best decisions we’ve made. From the very first call,<br>
+                                          their team demonstrated deep technical knowledge and a strong understanding.</p>
+                                    </div>
+                                 </div>
+                              </div>
+                              <div class="accordion-item tp_fade_anim" data-delay=".3">
+                                 <h2 class="accordion-header p-relative" id="order_five">
+                                    <button class="collapsed tp-faq-btn" type="button" data-bs-toggle="collapse" data-bs-target="#order__collapse_five" aria-expanded="false" aria-controls="order__collapse_five">
+                                       <span class="tp-faq-ai-count">05</span>
+                                       Is my data safe and secure?
+                                       <span class="accordion-btn"></span>
+                                    </button>
+                                 </h2>
+                                 <div id="order__collapse_five" class="accordion-collapse collapse" aria-labelledby="order_five" data-bs-parent="#general_faqaccordion">
+                                    <div class="accordion-body tp-faq-details-para">
+                                        <p>Partnering with this AI agency was one of the best decisions we’ve made. From the very first call,<br>
+                                          their team demonstrated deep technical knowledge and a strong understanding.</p>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+
+        
+       
+<div class="container text-center mb-4">
+    <select id="serviceFilter" class="form-select w-50 m-auto">
+        <option value="all">All Services</option>
+        {% for service in services %}
+            <option value="{{ service.id }}">{{ service.name }}</option>
+        {% endfor %}
+    </select>
+</div>
+
+<div class="accordion mb-60" id="general_faqaccordion">
+    {% for faq in faqs %}
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="faq_{{ faq.id }}">
+            <button class="tp-faq-btn collapsed" type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#faq_collapse_{{ faq.id }}">
+                <span class="tp-faq-ai-count">
+                    {{ forloop.counter|stringformat:"02d" }}
+                </span>
+                {{ faq.question }}
+                <span class="accordion-btn"></span>
+            </button>
+        </h2>
+        <div id="faq_collapse_{{ faq.id }}" class="accordion-collapse collapse"
+            data-bs-parent="#general_faqaccordion">
+            <div class="accordion-body">
+                <p>{{ faq.answer }}</p>
             </div>
         </div>
     </div>
+    {% empty %}
+    <p>No FAQs available.</p>
+    {% endfor %}
 </div>
+ {% endcomment %}
 
-<!-- tp-faq-area-start -->
-<div class="tp-faq-area p-relative z-index-1 pt-100 pb-100">
+<div class="tp-faq-area p-relative z-index-1       pb-100">
     <div class="container">
         <div class="row">
-            {% comment %} <div class="col-lg-9 offset-lg-3">
+
+            <!-- Filter Dropdown -->
+            <div class="container text-center mb-4">
+                <select id="serviceFilter" class="form-select w-50 m-auto">
+                    <option value="all">All Services</option>
+                    {% for service in train_services %}
+                        <option value="{{ service.id }}">{{ service.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="col-lg-9 offset-lg-3">
                 <div class="tp-faq-ai-title-wrap mb-50">
                     <span class="text-anim tp-ff-dm fw-500 fs-18 ls-m-4 tp-text-common-black-1 mb-10 d-inline-block">/ FAQ /</span>
-                    <h2 class="text-anim tp-section-ai-title fs-72 fs-xl-65 fs-lg-55 fs-sm-45 fs-xs-40 fw-600 ls-m-4 tp-ff-dm tp-text-common-black-1">
+                    {% comment %} <h2 class="text-anim tp-section-ai-title fs-72 fs-xl-65 fs-lg-55 fs-sm-45 fs-xs-40 fw-600 ls-m-4 tp-ff-dm tp-text-common-black-1">
                         Explore Answers to<br> Our Most Asked Questions
-                    </h2>
+                    </h2> {% endcomment %}
                 </div>
-            </div> {% endcomment %}
+            </div>
+
             <div class="col-12">
                 <div class="tp-faq-wrap tp-faq-cst-tab-content tp-faq-cst-tab-content-2 tp-faq-ai-tab-content">
+
                     <div class="accordion mb-60" id="general_faqaccordion">
-                        {% if faqs %}
-                            {% for faq in faqs %}
-                            <div class="accordion-item tp_fade_anim" data-delay=".3">
-                                <h2 class="accordion-header p-relative" id="faq_{{ faq.id }}">
-                                    <button class="{% if forloop.first %}tp-faq-btn{% else %}collapsed tp-faq-btn{% endif %}" 
-                                            type="button" 
-                                            data-bs-toggle="collapse" 
-                                            data-bs-target="#faq_collapse_{{ faq.id }}" 
-                                            aria-expanded="{% if forloop.first %}true{% else %}false{% endif %}" 
-                                            aria-controls="faq_collapse_{{ faq.id }}">
-                                        <span class="tp-faq-ai-count">{{ forloop.counter|stringformat:"02d" }}</span>
-                                        {{ faq.question }}
-                                        <span class="accordion-btn"></span>
-                                    </button>
-                                </h2>
-                                <div id="faq_collapse_{{ faq.id }}" 
-                                     class="accordion-collapse collapse {% if forloop.first %}show{% endif %}" 
-                                     aria-labelledby="faq_{{ faq.id }}" 
-                                     data-bs-parent="#general_faqaccordion">
-                                    <div class="accordion-body tp-faq-details-para">
-                                        <p>{{ faq.answer|linebreaks }}</p>
-                                    </div>
+
+                        {% for faq in faqs %}
+                        <div class="accordion-item tp_fade_anim" data-delay=".3">
+                            <h2 class="accordion-header p-relative" id="faq_{{ faq.id }}">
+                                <button class="tp-faq-btn collapsed" type="button"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#faq_collapse_{{ faq.id }}"
+                                    aria-expanded="false">
+                                    <span class="tp-faq-ai-count">
+                                        {{ forloop.counter|stringformat:"02d" }}
+                                    </span>
+                                    {{ faq.question }}
+                                    <span class="accordion-btn"></span>
+                                </button>
+                            </h2>
+                            <div id="faq_collapse_{{ faq.id }}" class="accordion-collapse collapse"
+                                data-bs-parent="#general_faqaccordion">
+                                <div class="accordion-body tp-faq-details-para">
+                                    <p>{{ faq.answer }}</p>
                                 </div>
                             </div>
-                            {% endfor %}
-                        {% else %}
-                            <div class="alert alert-info">
-                                <p>No FAQs available at the moment. Please check back later.</p>
-                            </div>
-                        {% endif %}
+                        </div>
+                        {% empty %}
+                        <p>No FAQs available.</p>
+                        {% endfor %}
+
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
 </div>
-<!-- tp-faq-area-end -->
+
+
+    
+    </div>
+</div>
+
+
+
+{% comment %} 
+<script>
+document.getElementById('serviceFilter').addEventListener('change', function() {
+    let serviceId = this.value;
+
+    fetch(`/filter-faqs/?service_id=${serviceId}`)
+        .then(response => response.json())
+        .then(data => {
+            let accordion = document.getElementById('general_faqaccordion');
+            accordion.innerHTML = '';
+
+            if (data.faqs.length === 0) {
+                accordion.innerHTML = '<p>No FAQs found.</p>';
+                return;
+            }
+
+            data.faqs.forEach((faq, index) => {
+                const count = String(index + 1).padStart(2, '0');
+
+                accordion.innerHTML += `
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="faq_${faq.id}">
+                            <button class="tp-faq-btn collapsed" type="button"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#faq_collapse_${faq.id}">
+                                <span class="tp-faq-ai-count">${count}</span>
+                                ${faq.question}
+                                <span class="accordion-btn"></span>
+                            </button>
+                        </h2>
+                        <div id="faq_collapse_${faq.id}" class="accordion-collapse collapse"
+                            data-bs-parent="#general_faqaccordion">
+                            <div class="accordion-body">
+                                <p>${faq.answer}</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+        })
+        .catch(error => console.error("Error loading FAQs:", error));
+});
+</script>
+ {% endcomment %}
+
+<script>
+document.getElementById('serviceFilter').addEventListener('change', function() {
+    let serviceId = this.value;
+
+    fetch(`/filter-faqs/?service_id=${serviceId}`)
+        .then(response => response.json())
+        .then(data => {
+            let accordion = document.getElementById('general_faqaccordion');
+            accordion.innerHTML = '';
+
+            if (data.faqs.length === 0) {
+                accordion.innerHTML = '<p>No FAQs found.</p>';
+                return;
+            }
+
+            data.faqs.forEach((faq, index) => {
+                const count = String(index + 1).padStart(2, '0');
+
+                accordion.innerHTML += `
+                    <div class="accordion-item tp_fade_anim" data-delay=".3">
+                        <h2 class="accordion-header p-relative" id="faq_${faq.id}">
+                            <button class="tp-faq-btn collapsed" type="button"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#faq_collapse_${faq.id}">
+                                <span class="tp-faq-ai-count">${count}</span>
+                                ${faq.question}
+                                <span class="accordion-btn"></span>
+                            </button>
+                        </h2>
+                        <div id="faq_collapse_${faq.id}" class="accordion-collapse collapse"
+                            data-bs-parent="#general_faqaccordion">
+                            <div class="accordion-body tp-faq-details-para">
+                                <p>${faq.answer}</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+        })
+        .catch(error => console.error("Error loading FAQs:", error));
+});
+</script>
+
 
 {% endblock %}
+
+
+

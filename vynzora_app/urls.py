@@ -5,13 +5,22 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     
-    path('ask-us/', views.faq_page, name='faq_page'),
-    
-    path('faqs/', views.faq_list, name='faq_list'),
-    path('add-faq/', views.add_faq, name='add_faq'),
-    path('faq/update/<int:faq_id>/', views.update_faq, name='update_faq'),
-    path('faq/delete/<int:faq_id>/', views.delete_faq, name='delete_faq'),
+    path('faqs/', views.faq_page, name='faq_page'),
+    path("filter-faqs/", views.filter_faqs, name="filter_faqs"),
 
+    
+   # TrainService URLs
+    path('train-services/', views.train_service_list, name='train_service_list'),
+    path('train-services/add/', views.add_train_service, name='add_train_service'),
+    path('train-services/update/<int:service_id>/', views.update_train_service, name='update_train_service'),
+    path('train-services/delete/<int:service_id>/', views.delete_train_service, name='delete_train_service'),
+
+    path('train-faqs/', views.train_faq_list, name='train_faq_list'),
+    path('train-faqs/add/', views.add_train_faq, name='add_train_faq'),
+    path('train-faqs/update/<int:faq_id>/', views.update_train_faq, name='update_train_faq'),
+    path('train-faqs/delete/<int:faq_id>/', views.delete_train_faq, name='delete_train_faq'),
+    
+  
     
     path("subscribe/", views.subscribe_newsletter, name="subscribe_newsletter"),
     

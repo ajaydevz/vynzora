@@ -16,110 +16,220 @@ from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.views.decorators.http import require_http_methods
 import json
-from .models import Newsletter,FAQS
+from .models import Newsletter
+from .models import TrainService, TrainFAQ
+
+from django.db.models import Count
+from django.template.loader import render_to_string
+
+
 
 def faq_page(request):
-    """
-    View to display all FAQs
-    """
-    faqs = FAQS.objects.all()
-    
-     
-    
-    # Get services for footer
-    footer_services = Services.objects.order_by("?")[:4]
     services = Services.objects.all()
     
+    footer_services = Services.objects.order_by("?")[:4]
     
+    train_services = TrainService.objects.all()
+    faqs = TrainFAQ.objects.all()
     
-    # Get career job count for hiring badge
-    active_jobs = Career_Model.objects.filter(post_end_date__gte=timezone.now()).count()
-    
-    context = {
-        'faqs': faqs,
-        'footer_services': footer_services,
-        'services':services
+
+    return render(request, "home/faq.html", {
+        "train_services": train_services,
+        "faqs": faqs,
+        "services":services,
+        "footer_services":footer_services
+         
+    })
+
+
+def filter_faqs(request):
+    service_id = request.GET.get("service_id")
+
+    if service_id == "all":
+        faqs = TrainFAQ.objects.all()
+    else:
+        faqs = TrainFAQ.objects.filter(train_service_id=service_id)
+
+    data = {
+        "faqs": [
+            {
+                "id": faq.id,
+                "question": faq.question,
+                "answer": faq.answer,
+            }
+            for faq in faqs
+        ]
     }
-    
-    return render(request, 'home/faq.html', context)
+    return JsonResponse(data)
 
 @login_required
-def faq_list(request):
-    """Display all FAQs"""
-    faqs = FAQS.objects.all()
-    context = {
-        'faqs': faqs
-    }
-    return render(request, 'admin_home/faq_list.html', context)
+def train_faq_list(request):
+    faqs = TrainFAQ.objects.select_related('train_service').all()
+    return render(request, "admin_home/train_faq_list.html", {"train_faqs": faqs})
 
 @login_required
-def update_faq(request, faq_id):
-    """Update an existing FAQ"""
-    faq = get_object_or_404(FAQS, id=faq_id)
-    
-    if request.method == 'POST':
-        question = request.POST.get('question', '').strip()
-        answer = request.POST.get('answer', '').strip()
+def add_train_faq(request):
+    services = TrainService.objects.all()
+    if request.method == "POST":
+        service_id = request.POST.get("train_service")
+        question = request.POST.get("question", "").strip()
+        answer = request.POST.get("answer", "").strip()
         
-        # Validation
-        if not question or not answer:
-            messages.error(request, 'Please fill in all required fields.')
-            return redirect('faq_list')
+        if not service_id:
+            messages.error(request, "Please select a train service.")
+            return redirect("add_train_faq")
         
-        if len(question) < 10:
-            messages.error(request, 'Question must be at least 10 characters long.')
-            return redirect('faq_list')
+        if not question:
+            messages.error(request, "Question is required.")
+            return redirect("add_train_faq")
+            
+        if not answer:
+            messages.error(request, "Answer is required.")
+            return redirect("add_train_faq")
         
-        if len(answer) < 20:
-            messages.error(request, 'Answer must be at least 20 characters long.')
-            return redirect('faq_list')
-        
-        # Update FAQ
-        try:
-            faq.question = question
-            faq.answer = answer
-            faq.save()
-            messages.success(request, 'FAQ updated successfully!')
-        except Exception as e:
-            messages.error(request, f'Error updating FAQ: {str(e)}')
-        
-        return redirect('faq_list')
-    
-    return redirect('faq_list')
-
-# Delete FAQ
-@login_required
-def delete_faq(request, faq_id):
-    """Delete an FAQ"""
-    faq = get_object_or_404(FAQS, id=faq_id)
-    
-    if request.method == 'POST':
-        try:
-            faq.delete()
-            messages.success(request, 'FAQ deleted successfully!')
-        except Exception as e:
-            messages.error(request, f'Error deleting FAQ: {str(e)}')
-    
-    return redirect('faq_list')
-
-
-def add_faq(request):
-    if request.method == 'POST':
-        question = request.POST.get('question')
-        answer = request.POST.get('answer')
-
-        FAQS.objects.create(
+        service = get_object_or_404(TrainService, id=service_id)
+        TrainFAQ.objects.create(
+            train_service=service,
             question=question,
             answer=answer
         )
-        messages.success(request, "FAQ added successfully!")
-        return redirect('faq_list')
+        messages.success(request, "Train FAQ added successfully!")
+        return redirect("train_faq_list")
+    
+    return render(request, "admin_home/add_train_faq.html", {"train_services": services})
 
-    return render(request, 'admin_home/add_faq.html')
+@login_required
+def update_train_faq(request, faq_id):
+    faq = get_object_or_404(TrainFAQ, id=faq_id)
+    if request.method == "POST":
+        service_id = request.POST.get("train_service")
+        question = request.POST.get("question", "").strip()
+        answer = request.POST.get("answer", "").strip()
+        
+        if service_id:
+            faq.train_service = get_object_or_404(TrainService, id=service_id)
+        if question:
+            faq.question = question
+        if answer:
+            faq.answer = answer
+            
+        faq.save()
+        messages.success(request, "Train FAQ updated successfully!")
+        return redirect("train_faq_list")
+    return redirect("train_faq_list")
+
+@login_required
+def delete_train_faq(request, faq_id):
+    faq = get_object_or_404(TrainFAQ, id=faq_id)
+    faq.delete()
+    messages.success(request, "Train FAQ deleted successfully!")
+    return redirect("train_faq_list")
+
+# ---- TrainService CRUD ----
+
+@login_required
+def train_service_list(request):
+    services = TrainService.objects.all()
+    return render(request, "admin_home/train_service_list.html", {"train_services": services})
+
+@login_required
+def add_train_service(request):
+    if request.method == "POST":
+        name = request.POST.get("name", "").strip()
+        if not name:
+            messages.error(request, "Train Service name is required.")
+            return redirect("add_train_service")
+        TrainService.objects.create(name=name, slug=slugify(name))
+        messages.success(request, "Train Service added successfully!")
+        return redirect("train_service_list")
+    return render(request, "admin_home/add_train_service.html")
+
+@login_required
+def update_train_service(request, service_id):
+    service = get_object_or_404(TrainService, id=service_id)
+    if request.method == "POST":
+        name = request.POST.get("name", "").strip()
+        service.name = name
+        service.slug = slugify(name)
+        service.save()
+        messages.success(request, "Train Service updated successfully!")
+        return redirect("train_service_list")
+    return redirect("train_service_list")
+
+@login_required
+def delete_train_service(request, service_id):
+    service = get_object_or_404(TrainService, id=service_id)
+    service.delete()
+    messages.success(request, "Train Service deleted successfully!")
+    return redirect("train_service_list")
 
 
-def faq(request):
-    return render(request,'home/faq.html')
+
+
+
+# from django.contrib.auth.decorators import login_required
+# from django.shortcuts import render, redirect, get_object_or_404
+# from django.contrib import messages
+# from django.utils.text import slugify
+# from .models import TrainService, TrainFAQ
+
+# # Train Service Views
+# @login_required
+# def train_service_list(request):
+#     services = TrainService.objects.all()
+#     return render(request, "admin_home/train_service_list.html", {"train_services": services})
+
+# @login_required
+# def add_train_service(request):
+#     if request.method == "POST":
+#         name = request.POST.get("name", "").strip()
+#         if not name:
+#             messages.error(request, "Train Service name is required.")
+#             return redirect("add_train_service")
+        
+#         if len(name) < 3:
+#             messages.error(request, "Service name must be at least 3 characters long.")
+#             return redirect("add_train_service")
+            
+#         TrainService.objects.create(name=name, slug=slugify(name))
+#         messages.success(request, "Train Service added successfully!")
+#         return redirect("train_service_list")
+    
+#     return render(request, "admin_home/add_train_service.html")
+
+# @login_required
+# def update_train_service(request, service_id):
+#     service = get_object_or_404(TrainService, id=service_id)
+#     if request.method == "POST":
+#         name = request.POST.get("name", "").strip()
+        
+#         if not name:
+#             messages.error(request, "Service name is required.")
+#             return redirect("train_service_list")
+            
+#         if len(name) < 3:
+#             messages.error(request, "Service name must be at least 3 characters long.")
+#             return redirect("train_service_list")
+        
+#         service.name = name
+#         service.slug = slugify(name)
+#         service.save()
+#         messages.success(request, "Train Service updated successfully!")
+#         return redirect("train_service_list")
+    
+#     return redirect("train_service_list")
+
+# @login_required
+# def delete_train_service(request, service_id):
+#     service = get_object_or_404(TrainService, id=service_id)
+#     if request.method == "POST":
+#         service.delete()
+#         messages.success(request, "Train Service deleted successfully!")
+#     return redirect("train_service_list")
+
+
+
+
 
 def subscribe_newsletter(request):
     if request.method == "POST":

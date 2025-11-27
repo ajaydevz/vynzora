@@ -7,20 +7,36 @@ from django.utils import timezone
 from ckeditor_uploader.fields import RichTextUploadingField
 
 
-class FAQS(models.Model):
+class TrainService(models.Model):
+    """Service or category for training FAQs"""
+    name = models.CharField(max_length=200, unique=True)
+    slug = models.SlugField(max_length=200, unique=True)
+
+    class Meta:
+        verbose_name = "Train Service"
+        verbose_name_plural = "Train Services"
+        ordering = ['name']
+
+    def __str__(self):
+        return self.name
+
+
+class TrainFAQ(models.Model):
+    """FAQ linked to a specific Train Service"""
+    train_service = models.ForeignKey(TrainService, on_delete=models.CASCADE, related_name="faqs")
     question = models.CharField(max_length=255)
     answer = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         ordering = ['-created_at']
-        verbose_name = 'FAQ'
-        verbose_name_plural = 'FAQs'
+        verbose_name = 'Train FAQ'
+        verbose_name_plural = 'Train FAQs'
 
     def __str__(self):
         return self.question
     
-    
+
 
 class Category(models.Model):
     name = models.CharField(max_length=200, unique=True)

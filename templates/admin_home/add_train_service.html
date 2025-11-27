@@ -3,7 +3,7 @@
 
 {% block content %}
 <style>
-  .add-team-container {
+  .add-service-container {
     max-width: 900px;
     margin: 0 auto;
     animation: fadeIn 0.5s ease;
@@ -164,11 +164,23 @@
     padding-left: 48px;
   }
 
-  textarea.form-control {
-    resize: vertical;
-    min-height: 120px;
-    font-family: inherit;
-    line-height: 1.6;
+  .slug-preview {
+    margin-top: 8px;
+    padding: 10px 16px;
+    background: #e8f4f8;
+    border-radius: 8px;
+    font-size: 13px;
+    color: #2980b9;
+    font-family: 'Courier New', monospace;
+    display: none;
+  }
+
+  .slug-preview.show {
+    display: block;
+  }
+
+  .slug-preview i {
+    margin-right: 8px;
   }
 
   .form-actions {
@@ -230,7 +242,6 @@
     font-size: 14px;
   }
 
-  /* Responsive Design */
   @media (max-width: 768px) {
     .form-body {
       padding: 30px 20px;
@@ -238,18 +249,6 @@
 
     .form-header {
       padding: 25px 20px;
-    }
-
-    .form-header i {
-      font-size: 36px;
-    }
-
-    .form-header h3 {
-      font-size: 20px;
-    }
-
-    .page-header h2 {
-      font-size: 24px;
     }
 
     .form-actions {
@@ -261,116 +260,70 @@
       justify-content: center;
     }
   }
-
-  @media (max-width: 576px) {
-    .form-body {
-      padding: 25px 15px;
-    }
-
-    .form-header {
-      padding: 20px 15px;
-    }
-
-    .page-header h2 {
-      font-size: 20px;
-    }
-
-    .breadcrumb-nav {
-      font-size: 13px;
-    }
-  }
-
-  /* Success Animation */
-  @keyframes successPulse {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-  }
-
-  .form-card.success {
-    animation: successPulse 0.5s ease;
-  }
 </style>
 
-<div class="add-team-container">
-  <!-- Page Header -->
+<div class="add-service-container">
   <div class="page-header">
-    <h2>Add FAQ</h2>
-    <p>Add a new frequently asked question to your website</p>
-    {% comment %} <div class="breadcrumb-nav">
-      <a href="{% url 'dashboard' %}"><i class="mdi mdi-home"></i> Dashboard</a>
+    <h2>Add Train Service</h2>
+    <p>Create a new train service for your system</p>
+    <div class="breadcrumb-nav">
+      <a href="{% url 'train_service_list' %}"><i class="mdi mdi-train"></i> Train Services</a>
       <i class="mdi mdi-chevron-right"></i>
-      <a href="{% url 'faq_list' %}">FAQs</a>
-      <i class="mdi mdi-chevron-right"></i>
-      <span>Add FAQ</span>
-    </div> {% endcomment %}
+      <span>Add Service</span>
+    </div>
   </div>
 
-  <!-- Form Card -->
   <div class="form-card">
     <div class="form-header">
-      <i class="mdi mdi-help-circle"></i>
-      <h3>New FAQ Entry</h3>
-      <p>Fill in the details below to add a new FAQ</p>
+      <i class="mdi mdi-train"></i>
+      <h3>New Train Service</h3>
+      <p>Fill in the details below to add a new train service</p>
     </div>
 
     <div class="form-body">
-      <form method="POST" id="addFaqForm">
+      <form method="POST" id="addServiceForm">
         {% csrf_token %}
         
-        <!-- FAQ Information Section -->
         <div class="form-section">
           <div class="section-title">
-            <i class="mdi mdi-comment-question"></i>
-            <span>FAQ Information</span>
+            <i class="mdi mdi-information"></i>
+            <span>Service Information</span>
           </div>
 
           <div class="form-group">
             <label class="form-label">
-              Question<span class="required">*</span>
+              Service Name<span class="required">*</span>
             </label>
             <div class="input-icon-wrapper">
-            
+              <i class="mdi mdi-train"></i>
               <input 
                 type="text" 
                 class="form-control" 
-                name="question" 
-                placeholder="Enter the frequently asked question" 
+                name="name" 
+                id="serviceName"
+                placeholder="Enter training service name (e.g.,webdevelopement, digital marketing etc.. )" 
                 required
               >
             </div>
             <div class="help-text">
               <i class="mdi mdi-information"></i>
-              <span>Enter a clear and concise question</span>
+              <span>Enter a unique name for the train service</span>
             </div>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label">
-              Answer<span class="required">*</span>
-            </label>
-            <textarea 
-              class="form-control" 
-              name="answer" 
-              placeholder="Enter the detailed answer to the question" 
-              required
-              rows="6"
-            ></textarea>
-            <div class="help-text">
-              <i class="mdi mdi-information"></i>
-              <span>Provide a comprehensive and helpful answer</span>
+            <div class="slug-preview" id="slugPreview">
+              <i class="mdi mdi-link-variant"></i>
+              <strong>Slug:</strong> <span id="slugValue"></span>
             </div>
           </div>
         </div>
 
-        <!-- Form Actions -->
         <div class="form-actions">
-          <button type="button" class="btn btn-secondary" onclick="window.history.back()">
+          <button type="button" class="btn btn-secondary" onclick="window.location.href='{% url 'train_service_list' %}'">
             <i class="mdi mdi-arrow-left"></i>
             Cancel
           </button>
           <button type="submit" class="btn btn-primary">
             <i class="mdi mdi-check"></i>
-            Add FAQ
+            Add Service
           </button>
         </div>
       </form>
@@ -379,74 +332,51 @@
 </div>
 
 <script>
+  // Slug generation
+  const serviceNameInput = document.getElementById('serviceName');
+  const slugPreview = document.getElementById('slugPreview');
+  const slugValue = document.getElementById('slugValue');
+
+  function generateSlug(text) {
+    return text
+      .toLowerCase()
+      .trim()
+      .replace(/[^\w\s-]/g, '')
+      .replace(/[\s_-]+/g, '-')
+      .replace(/^-+|-+$/g, '');
+  }
+
+  serviceNameInput.addEventListener('input', function() {
+    const name = this.value;
+    if (name.length > 0) {
+      const slug = generateSlug(name);
+      slugValue.textContent = slug;
+      slugPreview.classList.add('show');
+    } else {
+      slugPreview.classList.remove('show');
+    }
+  });
+
   // Form validation
-  const form = document.getElementById('addFaqForm');
+  const form = document.getElementById('addServiceForm');
   form.addEventListener('submit', function(e) {
-    const question = form.querySelector('[name="question"]').value.trim();
-    const answer = form.querySelector('[name="answer"]').value.trim();
+    const name = serviceNameInput.value.trim();
 
-    if (!question || !answer) {
+    if (!name) {
       e.preventDefault();
-      alert('Please fill in all required fields');
+      alert('Please enter a service name');
       return false;
     }
 
-    if (question.length < 10) {
+    if (name.length < 3) {
       e.preventDefault();
-      alert('Question must be at least 10 characters long');
+      alert('Service name must be at least 3 characters long');
       return false;
     }
 
-    if (answer.length < 20) {
-      e.preventDefault();
-      alert('Answer must be at least 20 characters long');
-      return false;
-    }
-
-    // Add loading state to submit button
     const submitBtn = form.querySelector('[type="submit"]');
     submitBtn.innerHTML = '<i class="mdi mdi-loading mdi-spin"></i> Adding...';
     submitBtn.disabled = true;
   });
-
-  // Input animations
-  const inputs = document.querySelectorAll('.form-control');
-  inputs.forEach(input => {
-    input.addEventListener('focus', function() {
-      this.parentElement.style.transform = 'scale(1.01)';
-    });
-    
-    input.addEventListener('blur', function() {
-      this.parentElement.style.transform = 'scale(1)';
-    });
-  });
-
-  // Character counter for textarea
-  const answerTextarea = document.querySelector('[name="answer"]');
-  const questionInput = document.querySelector('[name="question"]');
-
-  function addCharCounter(element, maxLength = null) {
-    const wrapper = element.parentElement;
-    const counter = document.createElement('div');
-    counter.className = 'help-text';
-    counter.style.marginTop = '8px';
-    counter.style.justifyContent = 'flex-end';
-    
-    function updateCounter() {
-      const length = element.value.length;
-      if (maxLength) {
-        counter.innerHTML = `<span>${length}/${maxLength} characters</span>`;
-      } else {
-        counter.innerHTML = `<span>${length} characters</span>`;
-      }
-    }
-    
-    element.addEventListener('input', updateCounter);
-    wrapper.appendChild(counter);
-    updateCounter();
-  }
-
-  addCharCounter(questionInput, 255);
-  addCharCounter(answerTextarea);
 </script>
 {% endblock %}

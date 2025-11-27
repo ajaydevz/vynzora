@@ -1,0 +1,418 @@
+{% extends 'admin_home/base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+  .add-faq-container {
+    max-width: 900px;
+    margin: 0 auto;
+    animation: fadeIn 0.5s ease;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .page-header {
+    margin-bottom: 30px;
+  }
+
+  .page-header h2 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 8px;
+  }
+
+  .page-header p {
+    color: #6c757d;
+    font-size: 14px;
+    margin: 0;
+  }
+
+  .breadcrumb-nav {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: #6c757d;
+    margin-top: 10px;
+  }
+
+  .breadcrumb-nav a {
+    color: #3498db;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+
+  .breadcrumb-nav a:hover {
+    color: #2980b9;
+  }
+
+  .breadcrumb-nav i {
+    font-size: 12px;
+  }
+
+  .form-card {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+  }
+
+  .form-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 30px;
+    color: white;
+    text-align: center;
+  }
+
+  .form-header i {
+    font-size: 48px;
+    margin-bottom: 15px;
+    opacity: 0.9;
+  }
+
+  .form-header h3 {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .form-header p {
+    font-size: 14px;
+    opacity: 0.9;
+    margin: 0;
+  }
+
+  .form-body {
+    padding: 40px;
+  }
+
+  .form-section {
+    margin-bottom: 30px;
+  }
+
+  .section-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .section-title i {
+    color: #3498db;
+    font-size: 20px;
+  }
+
+  .form-group {
+    margin-bottom: 24px;
+  }
+
+  .form-label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 8px;
+  }
+
+  .form-label .required {
+    color: #e74c3c;
+    margin-left: 4px;
+  }
+
+  .form-control {
+    width: 100%;
+    padding: 12px 16px;
+    font-size: 14px;
+    border: 2px solid #e9ecef;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    background: #f8f9fa;
+  }
+
+  .form-control:focus {
+    outline: none;
+    border-color: #3498db;
+    background: #fff;
+    box-shadow: 0 0 0 4px rgba(52, 152, 219, 0.1);
+  }
+
+  .form-control:hover {
+    border-color: #cbd5e0;
+  }
+
+  select.form-control {
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236c757d' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+    padding-right: 40px;
+  }
+
+  textarea.form-control {
+    resize: vertical;
+    min-height: 120px;
+    font-family: inherit;
+  }
+
+  .input-icon-wrapper {
+    position: relative;
+  }
+
+  .input-icon-wrapper i {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #6c757d;
+    font-size: 18px;
+  }
+
+  .input-icon-wrapper .form-control {
+    padding-left: 48px;
+  }
+
+  .form-actions {
+    display: flex;
+    gap: 15px;
+    margin-top: 35px;
+    padding-top: 30px;
+    border-top: 2px solid #f1f3f5;
+  }
+
+  .btn {
+    padding: 14px 32px;
+    font-size: 15px;
+    font-weight: 600;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    color: white;
+    flex: 1;
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(52, 152, 219, 0.3);
+  }
+
+  .btn-secondary {
+    background: #e9ecef;
+    color: #495057;
+    flex: 1;
+  }
+
+  .btn-secondary:hover {
+    background: #dee2e6;
+  }
+
+  .btn i {
+    font-size: 18px;
+  }
+
+  .help-text {
+    font-size: 12px;
+    color: #6c757d;
+    margin-top: 6px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .help-text i {
+    font-size: 14px;
+  }
+
+  .char-counter {
+    font-size: 12px;
+    color: #6c757d;
+    text-align: right;
+    margin-top: 6px;
+  }
+
+  @media (max-width: 768px) {
+    .form-body {
+      padding: 30px 20px;
+    }
+
+    .form-header {
+      padding: 25px 20px;
+    }
+
+    .form-actions {
+      flex-direction: column;
+    }
+
+    .btn {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+</style>
+
+<div class="add-faq-container">
+  <div class="page-header">
+    <h2>Add Train FAQ</h2>
+    <p>Create a new FAQ for a train service</p>
+    <div class="breadcrumb-nav">
+      <a href="{% url 'train_faq_list' %}"><i class="mdi mdi-help-circle"></i> Train FAQs</a>
+      <i class="mdi mdi-chevron-right"></i>
+      <span>Add FAQ</span>
+    </div>
+  </div>
+
+  <div class="form-card">
+    <div class="form-header">
+      <i class="mdi mdi-help-circle"></i>
+      <h3>New Train FAQ</h3>
+      <p>Fill in the details below to add a new FAQ</p>
+    </div>
+
+    <div class="form-body">
+      <form method="POST" id="addFaqForm">
+        {% csrf_token %}
+        
+        <div class="form-section">
+          <div class="section-title">
+            <i class="mdi mdi-information"></i>
+            <span>FAQ Information</span>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">
+              Train Service<span class="required">*</span>
+            </label>
+            <div class="input-icon-wrapper">
+              <i class="mdi mdi-train"></i>
+              <select class="form-control" name="train_service" id="trainService" required>
+                <option value="">Select a train service</option>
+                {% for service in train_services %}
+                <option value="{{ service.id }}">{{ service.name }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="help-text">
+              <i class="mdi mdi-information"></i>
+              <span>Select the train service this FAQ belongs to</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">
+              Question<span class="required">*</span>
+            </label>
+            <div class="input-icon-wrapper">
+              <i class="mdi mdi-comment-question"></i>
+              <input 
+                type="text" 
+                class="form-control" 
+                name="question" 
+                id="faqQuestion"
+                placeholder="Enter the FAQ question" 
+                required
+                maxlength="255"
+              >
+            </div>
+            <div class="char-counter">
+              <span id="questionCount">0</span>/255 characters
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">
+              Answer<span class="required">*</span>
+            </label>
+            <textarea 
+              class="form-control" 
+              name="answer" 
+              id="faqAnswer"
+              placeholder="Enter the FAQ answer"
+              required
+            ></textarea>
+            <div class="help-text">
+              <i class="mdi mdi-information"></i>
+              <span>Provide a clear and detailed answer</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn btn-secondary" onclick="window.location.href='{% url 'train_faq_list' %}'">
+            <i class="mdi mdi-arrow-left"></i>
+            Cancel
+          </button>
+          <button type="submit" class="btn btn-primary">
+            <i class="mdi mdi-check"></i>
+            Add FAQ
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  const questionInput = document.getElementById('faqQuestion');
+  const questionCount = document.getElementById('questionCount');
+
+  questionInput.addEventListener('input', function() {
+    questionCount.textContent = this.value.length;
+  });
+
+  const form = document.getElementById('addFaqForm');
+  form.addEventListener('submit', function(e) {
+    const service = document.getElementById('trainService').value;
+    const question = questionInput.value.trim();
+    const answer = document.getElementById('faqAnswer').value.trim();
+
+    if (!service) {
+      e.preventDefault();
+      alert('Please select a train service');
+      return false;
+    }
+
+    if (!question) {
+      e.preventDefault();
+      alert('Please enter a question');
+      return false;
+    }
+
+    if (question.length < 10) {
+      e.preventDefault();
+      alert('Question must be at least 10 characters long');
+      return false;
+    }
+
+    if (!answer) {
+      e.preventDefault();
+      alert('Please enter an answer');
+      return false;
+    }
+
+    if (answer.length < 20) {
+      e.preventDefault();
+      alert('Answer must be at least 20 characters long');
+      return false;
+    }
+
+    const submitBtn = form.querySelector('[type="submit"]');
+    submitBtn.innerHTML = '<i class="mdi mdi-loading mdi-spin"></i> Adding...';
+    submitBtn.disabled = true;
+  });
+</script>
+{% endblock %}
