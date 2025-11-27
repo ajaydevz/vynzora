@@ -7,7 +7,20 @@ from django.utils import timezone
 from ckeditor_uploader.fields import RichTextUploadingField
 
 
+class FAQS(models.Model):
+    question = models.CharField(max_length=255)
+    answer = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        ordering = ['-created_at']
+        verbose_name = 'FAQ'
+        verbose_name_plural = 'FAQs'
+
+    def __str__(self):
+        return self.question
+    
+    
 
 class Category(models.Model):
     name = models.CharField(max_length=200, unique=True)

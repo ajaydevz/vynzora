@@ -1130,7 +1130,7 @@
                 {% endif %}
                 <div class="service-details">
                   <h4 class="service-name" id="service-name-{{ service.id }}">{{ service.name }}</h4>
-                  <p class="service-description" id="service-description-{{ service.id }}">{{ service.description|truncatewords:20 }}</p>
+                  <p class="service-description" id="service-description-{{ service.id }}">{{ service.description|safe|truncatewords:20 }}</p>
                 </div>
               </div>
             </td>

@@ -5,6 +5,14 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     
+    path('ask-us/', views.faq_page, name='faq_page'),
+    
+    path('faqs/', views.faq_list, name='faq_list'),
+    path('add-faq/', views.add_faq, name='add_faq'),
+    path('faq/update/<int:faq_id>/', views.update_faq, name='update_faq'),
+    path('faq/delete/<int:faq_id>/', views.delete_faq, name='delete_faq'),
+
+    
     path("subscribe/", views.subscribe_newsletter, name="subscribe_newsletter"),
     
     path('newsletters/', views.newsletter_list, name='newsletter_list'),

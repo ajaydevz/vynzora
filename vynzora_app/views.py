@@ -16,7 +16,110 @@ from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.views.decorators.http import require_http_methods
 import json
-from .models import Newsletter
+from .models import Newsletter,FAQS
+
+def faq_page(request):
+    """
+    View to display all FAQs
+    """
+    faqs = FAQS.objects.all()
+    
+     
+    
+    # Get services for footer
+    footer_services = Services.objects.order_by("?")[:4]
+    services = Services.objects.all()
+    
+    
+    
+    # Get career job count for hiring badge
+    active_jobs = Career_Model.objects.filter(post_end_date__gte=timezone.now()).count()
+    
+    context = {
+        'faqs': faqs,
+        'footer_services': footer_services,
+        'services':services
+    }
+    
+    return render(request, 'home/faq.html', context)
+
+@login_required
+def faq_list(request):
+    """Display all FAQs"""
+    faqs = FAQS.objects.all()
+    context = {
+        'faqs': faqs
+    }
+    return render(request, 'admin_home/faq_list.html', context)
+
+@login_required
+def update_faq(request, faq_id):
+    """Update an existing FAQ"""
+    faq = get_object_or_404(FAQS, id=faq_id)
+    
+    if request.method == 'POST':
+        question = request.POST.get('question', '').strip()
+        answer = request.POST.get('answer', '').strip()
+        
+        # Validation
+        if not question or not answer:
+            messages.error(request, 'Please fill in all required fields.')
+            return redirect('faq_list')
+        
+        if len(question) < 10:
+            messages.error(request, 'Question must be at least 10 characters long.')
+            return redirect('faq_list')
+        
+        if len(answer) < 20:
+            messages.error(request, 'Answer must be at least 20 characters long.')
+            return redirect('faq_list')
+        
+        # Update FAQ
+        try:
+            faq.question = question
+            faq.answer = answer
+            faq.save()
+            messages.success(request, 'FAQ updated successfully!')
+        except Exception as e:
+            messages.error(request, f'Error updating FAQ: {str(e)}')
+        
+        return redirect('faq_list')
+    
+    return redirect('faq_list')
+
+# Delete FAQ
+@login_required
+def delete_faq(request, faq_id):
+    """Delete an FAQ"""
+    faq = get_object_or_404(FAQS, id=faq_id)
+    
+    if request.method == 'POST':
+        try:
+            faq.delete()
+            messages.success(request, 'FAQ deleted successfully!')
+        except Exception as e:
+            messages.error(request, f'Error deleting FAQ: {str(e)}')
+    
+    return redirect('faq_list')
+
+
+def add_faq(request):
+    if request.method == 'POST':
+        question = request.POST.get('question')
+        answer = request.POST.get('answer')
+
+        FAQS.objects.create(
+            question=question,
+            answer=answer
+        )
+        messages.success(request, "FAQ added successfully!")
+        return redirect('faq_list')
+
+    return render(request, 'admin_home/add_faq.html')
+
+
+def faq(request):
+    return render(request,'home/faq.html')
 
 def subscribe_newsletter(request):
     if request.method == "POST":
@@ -828,6 +931,11 @@ def portfolio(request):
     services = Services.objects.all()   
     footer_services = Services.objects.order_by("?")[:4]
     active_jobs = Career_Model.objects.filter(post_end_date__gte=timezone.now()).count()
+    
+    paginator = Paginator(projects, 4)  # Show 4 projects per page
+    page_number = request.GET.get('page')
+    projects = paginator.get_page(page_number)
+
     # return render(request,'portfolio.html', {'projects':projects})
     return render(request,'home/works.html',{'projects':projects,'services':services,'footer_services':footer_services,'career_job_count': active_jobs})
 

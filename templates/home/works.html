@@ -194,9 +194,106 @@
             </div>
             {% endfor %}
         </div>
+
+        {% if projects.paginator.count > 4 %}
+<div class="pagination-wrapper d-flex justify-content-center align-items-center mt-4">
+
+    {% if projects.has_previous %}
+    <a href="?page={{ projects.previous_page_number }}" class="pagination-btn prev-btn">
+        <svg width="22" height="10" viewBox="0 0 25 10">
+            <path d="M6.32 9.91L0.28 5.63..." fill="currentColor"/>
+        </svg>
+        Previous
+    </a>
+    {% endif %}
+
+    <ul class="pagination-numbers list-unstyled d-flex mx-3">
+        {% for num in projects.paginator.page_range %}
+        <li>
+            <a href="?page={{ num }}" class="pagination-number {% if projects.number == num %}active{% endif %}">
+                {{ num }}
+            </a>
+        </li>
+        {% endfor %}
+    </ul>
+
+    {% if projects.has_next %}
+    <a href="?page={{ projects.next_page_number }}" class="pagination-btn next-btn">
+        Next
+        <svg width="22" height="10" viewBox="0 0 25 10">
+            <path d="M18.67 9.91L24.72..." fill="currentColor"/>
+        </svg>
+    </a>
+    {% endif %}
+
+</div>
+{% endif %}
+
     
     </div>
 </div>
+
+
+
+
+<style>
+   /* Wrapper */
+.pagination-wrapper a {
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    color: #000;
+}
+
+/* Prev & Next Buttons */
+.pagination-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: #fff;
+    padding: 10px 16px;
+    border-radius: 6px;
+    border: 1px solid #000;
+    transition: all .25s ease;
+}
+
+.pagination-btn:hover {
+    background: #000;
+    color: #fff;
+}
+
+/* Page Numbers */
+.pagination-numbers li {
+    margin: 0 6px;
+}
+
+.pagination-number {
+    display: block;
+    padding: 8px 14px;
+    border-radius: 6px;
+    background: #fff;
+    color: #000;
+    border: 1px solid #000;
+    transition: all .25s ease;
+}
+
+.pagination-number:hover {
+    background: #000;
+    color: #fff;
+}
+
+/* Current Active Page */
+.pagination-number.active {
+    background: #000;
+    color: #fff;
+    border: 1px solid #000;
+}
+
+</style>
+
+
+
+
 <style>
 /* Keep exactly 2 items per row but make them slightly wider */
 .col-lg-6 {

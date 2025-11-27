@@ -1,0 +1,88 @@
+{% extends "home/base.html" %}
+{% load static %}
+{% block content %}
+
+<!-- tp-portfolio-area-start -->
+<div class="tp-portfolio-masonary-spacing tp-portfolio-area pb-60">
+    <div class="container">
+        <div class="row align-items-end pb-60 pre-header">
+            <div class="col-lg-8">
+                <div class="tp-portfolio-title-wrap mb-50">
+                    <h2 class="tp-portfolio-sectitle tp-ff-heading text-uppercase d-flex align-items-center">
+                        Faqs <span class="borders ml-40"></span>
+                    </h2>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="tp-portfolio-simple text-center">
+                    <p class="fs-18 tp-text-grey-1 lh-28 mb-3" style="color:black;">
+                        We pride ourselves on delivering innovative, impactful, and results-driven Faqs that exceed expectations.
+                    </p>
+                    {% comment %} <div class="tp-portfolio-icons">
+                        <i class="fab fa-node-js" title="Node.js"></i>
+                        <i class="fab fa-python" title="Python/Django"></i>
+                        <i class="fab fa-github" title="GitHub"></i>
+                        <i class="fab fa-js-square" title="JavaScript"></i>
+                        <i class="fab fa-html5" title="HTML5"></i>
+                        <i class="fab fa-css3-alt" title="CSS3"></i>
+                    </div> {% endcomment %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- tp-faq-area-start -->
+<div class="tp-faq-area p-relative z-index-1 pt-100 pb-100">
+    <div class="container">
+        <div class="row">
+            {% comment %} <div class="col-lg-9 offset-lg-3">
+                <div class="tp-faq-ai-title-wrap mb-50">
+                    <span class="text-anim tp-ff-dm fw-500 fs-18 ls-m-4 tp-text-common-black-1 mb-10 d-inline-block">/ FAQ /</span>
+                    <h2 class="text-anim tp-section-ai-title fs-72 fs-xl-65 fs-lg-55 fs-sm-45 fs-xs-40 fw-600 ls-m-4 tp-ff-dm tp-text-common-black-1">
+                        Explore Answers to<br> Our Most Asked Questions
+                    </h2>
+                </div>
+            </div> {% endcomment %}
+            <div class="col-12">
+                <div class="tp-faq-wrap tp-faq-cst-tab-content tp-faq-cst-tab-content-2 tp-faq-ai-tab-content">
+                    <div class="accordion mb-60" id="general_faqaccordion">
+                        {% if faqs %}
+                            {% for faq in faqs %}
+                            <div class="accordion-item tp_fade_anim" data-delay=".3">
+                                <h2 class="accordion-header p-relative" id="faq_{{ faq.id }}">
+                                    <button class="{% if forloop.first %}tp-faq-btn{% else %}collapsed tp-faq-btn{% endif %}" 
+                                            type="button" 
+                                            data-bs-toggle="collapse" 
+                                            data-bs-target="#faq_collapse_{{ faq.id }}" 
+                                            aria-expanded="{% if forloop.first %}true{% else %}false{% endif %}" 
+                                            aria-controls="faq_collapse_{{ faq.id }}">
+                                        <span class="tp-faq-ai-count">{{ forloop.counter|stringformat:"02d" }}</span>
+                                        {{ faq.question }}
+                                        <span class="accordion-btn"></span>
+                                    </button>
+                                </h2>
+                                <div id="faq_collapse_{{ faq.id }}" 
+                                     class="accordion-collapse collapse {% if forloop.first %}show{% endif %}" 
+                                     aria-labelledby="faq_{{ faq.id }}" 
+                                     data-bs-parent="#general_faqaccordion">
+                                    <div class="accordion-body tp-faq-details-para">
+                                        <p>{{ faq.answer|linebreaks }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        {% else %}
+                            <div class="alert alert-info">
+                                <p>No FAQs available at the moment. Please check back later.</p>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- tp-faq-area-end -->
+
+{% endblock %}

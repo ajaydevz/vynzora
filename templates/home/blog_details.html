@@ -1,6 +1,18 @@
 
 {% extends "home/base.html" %}
 {% load static %}
+
+
+{% block title %}
+{{ blog.meta_title }} 
+{% endblock %}
+
+
+
+{% block meta_description %}{{ blog.meta_description|truncatechars:160 }}{% endblock %}
+
+
+
 {% block content %}
 
 
