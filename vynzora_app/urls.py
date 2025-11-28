@@ -5,6 +5,11 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     
+    path('partners-list/',views.partner_list, name='partner_list'),
+    path('add-partner/', views.add_partner, name='add_partner'),
+    path('update-partner/<int:pk>/', views.update_partner, name='update_partner'),
+    path('delete-partner/<int:pk>/', views.delete_partner, name='delete_partner'),
+    
     path('faqs/', views.faq_page, name='faq_page'),
     path("filter-faqs/", views.filter_faqs, name="filter_faqs"),
 
@@ -37,6 +42,9 @@ urlpatterns = [
     path('portfolio/', views.portfolio, name='portfolio'),
     path('contact/', views.contact, name='contact'),
     
+    path('privacy-policy/', views.privacy_policy, name='privacy_policy'),
+    path('terms-condition/', views.terms_condition, name='terms_condition'),
+    
     path('verify-certificate/', views.verify_certificate, name='verify_certificate'),
     # path('services/<int:id>/', views.service_detail, name='service_detail'),
     
@@ -63,8 +71,7 @@ urlpatterns = [
     path('trademark/', views.trademark, name='trademark'),
     path('branding/', views.branding, name='branding'),
     path('it-solutions/', views.it_solutions, name='it_solutions'),
-    path('privacy-and-policy/', views.privacy_and_policy, name='privacy_and_policy'),
-    path('terms-and-conditions/', views.terms_and_conditions, name='terms_and_conditions'),
+
 
 
     path('careers/', views.career_submit_application, name='submit_application'),

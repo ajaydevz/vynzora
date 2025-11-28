@@ -2,8 +2,13 @@ from django import forms
 from .models import ContactModel, ClientReview, Client_Logo, Technologies, Blog, Team, ProjectModel, Certificates, Category, Website, Career_Model, Candidate
 from .models import Services, ServiceOffer, ServiceProcessStep, ServiceFAQ
 from django.forms import inlineformset_factory
-from .models import Newsletter
+from .models import Newsletter,Partner
 
+class PartnerForm(forms.ModelForm):
+    class Meta:
+        model = Partner
+        fields = '__all__'
+        
 class NewsletterForm(forms.ModelForm):
     class Meta:
         model = Newsletter

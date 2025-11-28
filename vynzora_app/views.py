@@ -10,7 +10,7 @@ from django.views.decorators.http import require_http_methods
 from .models import ContactModel, ClientReview, Client_Logo, Technologies, Blog, Team, ProjectModel, Certificates, Category, Website, Career_Model, Candidate
 from .forms import ContactModelForm, ClientReviewForm, Client_Logo_Form, TechnologiesForm, BlogForm, TeamForm, ProjectModelForm, CertificatesForm, CategoryForm, WebsiteForm, CareerForm, CandidateForm
 
-from .models import Services
+from .models import Services,Partner
 
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
@@ -21,6 +21,47 @@ from .models import TrainService, TrainFAQ
 
 from django.db.models import Count
 from django.template.loader import render_to_string
+from .forms import PartnerForm
+from django.views.decorators.cache import never_cache
+
+
+
+@login_required
+@never_cache
+def partner_list(request):
+    partners = Partner.objects.all()
+    return render(request, "admin_home/partner_list.html", {"partners": partners})
+
+@login_required
+@never_cache
+def add_partner(request):
+    if request.method == "POST":
+        form = PartnerForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            messages.success(request,'added partner sucessfully.')
+            return redirect("partner_list")
+    else:
+        form = PartnerForm()
+    return render(request, "admin_home/add_partner.html", {"form": form})
+
+def update_partner(request, pk):
+    partner = get_object_or_404(Partner, pk=pk)
+    if request.method == "POST":
+        form = PartnerForm(request.POST, request.FILES, instance=partner)
+        if form.is_valid():
+            form.save()
+            messages.success(request,'update partner sucessfully.')
+            return redirect("partner_list")
+    else:
+        form = PartnerForm(instance=partner)
+    return render(request, "admin_home/partner_list.html", {"form": form})
+
+def delete_partner(request, pk):
+    partner = get_object_or_404(Partner, pk=pk)
+    partner.delete()
+    messages.success(request,'delete partner sucessfully.')
+    return redirect("partner_list")
 
 
 
@@ -63,11 +104,13 @@ def filter_faqs(request):
     return JsonResponse(data)
 
 @login_required
+@never_cache
 def train_faq_list(request):
     faqs = TrainFAQ.objects.select_related('train_service').all()
     return render(request, "admin_home/train_faq_list.html", {"train_faqs": faqs})
 
 @login_required
+@never_cache
 def add_train_faq(request):
     services = TrainService.objects.all()
     if request.method == "POST":
@@ -128,11 +171,13 @@ def delete_train_faq(request, faq_id):
 # ---- TrainService CRUD ----
 
 @login_required
+@never_cache
 def train_service_list(request):
     services = TrainService.objects.all()
     return render(request, "admin_home/train_service_list.html", {"train_services": services})
 
 @login_required
+@never_cache
 def add_train_service(request):
     if request.method == "POST":
         name = request.POST.get("name", "").strip()
@@ -268,13 +313,16 @@ def partners(request):
     # Get projects for offcanvas
     projects = ProjectModel.objects.all()
     
+    partners = Partner.objects.all().order_by('-created_at')
+    
     context = {
         'client_logos': client_logos,
         'reviews': reviews,
         'footer_services': footer_services,
         'career_job_count': active_jobs,
         'projects': projects,
-        'services':services
+        'services':services,
+        'partners': partners
     }
     
     return render(request, 'home/partne.html', context)
@@ -599,7 +647,8 @@ from django.db import transaction
 from .models import Services, ServiceOffer, ServiceProcessStep, ServiceFAQ
 from .forms import ServiceForm
 
-
+@login_required
+@never_cache
 def service_list(request):
     services = Services.objects.all()
     return render(request, "admin_home/service_list.html", {"services": services})
@@ -842,7 +891,8 @@ def service_delete(request, pk):
     messages.success(request, "Service deleted successfully.")
     return redirect("service_list")
 
-
+@login_required
+@never_cache
 def service_create(request):
     if request.method == "POST":
         form = ServiceForm(request.POST, request.FILES)
@@ -1022,6 +1072,96 @@ def contact(request):
     
     return render(request, 'home/contact.html', {'form': form,'services':services,'footer_services':footer_services,'career_job_count': active_jobs})
 
+
+def privacy_policy(request):
+
+    services = Services.objects.all()
+    footer_services = Services.objects.order_by("?")[:4]
+    active_jobs = Career_Model.objects.filter(post_end_date__gte=timezone.now()).count()
+
+    if request.method == 'POST':
+        form = ContactModelForm(request.POST)
+
+        is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
+        
+        if form.is_valid():
+            form.save()
+
+            if is_ajax:
+                return JsonResponse({
+                    'success': True,
+                    'message': 'Your message has been successfully submitted.'
+                })
+            else:
+                messages.success(request, 'Your message has been successfully submitted.')
+                return redirect('privacy_policy')
+        else:
+            if is_ajax:
+                return JsonResponse({
+                    'success': False,
+                    'message': 'Oops! Please check your form and try again.',
+                    'errors': form.errors
+                }, status=400)
+            else:
+                messages.error(request, "Oops! Please try again.")
+                return redirect('privacy_policy')
+
+    else:
+        form = ContactModelForm()
+
+    return render(request, 'home/privacy_policy.html', {
+        'form': form,
+        'services': services,
+        'footer_services': footer_services,
+        'career_job_count': active_jobs,
+    })
+    
+
+def terms_condition(request):
+
+    services = Services.objects.all()
+    footer_services = Services.objects.order_by("?")[:4]
+    active_jobs = Career_Model.objects.filter(post_end_date__gte=timezone.now()).count()
+
+    if request.method == 'POST':
+        form = ContactModelForm(request.POST)
+
+        is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
+        
+        if form.is_valid():
+            form.save()
+
+            if is_ajax:
+                return JsonResponse({
+                    'success': True,
+                    'message': 'Your message has been successfully submitted.'
+                })
+            else:
+                messages.success(request, 'Your message has been successfully submitted.')
+                return redirect('terms_condition')
+        else:
+            if is_ajax:
+                return JsonResponse({
+                    'success': False,
+                    'message': 'Oops! Please check your form and try again.',
+                    'errors': form.errors
+                }, status=400)
+            else:
+                messages.error(request, "Oops! Please try again.")
+                return redirect('terms_condition')
+
+    else:
+        form = ContactModelForm()
+
+    return render(request, 'home/terms_condition.html', {
+        'form': form,
+        'services': services,
+        'footer_services': footer_services,
+        'career_job_count': active_jobs,
+    })
+    
+    
+
 # def contact(request):
 #     services = Services.objects.all() 
 #     footer_services = Services.objects.all()[:5]  
@@ -1068,11 +1208,7 @@ def branding(request):
 def it_solutions(request):
     return render(request, 'it_solutions.html')
 
-def terms_and_conditions(request):
-    return render(request, 'terms_and_conditions.html')
 
-def privacy_and_policy(request):
-    return render(request, 'privacy_and_policy.html')
 
 
 
@@ -1192,26 +1328,63 @@ def blog_details(request, slug):
 
 
 # Admin Side
+# @csrf_protect
+# def user_login(request):
+#     if request.method == "POST":
+#         username = request.POST['username']
+#         password = request.POST['password']
+#         user = authenticate(request, username=username, password=password)
+#         if user is not None:
+#             login(request, user)
+#             messages.success(request, f"Welcome back, Admin!")
+#             return redirect('dashboard')
+#         else:   
+#             messages.error(request, "There was an error logging in, try again.")
+#             return redirect('user_login')
+#     return render(request, 'home/login.html')
+
+from django.views.decorators.csrf import csrf_protect
+
+
 @csrf_protect
+@never_cache  # Prevent browser caching
 def user_login(request):
+    if request.user.is_authenticated:
+        return redirect('dashboard')  # Prevent logged-in users from accessing login page
+    
     if request.method == "POST":
-        username = request.POST['username']
-        password = request.POST['password']
+        username = request.POST.get('username')
+        password = request.POST.get('password')
         user = authenticate(request, username=username, password=password)
+        
         if user is not None:
             login(request, user)
-            messages.success(request, f"Welcome back, Admin!")
+            messages.success(request, f"Welcome back, {user.username}!")
             return redirect('dashboard')
         else:   
-            messages.error(request, "There was an error logging in, try again.")
+            messages.error(request, "Invalid username or password.")
             return redirect('user_login')
+    
     return render(request, 'home/login.html')
 
+# def logout_user(request):
+#     logout(request)
+#     messages.success(request, ("You Were Logged Out"))
+#     return redirect('user_login')
+
+from django.contrib.sessions.models import Session
 
 def logout_user(request):
-    logout(request)
-    messages.success(request, ("You Were Logged Out"))
+    # Delete all sessions for this user (logs out from all tabs)
+    if request.user.is_authenticated:
+        Session.objects.filter(expire_date__gte=timezone.now(), session_key__in=[
+            s.session_key for s in Session.objects.all() if request.user.id == int(s.get_decoded().get('_auth_user_id', 0))
+        ]).delete()
+    
+    logout(request)  # Log out current session
+    messages.success(request, "You have been logged out successfully.")
     return redirect('user_login')
+
 
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
@@ -1224,6 +1397,7 @@ from .models import (
 from django.db.models import Q
 
 @login_required(login_url='user_login')
+@never_cache
 def newsletter_list(request):
     newsletters = Newsletter.objects.all().order_by('-subscribed_at')
     
@@ -1241,6 +1415,7 @@ def newsletter_list(request):
     return render(request, 'admin_home/newsletter_list.html', context)
 
 @login_required(login_url='user_login')
+@never_cache
 def delete_newsletter(request, newsletter_id):
     if request.method == 'POST':
         newsletter = get_object_or_404(Newsletter, id=newsletter_id)
@@ -1253,6 +1428,7 @@ def delete_newsletter(request, newsletter_id):
     return redirect('newsletter_list')
 
 @login_required(login_url='user_login')
+@never_cache
 def dashboard(request):
     # Counts
     active_projects_count = ProjectModel.objects.count()
@@ -1347,12 +1523,14 @@ def dashboard(request):
 
 # Contact 
 @login_required(login_url='user_login')
+@never_cache
 def contact_view(request):
     contacts = ContactModel.objects.all().order_by('-id')  
     return render(request,'admin_home/contact_view.html',{'contacts':contacts})
 
 
 @login_required(login_url='user_login')
+
 def delete_contact(request,id):
     contact = ContactModel.objects.get(id=id)
     contact.delete()
@@ -1362,6 +1540,7 @@ def delete_contact(request,id):
 
 # Client Reviews
 @login_required(login_url='user_login')
+@never_cache
 def add_client_review(request):
     if request.method == 'POST':
         form = ClientReviewForm(request.POST, request.FILES)
@@ -1378,12 +1557,14 @@ def add_client_review(request):
 
 
 @login_required(login_url='user_login')
+@never_cache
 def view_client_reviews(request):
     client_reviews = ClientReview.objects.all().order_by('-id')
     return render(request, 'admin_home/view_client_reviews.html', {'client_reviews': client_reviews})
 
 
 @login_required(login_url='user_login')
+
 def update_client_review(request, id):
     client_reviews = get_object_or_404(ClientReview, id=id)
     if request.method == 'POST':
@@ -1401,6 +1582,7 @@ def update_client_review(request, id):
     
 
 @login_required(login_url='user_login')
+
 def delete_client_review(request,id):
     client_reviews = ClientReview.objects.get(id=id)
     client_reviews.delete()
@@ -1410,6 +1592,7 @@ def delete_client_review(request,id):
 
 #  Client Logo
 @login_required(login_url='user_login')
+@never_cache
 def add_clients_logo(request):
     if request.method == 'POST':
         form = Client_Logo_Form(request.POST, request.FILES)
@@ -1423,6 +1606,7 @@ def add_clients_logo(request):
     return render(request, 'admin_home/add_clients_logo.html', {'form': form})
 
 @login_required(login_url='user_login')
+@never_cache
 def view_clients_logo(request):
     logo = Client_Logo.objects.all().order_by('-id')
     return render(request,'admin_home/view_clients_logo.html',{'logo':logo})
@@ -1451,6 +1635,7 @@ def delete_clients_logo(request,id):
 
 #  Technologies
 @login_required(login_url='user_login')
+@never_cache
 def add_technologies(request):
     if request.method == 'POST':
         form = TechnologiesForm(request.POST, request.FILES)
@@ -1464,6 +1649,7 @@ def add_technologies(request):
     return render(request, 'admin_home/add_technologies.html', {'form': form})
 
 @login_required(login_url='user_login')
+@never_cache
 def view_technologies(request):
     logo = Technologies.objects.all().order_by('-id')
     return render(request,'admin_home/view_technologies.html',{'logo':logo})
@@ -1491,6 +1677,7 @@ def delete_technologies(request,id):
 
 
 @login_required(login_url='user_login')
+@never_cache
 def add_blog_details(request):
     if request.method == 'POST':
         form = BlogForm(request.POST, request.FILES)
@@ -1505,6 +1692,7 @@ def add_blog_details(request):
 
 
 @login_required(login_url='user_login')
+@never_cache
 def view_blog_details(request):
     blogs = Blog.objects.all().order_by('-id')
     return render(request, 'admin_home/view_blog_details.html', {'blogs': blogs})
@@ -1580,6 +1768,7 @@ def add_team(request):
 
 
 @login_required(login_url='user_login')
+@never_cache
 def view_team(request):
     client_reviews = Team.objects.all().order_by('-id')
     return render(request, 'admin_home/view_team.html', {'client_reviews': client_reviews})
@@ -1637,6 +1826,7 @@ def page_500(request):
 # Portfolio 
 
 @login_required(login_url='user_login')
+@never_cache
 def add_project(request):
     if request.method == 'POST':
         form = ProjectModelForm(request.POST, request.FILES)
@@ -1654,6 +1844,7 @@ def add_project(request):
 
 
 @login_required(login_url='user_login')
+@never_cache
 def view_projects(request):
     projects = ProjectModel.objects.all().order_by('-id')
     return render(request, 'admin_home/view_projects.html', {'projects': projects})
@@ -1684,6 +1875,7 @@ def delete_projects(request,id):
 
 # Certificate
 @login_required(login_url='user_login')
+@never_cache
 def add_certificates(request):
     if request.method == 'POST':
         form = CertificatesForm(request.POST, request.FILES)
@@ -1697,6 +1889,7 @@ def add_certificates(request):
     return render(request, 'admin_home/add_certificates.html', {'form': form})
 
 @login_required(login_url='user_login')
+@never_cache
 def view_certificates(request):
     certificates = Certificates.objects.all().order_by('-id')
     return render(request, 'admin_home/view_certificates.html', {'certificates': certificates})
@@ -1868,6 +2061,7 @@ def extract_youtube_id(url):
 
 # addd Catgeoory
 @login_required(login_url='user_login')
+@never_cache
 def add_category(request):
     if request.method == 'POST':
         form = CategoryForm(request.POST, request.FILES)
@@ -1881,6 +2075,7 @@ def add_category(request):
     return render(request, 'admin_home/add_category.html', {'form': form})
 
 @login_required(login_url='user_login')
+@never_cache
 def view_category(request):
     categories = Category.objects.all().order_by('-id')
     return render(request, "admin_home/view_category.html", {"categories": categories})
@@ -1926,6 +2121,7 @@ from .models import WebsiteFAQ
 
 
 @login_required(login_url='user_login')
+@never_cache
 def add_website(request):
     categories = Category.objects.all()
 
@@ -1980,6 +2176,7 @@ def add_website(request):
 
 
 @login_required(login_url='user_login')
+@never_cache
 def view_websites(request):
     websites = Website.objects.prefetch_related('faqs').select_related('category').all().order_by('-id')
     
@@ -2142,6 +2339,7 @@ def delete_website(request, website_id):
 
 
 @login_required(login_url='user_login')
+@never_cache
 def add_job_details(request):
     if request.method == 'POST':
         form = CareerForm(request.POST, request.FILES)
@@ -2155,6 +2353,7 @@ def add_job_details(request):
     return render(request, 'admin_home/add_job_details.html', {'form': form})
 
 @login_required(login_url='user_login')
+@never_cache
 def view_job_details(request):
     job_details = Career_Model.objects.all().order_by('-id')
     return render(request, 'admin_home/view_job_details.html', {'job_details': job_details})
@@ -2193,6 +2392,7 @@ def delete_job_details(request,id):
     return redirect('view_job_details')
 
 @login_required(login_url='user_login')
+@never_cache
 def view_candidate_details(request):
     certificates = Candidate.objects.all().order_by('-id')
     return render(request, 'admin_home/view_candidate_certificate.html', {'certificates': certificates})

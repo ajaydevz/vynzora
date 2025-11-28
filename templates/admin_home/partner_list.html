@@ -1,0 +1,1339 @@
+{% extends "admin_home/base.html" %}
+{% load static %}
+
+{% block content %}
+
+<style>
+  .partner-list-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    animation: fadeIn 0.5s ease;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+
+  .header-left h2 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 8px;
+  }
+
+  .header-left p {
+    color: #6c757d;
+    font-size: 14px;
+    margin: 0;
+  }
+
+  .header-right {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+  }
+
+  .search-box {
+    position: relative;
+    width: 300px;
+  }
+
+  .search-box input {
+    width: 100%;
+    padding: 12px 45px 12px 45px;
+    border: 2px solid #e9ecef;
+    border-radius: 10px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    background: #f8f9fa;
+  }
+
+  .search-box input:focus {
+    outline: none;
+    border-color: #3498db;
+    background: #fff;
+    box-shadow: 0 0 0 4px rgba(52, 152, 219, 0.1);
+  }
+
+  .search-box i {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #6c757d;
+    font-size: 18px;
+  }
+
+  .clear-search {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #6c757d;
+    cursor: pointer;
+    font-size: 18px;
+    display: none;
+    transition: color 0.3s ease;
+  }
+
+  .clear-search:hover {
+    color: #e74c3c;
+  }
+
+  .clear-search.show {
+    display: block;
+  }
+
+  .btn-add {
+    padding: 12px 24px;
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+  }
+
+  .btn-add:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(52, 152, 219, 0.3);
+  }
+
+  .partner-card {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+  }
+
+  .partner-card-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 25px 30px;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .partner-card-header h3 {
+    font-size: 20px;
+    font-weight: 700;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .partner-count {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .table-wrapper {
+    overflow-x: auto;
+    max-height: 600px;
+    overflow-y: auto;
+  }
+
+  .partner-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .partner-table thead {
+    background: #f8f9fa;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+
+  .partner-table thead th {
+    padding: 18px 20px;
+    text-align: left;
+    font-size: 13px;
+    font-weight: 700;
+    color: #2c3e50;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 2px solid #e9ecef;
+  }
+
+  .partner-table tbody tr {
+    border-bottom: 1px solid #f1f3f5;
+    transition: all 0.3s ease;
+  }
+
+  .partner-table tbody tr:hover {
+    background: #f8f9fa;
+    transform: scale(1.01);
+  }
+
+  .partner-table tbody td {
+    padding: 20px;
+    font-size: 14px;
+    color: #495057;
+  }
+
+  .partner-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+
+  .partner-logo {
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
+    object-fit: contain;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    background: #fff;
+    padding: 8px;
+  }
+
+  .partner-details h4 {
+    font-size: 15px;
+    font-weight: 600;
+    color: #2c3e50;
+    margin: 0 0 4px 0;
+  }
+
+  .partner-details p {
+    font-size: 13px;
+    color: #6c757d;
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .no-logo {
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 24px;
+    font-weight: 700;
+  }
+
+  .action-buttons {
+    display: flex;
+    gap: 10px;
+  }
+
+  .btn-action {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .btn-update {
+    background: #3498db;
+    color: white;
+  }
+
+  .btn-update:hover {
+    background: #2980b9;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+  }
+
+  .btn-delete {
+    background: #e74c3c;
+    color: white;
+  }
+
+  .btn-delete:hover {
+    background: #c0392b;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(231, 76, 60, 0.3);
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 80px 20px;
+  }
+
+  .empty-state i {
+    font-size: 64px;
+    color: #cbd5e0;
+    margin-bottom: 20px;
+  }
+
+  .empty-state h3 {
+    font-size: 20px;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 10px;
+  }
+
+  .empty-state p {
+    font-size: 14px;
+    color: #6c757d;
+    margin-bottom: 25px;
+  }
+
+  .no-results {
+    text-align: center;
+    padding: 60px 20px;
+  }
+
+  .no-results i {
+    font-size: 48px;
+    color: #cbd5e0;
+    margin-bottom: 15px;
+  }
+
+  .no-results p {
+    font-size: 14px;
+    color: #6c757d;
+  }
+
+  .highlight {
+    background: #fff3cd;
+    padding: 2px 4px;
+    border-radius: 3px;
+    font-weight: 600;
+  }
+
+  /* Modal Styles */
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    animation: fadeIn 0.3s ease;
+  }
+
+  .modal.show {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .modal-content {
+    background: #fff;
+    border-radius: 16px;
+    max-width: 700px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    animation: slideUp 0.3s ease;
+  }
+
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(50px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .modal-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 25px 30px;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .modal-header h3 {
+    font-size: 20px;
+    font-weight: 700;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .modal-close {
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+  }
+
+  .modal-close:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: rotate(90deg);
+  }
+
+  .modal-body {
+    padding: 30px;
+  }
+
+  .form-group {
+    margin-bottom: 24px;
+  }
+
+  .form-label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 8px;
+  }
+
+  .form-label .required {
+    color: #e74c3c;
+    margin-left: 4px;
+  }
+
+  .form-control {
+    width: 100%;
+    padding: 12px 16px;
+    font-size: 14px;
+    border: 2px solid #e9ecef;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    background: #f8f9fa;
+    box-sizing: border-box;
+  }
+
+  .form-control:focus {
+    outline: none;
+    border-color: #3498db;
+    background: #fff;
+    box-shadow: 0 0 0 4px rgba(52, 152, 219, 0.1);
+  }
+
+  textarea.form-control {
+    min-height: 80px;
+    resize: vertical;
+  }
+
+  .current-logo-wrapper {
+    text-align: center;
+    margin-bottom: 20px;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 12px;
+    border: 2px dashed #e9ecef;
+    transition: all 0.3s ease;
+  }
+
+  .current-logo-wrapper.has-new-logo {
+    border-color: #27ae60;
+    background: #f8fff9;
+  }
+
+  .current-logo-wrapper h4 {
+    font-size: 14px;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 15px;
+  }
+
+  .current-logo {
+    max-width: 150px;
+    max-height: 150px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    background: #fff;
+    padding: 10px;
+    object-fit: contain;
+  }
+
+  .current-logo.preview-new {
+    border: 3px solid #27ae60;
+    box-shadow: 0 4px 20px rgba(39, 174, 96, 0.3);
+  }
+
+  .logo-actions {
+    margin-top: 15px;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .btn-clear-logo {
+    padding: 8px 16px;
+    background: #e74c3c;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .btn-clear-logo:hover {
+    background: #c0392b;
+    transform: translateY(-1px);
+  }
+
+  .file-input-wrapper {
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+    width: 100%;
+  }
+
+  .file-input-wrapper input[type=file] {
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+  }
+
+  .file-input-custom {
+    padding: 12px 16px;
+    border: 2px dashed #e9ecef;
+    border-radius: 10px;
+    background: #f8f9fa;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: #6c757d;
+  }
+
+  .file-input-custom:hover {
+    border-color: #3498db;
+    background: #e3f2fd;
+  }
+
+  .file-input-custom.has-file {
+    border-color: #27ae60;
+    background: #e8f5e8;
+    color: #27ae60;
+  }
+
+  .points-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+  }
+
+  .modal-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 30px;
+  }
+
+  .btn-modal {
+    flex: 1;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .btn-cancel {
+    background: #e9ecef;
+    color: #495057;
+  }
+
+  .btn-cancel:hover {
+    background: #dee2e6;
+  }
+
+  .btn-submit {
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    color: white;
+  }
+
+  .btn-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(52, 152, 219, 0.3);
+  }
+
+  .btn-confirm-delete {
+    background: linear-gradient(135deg, #e74c3c, #c0392b);
+    color: white;
+  }
+
+  .btn-confirm-delete:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(231, 76, 60, 0.3);
+  }
+
+  /* Delete Modal Specific Styles */
+  .delete-modal-content {
+    max-width: 550px;
+  }
+
+  .delete-modal-body {
+    padding: 30px;
+  }
+
+  .delete-content {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .delete-icon {
+    flex-shrink: 0;
+    width: 48px;
+    height: 48px;
+    background: #fee;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .delete-icon i {
+    font-size: 24px;
+    color: #e74c3c;
+  }
+
+  .delete-text h4 {
+    font-size: 16px;
+    font-weight: 700;
+    color: #2c3e50;
+    margin: 0 0 6px 0;
+  }
+
+  .delete-text p {
+    font-size: 14px;
+    color: #6c757d;
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  .delete-partner-name {
+    font-weight: 600;
+    color: #2c3e50;
+  }
+
+  .delete-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 0;
+  }
+
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .page-header {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .header-right {
+      flex-direction: column;
+    }
+
+    .search-box {
+      width: 100%;
+    }
+
+    .partner-table thead th,
+    .partner-table tbody td {
+      padding: 12px;
+      font-size: 12px;
+    }
+
+    .partner-info {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .action-buttons {
+      flex-direction: column;
+      width: 100%;
+    }
+
+    .btn-action {
+      width: 100%;
+      justify-content: center;
+    }
+
+    .modal-content {
+      width: 95%;
+      margin: 10px;
+    }
+
+    .modal-body {
+      padding: 20px;
+    }
+
+    .points-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .delete-modal-content {
+      width: 95%;
+    }
+
+    .delete-content {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+  }
+
+  @media (max-width: 576px) {
+    .header-left h2 {
+      font-size: 20px;
+    }
+
+    .partner-card-header {
+      padding: 20px;
+    }
+
+    .partner-card-header h3 {
+      font-size: 16px;
+    }
+
+    .modal-actions,
+    .delete-actions {
+      flex-direction: column;
+    }
+
+    .btn-modal {
+      width: 100%;
+    }
+  }
+
+  /* Scrollbar Styling */
+  .table-wrapper::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  .table-wrapper::-webkit-scrollbar-track {
+    background: #f1f3f5;
+    border-radius: 10px;
+  }
+
+  .table-wrapper::-webkit-scrollbar-thumb {
+    background: #cbd5e0;
+    border-radius: 10px;
+  }
+
+  .table-wrapper::-webkit-scrollbar-thumb:hover {
+    background: #a0aec0;
+  }
+</style>
+
+<div class="partner-list-container">
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="header-left">
+      <h2>Partners</h2>
+      <p>Manage your business partners and their information</p>
+    </div>
+    <div class="header-right">
+      <div class="search-box">
+        <i class="mdi mdi-magnify"></i>
+        <input 
+          type="text" 
+          id="searchInput" 
+          placeholder="Search by name or description..." 
+          autocomplete="off"
+        >
+        <button type="button" class="clear-search" id="clearSearch">
+          <i class="mdi mdi-close"></i>
+        </button>
+      </div>
+      <a href="{% url 'add_partner' %}" class="btn-add">
+        <i class="mdi mdi-plus"></i>
+        Add Partner
+      </a>
+    </div>
+  </div>
+
+  <!-- Partner Card -->
+  <div class="partner-card">
+    <div class="partner-card-header">
+      <h3>
+        <i class="mdi mdi-handshake"></i>
+        All Partners
+      </h3>
+      <span class="partner-count" id="partnerCount">{{ partners|length }} Partners</span>
+    </div>
+
+    <div class="table-wrapper">
+      {% if partners %}
+      <table class="partner-table">
+        <thead>
+          <tr>
+            <th>Partner</th>
+            <th>Description</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="partnerTableBody">
+          {% for partner in partners %}
+          <tr data-name="{{ partner.name }}" data-description="{{ partner.description }}">
+            <td>
+              <div class="partner-info">
+                {% if partner.logo %}
+                  <img src="{{ partner.logo.url }}" alt="{{ partner.name }}" class="partner-logo">
+                {% else %}
+                  <div class="no-logo">{{ partner.name|first|upper }}</div>
+                {% endif %}
+                <div class="partner-details">
+                  <h4 class="partner-name">{{ partner.name }}</h4>
+                </div>
+              </div>
+            </td>
+            <td>
+              <p class="partner-description">{{ partner.description }}</p>
+            </td>
+            <td>
+              <div class="action-buttons">
+                <button 
+                  type="button" 
+                  class="btn-action btn-update" 
+                  onclick='openUpdateModal({{ partner.id }}, "{{ partner.name|escapejs }}", "{{ partner.description|escapejs }}", "{% if partner.logo %}{{ partner.logo.url }}{% endif %}", "{{ partner.point1|escapejs }}", "{{ partner.point2|escapejs }}", "{{ partner.point3|escapejs }}", "{{ partner.point4|escapejs }}", "{{ partner.point5|escapejs }}", "{{ partner.point6|escapejs }}")'
+                >
+                  <i class="mdi mdi-pencil"></i>
+                  Update
+                </button>
+                <button 
+                  type="button" 
+                  class="btn-action btn-delete" 
+                  onclick='openDeleteModal({{ partner.id }}, "{{ partner.name|escapejs }}")'
+                >
+                  <i class="mdi mdi-delete"></i>
+                  Delete
+                </button>
+              </div>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <div class="no-results" id="noResults" style="display: none;">
+        <i class="mdi mdi-magnify"></i>
+        <p>No partners found matching your search.</p>
+      </div>
+      {% else %}
+      <div class="empty-state">
+        <i class="mdi mdi-handshake-outline"></i>
+        <h3>No Partners Yet</h3>
+        <p>Start building partnerships by adding your first partner</p>
+        <a href="{% url 'add_partner' %}" class="btn-add">
+          <i class="mdi mdi-plus"></i>
+          Add First Partner
+        </a>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<!-- Update Modal -->
+<div id="updateModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>
+        <i class="mdi mdi-pencil"></i>
+        Update Partner
+      </h3>
+      <button type="button" class="modal-close" onclick="closeUpdateModal()">
+        <i class="mdi mdi-close"></i>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form method="POST" enctype="multipart/form-data" id="updateForm" action="">
+        {% csrf_token %}
+        
+        <div class="form-group">
+          <label class="form-label">
+            Partner Name<span class="required">*</span>
+          </label>
+          <input 
+            type="text" 
+            class="form-control" 
+            name="name" 
+            id="updateName" 
+            placeholder="Enter partner name" 
+            required
+          >
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">
+            Description<span class="required">*</span>
+          </label>
+          <textarea 
+            class="form-control" 
+            name="description" 
+            id="updateDescription" 
+            placeholder="Describe the partner and their services..."
+            maxlength="300"
+            required
+          ></textarea>
+          <small style="color: #6c757d; font-size: 12px; margin-top: 6px; display: block;">
+            <i class="mdi mdi-information"></i> Maximum 300 characters
+          </small>
+        </div>
+
+        <div class="current-logo-wrapper" id="currentLogoWrapper">
+          <h4>Current Logo</h4>
+          <img src="" alt="Current" class="current-logo" id="currentLogo">
+          <div class="logo-actions" id="logoActions" style="display: none;">
+            <button type="button" class="btn-clear-logo" onclick="clearLogoSelection()">
+              <i class="mdi mdi-close"></i>
+              Clear New Logo
+            </button>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">
+            Upload New Logo (Optional)
+          </label>
+          <div class="file-input-wrapper">
+            <input 
+              type="file" 
+              class="form-control" 
+              name="logo" 
+              id="logoInput"
+              accept="image/*"
+            >
+            <div class="file-input-custom" id="fileInputCustom">
+              <i class="mdi mdi-cloud-upload"></i>
+              Click to browse or drag & drop a logo
+              <br>
+              <small>Supports: JPG, PNG, GIF (Max: 5MB)</small>
+            </div>
+          </div>
+          <small style="color: #6c757d; font-size: 12px; margin-top: 6px; display: block;">
+            <i class="mdi mdi-information"></i> Leave empty to keep current logo
+          </small>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">
+            Key Points<span class="required">*</span>
+          </label>
+          <div class="points-grid">
+            <input type="text" class="form-control" name="point1" id="updatePoint1" placeholder="Point 1" maxlength="150" required>
+            <input type="text" class="form-control" name="point2" id="updatePoint2" placeholder="Point 2" maxlength="150" required>
+            <input type="text" class="form-control" name="point3" id="updatePoint3" placeholder="Point 3" maxlength="150" required>
+            <input type="text" class="form-control" name="point4" id="updatePoint4" placeholder="Point 4" maxlength="150" required>
+            <input type="text" class="form-control" name="point5" id="updatePoint5" placeholder="Point 5" maxlength="150" required>
+            <input type="text" class="form-control" name="point6" id="updatePoint6" placeholder="Point 6" maxlength="150" required>
+          </div>
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="btn-modal btn-cancel" onclick="closeUpdateModal()">
+            <i class="mdi mdi-close"></i>
+            Cancel
+          </button>
+          <button type="submit" class="btn-modal btn-submit">
+            <i class="mdi mdi-check"></i>
+            Update Partner
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Modal -->
+<div id="deleteModal" class="modal">
+  <div class="modal-content delete-modal-content">
+    <div class="modal-header" style="background: linear-gradient(135deg, #e74c3c, #c0392b);">
+      <h3>
+        <i class="mdi mdi-delete"></i>
+        Delete Partner
+      </h3>
+      <button type="button" class="modal-close" onclick="closeDeleteModal()">
+        <i class="mdi mdi-close"></i>
+      </button>
+    </div>
+    <div class="modal-body delete-modal-body">
+      <div class="delete-content">
+        <div class="delete-icon">
+          <i class="mdi mdi-alert-circle"></i>
+        </div>
+        <div class="delete-text">
+          <h4>Delete this partner?</h4>
+          <p>Are you sure you want to delete <span class="delete-partner-name" id="deletePartnerName"></span>? This action cannot be undone.</p>
+        </div>
+      </div>
+
+      <form method="POST" id="deleteForm" action="">
+        {% csrf_token %}
+        <div class="delete-actions">
+          <button type="button" class="btn-modal btn-cancel" onclick="closeDeleteModal()">
+            Cancel
+          </button>
+          <button type="submit" class="btn-modal btn-confirm-delete">
+            <i class="mdi mdi-delete"></i>
+            Delete
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Search functionality
+  const searchInput = document.getElementById('searchInput');
+  const clearSearch = document.getElementById('clearSearch');
+  const partnerTableBody = document.getElementById('partnerTableBody');
+  const noResults = document.getElementById('noResults');
+  const partnerCount = document.getElementById('partnerCount');
+
+  // Modal elements
+  const updateModal = document.getElementById('updateModal');
+  const deleteModal = document.getElementById('deleteModal');
+  const logoInput = document.getElementById('logoInput');
+  const fileInputCustom = document.getElementById('fileInputCustom');
+  const currentLogoWrapper = document.getElementById('currentLogoWrapper');
+  const currentLogo = document.getElementById('currentLogo');
+  const logoActions = document.getElementById('logoActions');
+
+  // State variables
+  let currentPartnerId = null;
+  let originalLogoUrl = null;
+
+  // Highlight text function
+  function highlightText(text, searchTerm) {
+    if (!searchTerm) return text;
+    const regex = new RegExp(`(${searchTerm})`, 'gi');
+    return text.replace(regex, '<span class="highlight">$1</span>');
+  }
+
+  // Remove highlighting
+  function removeHighlighting() {
+    const highlightedElements = document.querySelectorAll('.highlight');
+    highlightedElements.forEach(el => {
+      const parent = el.parentNode;
+      parent.replaceChild(document.createTextNode(el.textContent), el);
+      parent.normalize();
+    });
+  }
+
+  // Search functionality
+  searchInput.addEventListener('input', function() {
+    const searchTerm = this.value.toLowerCase();
+    
+    if (searchTerm) {
+      clearSearch.classList.add('show');
+    } else {
+      clearSearch.classList.remove('show');
+      removeHighlighting();
+    }
+
+    const rows = partnerTableBody.getElementsByTagName('tr');
+    let visibleCount = 0;
+
+    Array.from(rows).forEach(row => {
+      const name = row.getAttribute('data-name').toLowerCase();
+      const description = row.getAttribute('data-description').toLowerCase();
+      
+      if (name.includes(searchTerm) || description.includes(searchTerm)) {
+        row.style.display = '';
+        visibleCount++;
+        
+        const nameElement = row.querySelector('.partner-name');
+        const descriptionElement = row.querySelector('.partner-description');
+        
+        if (nameElement) {
+          nameElement.innerHTML = highlightText(row.getAttribute('data-name'), searchTerm);
+        }
+        
+        if (descriptionElement) {
+          descriptionElement.innerHTML = highlightText(row.getAttribute('data-description'), searchTerm);
+        }
+      } else {
+        row.style.display = 'none';
+      }
+    });
+
+    if (visibleCount === 0 && searchTerm) {
+      noResults.style.display = 'block';
+      partnerTableBody.parentElement.style.display = 'none';
+    } else {
+      noResults.style.display = 'none';
+      partnerTableBody.parentElement.style.display = 'table';
+    }
+
+    partnerCount.textContent = `${visibleCount} Partner${visibleCount !== 1 ? 's' : ''}`;
+  });
+
+  clearSearch.addEventListener('click', function() {
+    searchInput.value = '';
+    searchInput.dispatchEvent(new Event('input'));
+    searchInput.focus();
+  });
+
+  // Modal functionality
+  function openUpdateModal(id, name, description, logoUrl, point1, point2, point3, point4, point5, point6) {
+    currentPartnerId = id;
+    originalLogoUrl = logoUrl;
+    
+    document.getElementById('updateForm').action = `/update-partner/${id}/`;
+    document.getElementById('updateName').value = name;
+    document.getElementById('updateDescription').value = description;
+    document.getElementById('updatePoint1').value = point1;
+    document.getElementById('updatePoint2').value = point2;
+    document.getElementById('updatePoint3').value = point3;
+    document.getElementById('updatePoint4').value = point4;
+    document.getElementById('updatePoint5').value = point5;
+    document.getElementById('updatePoint6').value = point6;
+    
+    if (logoUrl) {
+      currentLogo.src = logoUrl;
+      currentLogoWrapper.style.display = 'block';
+    } else {
+      currentLogoWrapper.style.display = 'none';
+    }
+    
+    resetLogoPreview();
+    updateModal.classList.add('show');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeUpdateModal() {
+    updateModal.classList.remove('show');
+    document.body.style.overflow = 'auto';
+    resetLogoPreview();
+  }
+
+  function openDeleteModal(id, name) {
+    document.getElementById('deleteForm').action = `/delete-partner/${id}/`;
+    document.getElementById('deletePartnerName').textContent = name;
+    deleteModal.classList.add('show');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeDeleteModal() {
+    deleteModal.classList.remove('show');
+    document.body.style.overflow = 'auto';
+  }
+
+  // Logo preview functionality
+  function setupLogoPreview() {
+    logoInput.addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      
+      if (file) {
+        if (!file.type.match('image.*')) {
+          alert('Please select a valid image file (JPEG, PNG, GIF, etc.)');
+          resetLogoPreview();
+          return;
+        }
+        
+        if (file.size > 5 * 1024 * 1024) {
+          alert('Image size should be less than 5MB');
+          resetLogoPreview();
+          return;
+        }
+        
+        const reader = new FileReader();
+        
+        reader.onload = function(e) {
+          currentLogo.src = e.target.result;
+          currentLogo.classList.add('preview-new');
+          currentLogoWrapper.style.display = 'block';
+          currentLogoWrapper.classList.add('has-new-logo');
+          logoActions.style.display = 'flex';
+          
+          fileInputCustom.classList.add('has-file');
+          fileInputCustom.innerHTML = `
+            <i class="mdi mdi-check-circle" style="color: #27ae60;"></i>
+            ${file.name}
+            <br>
+            <small>${(file.size / 1024 / 1024).toFixed(2)} MB</small>
+          `;
+        };
+        
+        reader.onerror = function() {
+          alert('Error reading the image file. Please try again.');
+          resetLogoPreview();
+        };
+        
+        reader.readAsDataURL(file);
+      } else {
+        resetLogoPreview();
+      }
+    });
+
+    fileInputCustom.addEventListener('dragover', function(e) {
+      e.preventDefault();
+      this.style.borderColor = '#3498db';
+      this.style.background = '#e3f2fd';
+    });
+
+    fileInputCustom.addEventListener('dragleave', function(e) {
+      e.preventDefault();
+      if (!fileInputCustom.classList.contains('has-file')) {
+        this.style.borderColor = '#e9ecef';
+        this.style.background = '#f8f9fa';
+      }
+    });
+
+    fileInputCustom.addEventListener('drop', function(e) {
+      e.preventDefault();
+      const files = e.dataTransfer.files;
+      if (files.length > 0) {
+        logoInput.files = files;
+        logoInput.dispatchEvent(new Event('change'));
+      }
+    });
+  }
+
+  function resetLogoPreview() {
+    logoInput.value = '';
+    currentLogo.classList.remove('preview-new');
+    currentLogoWrapper.classList.remove('has-new-logo');
+    logoActions.style.display = 'none';
+    fileInputCustom.classList.remove('has-file');
+    fileInputCustom.innerHTML = `
+      <i class="mdi mdi-cloud-upload"></i>
+      Click to browse or drag & drop a logo
+      <br>
+      <small>Supports: JPG, PNG, GIF (Max: 5MB)</small>
+    `;
+    
+    if (originalLogoUrl) {
+      currentLogo.src = originalLogoUrl;
+      currentLogoWrapper.style.display = 'block';
+    } else {
+      currentLogoWrapper.style.display = 'none';
+    }
+  }
+
+  function clearLogoSelection() {
+    resetLogoPreview();
+  }
+
+  // Close modals when clicking outside
+  window.addEventListener('click', function(event) {
+    if (event.target === updateModal) {
+      closeUpdateModal();
+    }
+    if (event.target === deleteModal) {
+      closeDeleteModal();
+    }
+  });
+
+  // Close modals with Escape key
+  document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') {
+      closeUpdateModal();
+      closeDeleteModal();
+    }
+  });
+
+  // Form validation
+  document.getElementById('updateForm').addEventListener('submit', function(e) {
+    const name = document.getElementById('updateName').value.trim();
+    const description = document.getElementById('updateDescription').value.trim();
+    
+    // Validate all points
+    for (let i = 1; i <= 6; i++) {
+      const point = document.getElementById(`updatePoint${i}`).value.trim();
+      if (!point) {
+        e.preventDefault();
+        alert(`Please fill in Point ${i}`);
+        return false;
+      }
+    }
+    
+    if (!name || !description) {
+      e.preventDefault();
+      alert('Please fill in all required fields.');
+      return false;
+    }
+    
+    if (logoInput.files.length > 0) {
+      const file = logoInput.files[0];
+      if (!file.type.match('image.*')) {
+        e.preventDefault();
+        alert('Please select a valid image file.');
+        return false;
+      }
+      if (file.size > 5 * 1024 * 1024) {
+        e.preventDefault();
+        alert('Image size should be less than 5MB.');
+        return false;
+      }
+    }
+
+    // Show loading state
+    const submitBtn = this.querySelector('.btn-submit');
+    submitBtn.innerHTML = '<i class="mdi mdi-loading mdi-spin"></i> Updating...';
+    submitBtn.disabled = true;
+  });
+
+  // Initialize page
+  document.addEventListener('DOMContentLoaded', function() {
+    searchInput.focus();
+    
+    const rows = partnerTableBody ? partnerTableBody.getElementsByTagName('tr') : [];
+    Array.from(rows).forEach((row, index) => {
+      row.style.animationDelay = `${index * 0.1}s`;
+    });
+    
+    setupLogoPreview();
+  });
+</script>
+{% endblock %}

@@ -937,7 +937,7 @@
             }
         }
     </style>
-     <section class="tp-partner-grid">
+     {% comment %} <section class="tp-partner-grid">
         <div class="container">
             <div class="tp-partner-grid-header">
                  <span class="tp-partner-hero-subtitle">/ Our Partnership /</span>
@@ -1082,7 +1082,92 @@
             </div>
         </div>
     </section>
-           
+            {% endcomment %}
+
+
+
+
+
+         <section class="tp-partner-grid">
+    <div class="container">
+        <div class="tp-partner-grid-header">
+            <span class="tp-partner-hero-subtitle">/ Our Partnership /</span>
+            <h2 class="tp-partner-grid-title">Strategic Cloud Partnerships</h2>
+            <p class="tp-partner-grid-desc">
+                We partner with industry leaders to deliver cutting-edge solutions tailored to your business needs.
+            </p>
+        </div>
+
+        {% for partner in partners %}
+        <div class="tp-partner-card">
+            <div class="tp-partner-card-left">
+                <img src="{{ partner.logo.url }}" 
+                     alt="{{ partner.name }}" 
+                     class="tp-partner-card-icon">
+            </div>
+
+            <div class="tp-partner-card-right">
+                <h3 class="tp-partner-card-title">{{ partner.name }}</h3>
+                <p class="tp-partner-card-desc">{{ partner.description }}</p>
+
+                 <div class="tp-partner-features">
+                              <div class="tp-partner-feature">
+                                 <span class="tp-partner-feature-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="#ffffffff" stroke-width="3">
+                                       <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
+                                 </span>
+                                 {{ partner.point1 }}
+                              </div>
+                              <div class="tp-partner-feature">
+                                 <span class="tp-partner-feature-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="#ffffffff" stroke-width="3">
+                                       <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
+                                 </span>
+                                   {{ partner.point2 }}
+                              </div>
+                              <div class="tp-partner-feature">
+                                 <span class="tp-partner-feature-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="#ffffffff" stroke-width="3">
+                                       <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
+                                 </span>
+                                  {{ partner.point3 }}
+                              </div>
+                              <div class="tp-partner-feature">
+                                 <span class="tp-partner-feature-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="#ffffffff" stroke-width="3">
+                                       <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
+                                 </span>
+                              {{ partner.point4 }}
+                              </div>
+                              <div class="tp-partner-feature">
+                                 <span class="tp-partner-feature-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="#ffffffff" stroke-width="3">
+                                       <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
+                                 </span>
+                              {{ partner.point5 }}
+                              </div>
+                              <div class="tp-partner-feature">
+                                 <span class="tp-partner-feature-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="#ffffffff" stroke-width="3">
+                                       <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
+                                 </span>
+                              {{ partner.point6 }}
+                              </div>
+                           </div>
+
+            </div>
+        </div>
+        {% endfor %}
+
+    </div>
+</section>
+
             {% comment %} <section class="tp-partner-grid">
                <div class="container">
                   <div class="tp-partner-grid-header">

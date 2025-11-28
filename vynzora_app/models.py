@@ -6,7 +6,24 @@ from django.core.exceptions import ValidationError
 from django.utils import timezone
 from ckeditor_uploader.fields import RichTextUploadingField
 
+class Partner(models.Model):
+    name = models.CharField(max_length=150, unique=True)
+    logo = models.ImageField(upload_to='partners/')  # supports image uploads
+    description = models.TextField(max_length=300)
 
+    point1 = models.CharField(max_length=150)
+    point2 = models.CharField(max_length=150)
+    point3 = models.CharField(max_length=150)
+    point4 = models.CharField(max_length=150)
+    point5 = models.CharField(max_length=150)
+    point6 = models.CharField(max_length=150)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.name
+    
+    
 class TrainService(models.Model):
     """Service or category for training FAQs"""
     name = models.CharField(max_length=200, unique=True)
