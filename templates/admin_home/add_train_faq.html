@@ -267,10 +267,10 @@
 
 <div class="add-faq-container">
   <div class="page-header">
-    <h2>Add Train FAQ</h2>
-    <p>Create a new FAQ for a train service</p>
+    <h2>Add FAQ</h2>
+    <p>Create a new FAQ for an service</p>
     <div class="breadcrumb-nav">
-      <a href="{% url 'train_faq_list' %}"><i class="mdi mdi-help-circle"></i> Train FAQs</a>
+      <a href="{% url 'train_faq_list' %}"><i class="mdi mdi-help-circle"></i> FAQs</a>
       <i class="mdi mdi-chevron-right"></i>
       <span>Add FAQ</span>
     </div>
@@ -279,7 +279,7 @@
   <div class="form-card">
     <div class="form-header">
       <i class="mdi mdi-help-circle"></i>
-      <h3>New Train FAQ</h3>
+      <h3>New FAQ</h3>
       <p>Fill in the details below to add a new FAQ</p>
     </div>
 
@@ -295,12 +295,12 @@
 
           <div class="form-group">
             <label class="form-label">
-              Train Service<span class="required">*</span>
+              Faq Service<span class="required">*</span>
             </label>
             <div class="input-icon-wrapper">
-              <i class="mdi mdi-train"></i>
+              <i class="mdi mdi-help-circle"></i>
               <select class="form-control" name="train_service" id="trainService" required>
-                <option value="">Select a train service</option>
+                <option value="">Select a faq service</option>
                 {% for service in train_services %}
                 <option value="{{ service.id }}">{{ service.name }}</option>
                 {% endfor %}

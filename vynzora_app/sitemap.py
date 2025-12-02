@@ -1,6 +1,6 @@
 from django.contrib.sitemaps import Sitemap
 from django.urls import reverse
-from .models import Blog, Website, Category
+from .models import Blog, Website, Category,TrainFAQ,TrainService
 
 # Define the site domain correctly
 SITE_DOMAIN = "https://vynzora.com"
@@ -51,3 +51,31 @@ class CategorySitemap(Sitemap):
 
     def location(self, obj):
         return f"{SITE_DOMAIN}{reverse('view_category')}"
+    
+
+
+class TrainServiceSitemap(Sitemap):
+    priority = 0.7
+    changefreq = "weekly"
+
+    def items(self):
+        return TrainService.objects.all()
+
+    def location(self, obj):
+        return f"{SITE_DOMAIN}{reverse('faq_page', kwargs={'service_slug': obj.slug})}"
+
+
+
+class TrainFAQSitemap(Sitemap):
+    priority = 0.5
+    changefreq = "weekly"
+
+    def items(self):
+        return TrainFAQ.objects.all()
+
+    def location(self, obj):
+        return (
+            f"{SITE_DOMAIN}"
+            f"{reverse('faq_by_service', kwargs={'service_slug': obj.train_service.slug})}"
+            f"#faq-{obj.id}"
+        )

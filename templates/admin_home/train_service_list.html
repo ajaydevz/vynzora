@@ -157,6 +157,8 @@
   .action-buttons {
     display: flex;
     gap: 8px;
+    flex-wrap: nowrap;
+    align-items: center;
   }
 
   .btn-action {
@@ -170,28 +172,41 @@
     align-items: center;
     gap: 6px;
     transition: all 0.3s ease;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .btn-view {
+    background: #2e7d32;
+    color: white;
+  }
+
+  .btn-view:hover {
+    background: #1b5e20;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(46, 125, 50, 0.3);
   }
 
   .btn-edit {
-    background: #e3f2fd;
-    color: #1976d2;
+    background: #1976d2;
+    color: white;
   }
 
   .btn-edit:hover {
-    background: #1976d2;
-    color: white;
+    background: #1565c0;
     transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(25, 118, 210, 0.3);
   }
 
   .btn-delete {
-    background: #ffebee;
-    color: #c62828;
+    background: #c62828;
+    color: white;
   }
 
   .btn-delete:hover {
-    background: #c62828;
-    color: white;
+    background: #b71c1c;
     transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(198, 40, 40, 0.3);
   }
 
   .btn-action i {
@@ -245,9 +260,10 @@
   .modal-content {
     background: white;
     border-radius: 16px;
-    max-width: 500px;
+    max-width: 600px;
     width: 90%;
-    overflow: hidden;
+    max-height: 90vh;
+    overflow-y: auto;
     animation: slideUp 0.3s ease;
   }
 
@@ -259,6 +275,10 @@
   .modal-header {
     padding: 25px 30px;
     border-bottom: 2px solid #f1f3f5;
+    position: sticky;
+    top: 0;
+    background: white;
+    z-index: 10;
   }
 
   .modal-header h3 {
@@ -279,6 +299,35 @@
     padding: 30px;
   }
 
+  .modal-section {
+    margin-bottom: 30px;
+  }
+
+  .modal-section:last-child {
+    margin-bottom: 0;
+  }
+
+  .section-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .section-title i {
+    color: #3498db;
+    font-size: 18px;
+  }
+
+  .section-divider {
+    height: 2px;
+    background: #f1f3f5;
+    margin: 25px 0;
+  }
+
   .form-group {
     margin-bottom: 20px;
   }
@@ -291,6 +340,13 @@
     margin-bottom: 8px;
   }
 
+  .form-label .optional {
+    color: #95a5a6;
+    font-weight: 400;
+    font-size: 12px;
+    margin-left: 4px;
+  }
+
   .form-control {
     width: 100%;
     padding: 12px 16px;
@@ -299,6 +355,7 @@
     border-radius: 10px;
     transition: all 0.3s ease;
     background: #f8f9fa;
+    font-family: inherit;
   }
 
   .form-control:focus {
@@ -306,6 +363,12 @@
     border-color: #3498db;
     background: #fff;
     box-shadow: 0 0 0 4px rgba(52, 152, 219, 0.1);
+  }
+
+  textarea.form-control {
+    min-height: 100px;
+    resize: vertical;
+    line-height: 1.6;
   }
 
   .slug-preview {
@@ -322,12 +385,43 @@
     margin-right: 8px;
   }
 
+  .char-counter {
+    font-size: 12px;
+    color: #6c757d;
+    margin-top: 6px;
+    text-align: right;
+  }
+
+  .char-counter.warning {
+    color: #f39c12;
+  }
+
+  .char-counter.danger {
+    color: #e74c3c;
+  }
+
+  .help-text {
+    font-size: 12px;
+    color: #6c757d;
+    margin-top: 6px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .help-text i {
+    font-size: 14px;
+  }
+
   .modal-footer {
     padding: 20px 30px;
     border-top: 2px solid #f1f3f5;
     display: flex;
     gap: 12px;
     justify-content: flex-end;
+    position: sticky;
+    bottom: 0;
+    background: white;
   }
 
   .btn-modal {
@@ -407,6 +501,20 @@
     color: #2c3e50;
   }
 
+  .seo-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #e8f5e9;
+    color: #2e7d32;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
   @media (max-width: 768px) {
     .page-header {
       flex-direction: column;
@@ -430,6 +538,20 @@
 
     .modal-content {
       width: 95%;
+      max-height: 85vh;
+    }
+
+    .modal-body {
+      padding: 20px;
+    }
+
+    .modal-footer {
+      flex-direction: column;
+    }
+
+    .btn-modal {
+      width: 100%;
+      justify-content: center;
     }
   }
 </style>
@@ -437,7 +559,7 @@
 <div class="service-list-container">
   <div class="page-header">
     <div class="header-left">
-      <h2>Train Services</h2>
+      <h2>FAQ Services</h2>
       <p>Manage your train services and their configurations</p>
     </div>
     <div class="header-right">
@@ -452,7 +574,7 @@
     <div class="list-header">
       <h3>
         <i class="mdi mdi-train"></i>
-        All Train Services
+        All FAQ Services
       </h3>
     </div>
 
@@ -465,7 +587,7 @@
               <th style="width: 80px;">#</th>
               <th>Service Name</th>
               <th style="width: 250px;">Slug</th>
-              <th style="width: 200px;">Actions</th>
+              <th style="width: 350px;">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -474,7 +596,7 @@
               <td>{{ forloop.counter }}</td>
               <td>
                 <div class="service-name">
-                  <i class="mdi mdi-train"></i>
+                  <i class="mdi mdi-help-circle"></i>
                   {{ service.name }}
                 </div>
               </td>
@@ -483,7 +605,11 @@
               </td>
               <td>
                 <div class="action-buttons">
-                  <button class="btn-action btn-edit" onclick='openEditModal({{ service.id }}, "{{ service.name|escapejs }}")'>
+                  <a href="http://127.0.0.1:8000/ask-us/{{ service.slug }}/" class="btn-action btn-view" target="_blank" title="View page on website">
+                    <i class="mdi mdi-eye"></i>
+                    View
+                  </a>
+                  <button class="btn-action btn-edit" onclick='openEditModal({{ service.id }}, "{{ service.name|escapejs }}", "{{ service.meta_title|default:""|escapejs }}", "{{ service.meta_description|default:""|escapejs }}")'>
                     <i class="mdi mdi-pencil"></i>
                     Edit
                   </button>
@@ -500,13 +626,9 @@
       </div>
       {% else %}
       <div class="empty-state">
-       
-        <h3>No Train Services Found</h3>
-        <p>Get started by adding your first train service</p>
-        {% comment %} <a href="{% url 'add_train_service' %}" class="btn-add">
-          <i class="mdi mdi-plus-circle"></i>
-          Add Train Service
-        </a> {% endcomment %}
+        <i class="mdi mdi-train"></i>
+        <h3>No FAQ Services Found</h3>
+        <p>Get started by adding your first FAQ service</p>
       </div>
       {% endif %}
     </div>
@@ -519,21 +641,82 @@
     <div class="modal-header">
       <h3>
         <i class="mdi mdi-pencil"></i>
-        Edit Train Service
+        Edit FAQ Service
       </h3>
     </div>
     <form method="POST" id="editForm">
       {% csrf_token %}
       <div class="modal-body">
-        <div class="form-group">
-          <label class="form-label">Service Name</label>
-          <input type="text" class="form-control" name="name" id="editServiceName" required placeholder="Enter service name">
+        <!-- Basic Information Section -->
+        <div class="modal-section">
+          <div class="section-title">
+            <i class="mdi mdi-information"></i>
+            <span>Basic Information</span>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label">Service Name</label>
+            <input type="text" class="form-control" name="name" id="editServiceName" required placeholder="Enter service name">
+          </div>
+          
+          <div class="slug-preview">
+            <i class="mdi mdi-link-variant"></i>
+            <strong>Slug Preview:</strong> <span id="editSlugValue"></span>
+          </div>
         </div>
-        <div class="slug-preview">
-          <i class="mdi mdi-link-variant"></i>
-          <strong>Slug Preview:</strong> <span id="editSlugValue"></span>
+
+        <div class="section-divider"></div>
+
+        <!-- SEO Section -->
+        <div class="modal-section">
+          <div class="section-title">
+            <i class="mdi mdi-search-web"></i>
+            <span>SEO Settings</span>
+            <span class="seo-badge">
+              <i class="mdi mdi-check-circle"></i>
+              Optional
+            </span>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">
+              Meta Title<span class="optional">(optional)</span>
+            </label>
+            <input 
+              type="text" 
+              class="form-control" 
+              name="meta_title" 
+              id="editMetaTitle"
+              placeholder="Enter SEO meta title"
+              maxlength="255"
+            >
+            <div class="char-counter" id="editTitleCounter">0 / 255 characters</div>
+            <div class="help-text">
+              <i class="mdi mdi-lightbulb"></i>
+              <span>Recommended: 50-60 characters</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">
+              Meta Description<span class="optional">(optional)</span>
+            </label>
+            <textarea 
+              class="form-control" 
+              name="meta_description" 
+              id="editMetaDescription"
+              placeholder="Enter SEO meta description"
+              maxlength="500"
+            ></textarea>
+            <div class="char-counter" id="editDescCounter">0 / 500 characters</div>
+            <div class="help-text">
+              <i class="mdi mdi-lightbulb"></i>
+              <span>Recommended: 150-160 characters</span>
+            </div>
+          </div>
         </div>
       </div>
+      
       <div class="modal-footer">
         <button type="button" class="btn-modal btn-cancel" onclick="closeEditModal()">
           <i class="mdi mdi-close"></i>
@@ -563,7 +746,7 @@
         <div class="delete-warning">
           <p>
             <i class="mdi mdi-alert"></i>
-            Are you sure you want to delete this train service?
+            Are you sure you want to delete this FAQ service?
           </p>
         </div>
         <div class="delete-info">
@@ -587,6 +770,7 @@
     </form>
   </div>
 </div>
+
 <script>
   let currentEditId = null;
   let currentDeleteId = null;
@@ -604,10 +788,30 @@
   const updateUrlTemplate = "{% url 'update_train_service' 0 %}";
   const deleteUrlTemplate = "{% url 'delete_train_service' 0 %}";
 
-  function openEditModal(id, name) {
+  function openEditModal(id, name, metaTitle, metaDescription) {
     currentEditId = id;
+    
+    // Set basic fields
     document.getElementById('editServiceName').value = name;
     document.getElementById('editSlugValue').textContent = generateSlug(name);
+    
+    // Set SEO fields
+    document.getElementById('editMetaTitle').value = metaTitle || '';
+    document.getElementById('editMetaDescription').value = metaDescription || '';
+    
+    // Update character counters
+    updateCharCounter(
+      document.getElementById('editMetaTitle'),
+      document.getElementById('editTitleCounter'),
+      255,
+      { min: 50, max: 60 }
+    );
+    updateCharCounter(
+      document.getElementById('editMetaDescription'),
+      document.getElementById('editDescCounter'),
+      500,
+      { min: 150, max: 160 }
+    );
 
     // Replace 0 with actual id
     document.getElementById('editForm').action = updateUrlTemplate.replace('0', id);
@@ -620,11 +824,40 @@
     currentEditId = null;
   }
 
+  // Slug generation on name input
   document.getElementById('editServiceName').addEventListener('input', function() {
     const slug = generateSlug(this.value);
     document.getElementById('editSlugValue').textContent = slug || '(empty)';
   });
 
+  // Character counter function
+  function updateCharCounter(input, counter, max, recommended) {
+    const length = input.value.length;
+    counter.textContent = `${length} / ${max} characters`;
+    
+    counter.classList.remove('warning', 'danger');
+    if (length > max * 0.9) {
+      counter.classList.add('danger');
+    } else if (length > max * 0.8) {
+      counter.classList.add('warning');
+    }
+    
+    if (recommended && length > 0 && length < recommended.min) {
+      counter.textContent += ` (recommended: ${recommended.min}-${recommended.max})`;
+      counter.classList.add('warning');
+    }
+  }
+
+  // Character counters for edit modal
+  document.getElementById('editMetaTitle').addEventListener('input', function() {
+    updateCharCounter(this, document.getElementById('editTitleCounter'), 255, { min: 50, max: 60 });
+  });
+
+  document.getElementById('editMetaDescription').addEventListener('input', function() {
+    updateCharCounter(this, document.getElementById('editDescCounter'), 500, { min: 150, max: 160 });
+  });
+
+  // Form validation
   document.getElementById('editForm').addEventListener('submit', function(e) {
     const name = document.getElementById('editServiceName').value.trim();
     if (!name) {
@@ -654,12 +887,14 @@
     currentDeleteId = null;
   }
 
+  // Close modal on outside click
   window.onclick = function(event) {
     if (event.target.classList.contains('modal')) {
       event.target.classList.remove('show');
     }
   }
 
+  // Close modal on Escape key
   document.addEventListener('keydown', function(event) {
     if (event.key === 'Escape') {
       closeEditModal();
@@ -667,6 +902,5 @@
     }
   });
 </script>
-
 
 {% endblock %}

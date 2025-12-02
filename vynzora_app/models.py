@@ -28,6 +28,8 @@ class TrainService(models.Model):
     """Service or category for training FAQs"""
     name = models.CharField(max_length=200, unique=True)
     slug = models.SlugField(max_length=200, unique=True)
+    meta_title = models.CharField(max_length=255, blank=True, null=True, help_text="SEO meta title")
+    meta_description = models.TextField(max_length=500, blank=True, null=True, help_text="SEO meta description")
 
     class Meta:
         verbose_name = "Train Service"

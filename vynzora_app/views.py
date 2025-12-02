@@ -176,15 +176,50 @@ def train_service_list(request):
     services = TrainService.objects.all()
     return render(request, "admin_home/train_service_list.html", {"train_services": services})
 
+# @login_required
+# @never_cache
+# def add_train_service(request):
+#     if request.method == "POST":
+#         name = request.POST.get("name", "").strip()
+#         if not name:
+#             messages.error(request, "Train Service name is required.")
+#             return redirect("add_train_service")
+#         TrainService.objects.create(name=name, slug=slugify(name))
+#         messages.success(request, "Train Service added successfully!")
+#         return redirect("train_service_list")
+#     return render(request, "admin_home/add_train_service.html")
+
+# @login_required
+# def update_train_service(request, service_id):
+#     service = get_object_or_404(TrainService, id=service_id)
+#     if request.method == "POST":
+#         name = request.POST.get("name", "").strip()
+#         service.name = name
+#         service.slug = slugify(name)
+#         service.save()
+#         messages.success(request, "Train Service updated successfully!")
+#         return redirect("train_service_list")
+#     return redirect("train_service_list")
+
+
 @login_required
 @never_cache
 def add_train_service(request):
     if request.method == "POST":
         name = request.POST.get("name", "").strip()
+        meta_title = request.POST.get("meta_title", "").strip()
+        meta_description = request.POST.get("meta_description", "").strip()
+        
         if not name:
             messages.error(request, "Train Service name is required.")
             return redirect("add_train_service")
-        TrainService.objects.create(name=name, slug=slugify(name))
+        
+        TrainService.objects.create(
+            name=name, 
+            slug=slugify(name),
+            meta_title=meta_title if meta_title else None,
+            meta_description=meta_description if meta_description else None
+        )
         messages.success(request, "Train Service added successfully!")
         return redirect("train_service_list")
     return render(request, "admin_home/add_train_service.html")
@@ -194,12 +229,19 @@ def update_train_service(request, service_id):
     service = get_object_or_404(TrainService, id=service_id)
     if request.method == "POST":
         name = request.POST.get("name", "").strip()
+        meta_title = request.POST.get("meta_title", "").strip()
+        meta_description = request.POST.get("meta_description", "").strip()
+        
         service.name = name
         service.slug = slugify(name)
+        service.meta_title = meta_title if meta_title else None
+        service.meta_description = meta_description if meta_description else None
         service.save()
+        
         messages.success(request, "Train Service updated successfully!")
         return redirect("train_service_list")
     return redirect("train_service_list")
+
 
 @login_required
 def delete_train_service(request, service_id):
@@ -379,6 +421,8 @@ def partners(request):
 #     }
 #     return render(request, 'home/service.html',context)
 
+
+
 def service_detail(request,  slug):
     service = get_object_or_404(Services, slug=slug)
     services = Services.objects.all()   
@@ -398,6 +442,7 @@ def service_detail(request,  slug):
         'career_job_count': active_jobs,
     }
     return render(request, 'home/service.html', context)
+
 
 
 from .models import Services
@@ -1943,8 +1988,53 @@ def delete_certificates(request,id):
 #     )
    
 
-def category_website_detail(request, category_slug, website_slug):
-    category = get_object_or_404(Category, slug=category_slug)
+
+
+from django.shortcuts import render, get_object_or_404, redirect
+from django.utils.text import slugify
+from .models import TrainService, TrainFAQ, Services, Client_Logo, Blog, ClientReview
+
+
+def faq_page(request, service_slug):
+    selected_service = get_object_or_404(TrainService, slug=service_slug)
+
+    services = TrainService.objects.annotate(
+        faq_count=Count('faqs')
+    ).filter(faq_count__gt=0)
+
+    faqs = selected_service.faqs.all()
+
+    return render(request, "home/faq.html", {
+        "train_service": selected_service,
+        "faqs": faqs,
+        "all_train_services": services,
+    })
+    
+
+# def faq_page(request, service_slug):
+#     services = TrainService.objects.annotate(
+#         faq_count=Count('faqs')
+#     ).filter(faq_count__gt=0)
+
+#     selected_service = TrainService.objects.filter(slug=service_slug).first()
+
+#     if not selected_service:
+#         return redirect('faq_page_all')  # 🔥 create a "general ask-us page"
+
+#     faqs = selected_service.faqs.all()
+
+#     return render(request, "faq/faq_page.html", {
+#         "services": services,
+#         "train_service": selected_service,
+#         "faqs": faqs,
+#         "all_train_services": services,
+#     })
+
+
+
+
+def category_website_detail(request, category_slug, website_slug):           
+    category = get_object_or_404(Category, slug=category_slug)              
     
     client_logos = Client_Logo.objects.all()
     
@@ -1958,23 +2048,7 @@ def category_website_detail(request, category_slug, website_slug):
     
         
     
-    # video_url = website.videos.strip() if website.videos else None
-    # print("RAW VIDEO VALUE FROM DB:", repr(video_url)) 
     
-    # video_url = None
-    # if website.videos and website.videos.strip():
-    #     # Split by newlines and get first non-empty line
-    #     video_lines = [line.strip() for line in website.videos.split('\n') if line.strip()]
-    #     if video_lines:
-    #         video_url = video_lines[0]
-    
-    # print("EXTRACTED VIDEO URL:", video_url)
-    
-    # # Extract YouTube video ID
-    # video_id = None
-    # if video_url:
-    #     video_id = extract_youtube_id(video_url)
-    #     print("EXTRACTED VIDEO ID:", video_id)
     
     video_id = None
     video_url = None

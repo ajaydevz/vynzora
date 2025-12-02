@@ -10,8 +10,10 @@ urlpatterns = [
     path('update-partner/<int:pk>/', views.update_partner, name='update_partner'),
     path('delete-partner/<int:pk>/', views.delete_partner, name='delete_partner'),
     
-    path('faqs/', views.faq_page, name='faq_page'),
-    path("filter-faqs/", views.filter_faqs, name="filter_faqs"),
+    path("ask-us/<slug:service_slug>/", views.faq_page, name="faq_page"),
+    
+  
+
 
     
    # TrainService URLs
@@ -25,7 +27,6 @@ urlpatterns = [
     path('train-faqs/update/<int:faq_id>/', views.update_train_faq, name='update_train_faq'),
     path('train-faqs/delete/<int:faq_id>/', views.delete_train_faq, name='delete_train_faq'),
     
-  
     
     path("subscribe/", views.subscribe_newsletter, name="subscribe_newsletter"),
     

@@ -126,6 +126,13 @@
     margin-left: 4px;
   }
 
+  .form-label .optional {
+    color: #95a5a6;
+    font-weight: 400;
+    font-size: 12px;
+    margin-left: 4px;
+  }
+
   .form-control {
     width: 100%;
     padding: 12px 16px;
@@ -134,6 +141,7 @@
     border-radius: 10px;
     transition: all 0.3s ease;
     background: #f8f9fa;
+    font-family: inherit;
   }
 
   .form-control:focus {
@@ -145,6 +153,12 @@
 
   .form-control:hover {
     border-color: #cbd5e0;
+  }
+
+  textarea.form-control {
+    min-height: 120px;
+    resize: vertical;
+    line-height: 1.6;
   }
 
   .input-icon-wrapper {
@@ -181,6 +195,21 @@
 
   .slug-preview i {
     margin-right: 8px;
+  }
+
+  .char-counter {
+    font-size: 12px;
+    color: #6c757d;
+    margin-top: 6px;
+    text-align: right;
+  }
+
+  .char-counter.warning {
+    color: #f39c12;
+  }
+
+  .char-counter.danger {
+    color: #e74c3c;
   }
 
   .form-actions {
@@ -242,6 +271,20 @@
     font-size: 14px;
   }
 
+  .seo-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #e8f5e9;
+    color: #2e7d32;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
   @media (max-width: 768px) {
     .form-body {
       padding: 30px 20px;
@@ -264,10 +307,10 @@
 
 <div class="add-service-container">
   <div class="page-header">
-    <h2>Add Train Service</h2>
-    <p>Create a new train service for your system</p>
+    <h2>Add FAQ Service Category</h2>
+    <p>Create a new FAQ service for your system</p>
     <div class="breadcrumb-nav">
-      <a href="{% url 'train_service_list' %}"><i class="mdi mdi-train"></i> Train Services</a>
+      <a href="{% url 'train_service_list' %}"><i class="mdi mdi-format-list-bulleted"></i> Services</a>
       <i class="mdi mdi-chevron-right"></i>
       <span>Add Service</span>
     </div>
@@ -275,8 +318,8 @@
 
   <div class="form-card">
     <div class="form-header">
-      <i class="mdi mdi-train"></i>
-      <h3>New Train Service</h3>
+      <i class="mdi mdi-plus-circle"></i>
+      <h3>New FAQ Service</h3>
       <p>Fill in the details below to add a new train service</p>
     </div>
 
@@ -284,6 +327,7 @@
       <form method="POST" id="addServiceForm">
         {% csrf_token %}
         
+        <!-- Basic Information Section -->
         <div class="form-section">
           <div class="section-title">
             <i class="mdi mdi-information"></i>
@@ -295,13 +339,13 @@
               Service Name<span class="required">*</span>
             </label>
             <div class="input-icon-wrapper">
-              <i class="mdi mdi-train"></i>
+              <i class="mdi mdi-file-document"></i>
               <input 
                 type="text" 
                 class="form-control" 
                 name="name" 
                 id="serviceName"
-                placeholder="Enter training service name (e.g.,webdevelopement, digital marketing etc.. )" 
+                placeholder="Enter training service name (e.g., Web Development, Digital Marketing)" 
                 required
               >
             </div>
@@ -312,6 +356,58 @@
             <div class="slug-preview" id="slugPreview">
               <i class="mdi mdi-link-variant"></i>
               <strong>Slug:</strong> <span id="slugValue"></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- SEO Section -->
+        <div class="form-section">
+          <div class="section-title">
+            <i class="mdi mdi-search-web"></i>
+            <span>SEO Settings</span>
+            <span class="seo-badge">
+              <i class="mdi mdi-check-circle"></i>
+              Optional
+            </span>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">
+              Meta Title<span class="optional">(optional)</span>
+            </label>
+            <div class="input-icon-wrapper">
+              <i class="mdi mdi-format-title"></i>
+              <input 
+                type="text" 
+                class="form-control" 
+                name="meta_title" 
+                id="metaTitle"
+                placeholder="Enter SEO meta title (recommended: 50-60 characters)"
+                maxlength="255"
+              >
+            </div>
+            <div class="char-counter" id="titleCounter">0 / 255 characters</div>
+            <div class="help-text">
+              <i class="mdi mdi-lightbulb"></i>
+              <span>This will appear in search engine results as the page title</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">
+              Meta Description<span class="optional">(optional)</span>
+            </label>
+            <textarea 
+              class="form-control" 
+              name="meta_description" 
+              id="metaDescription"
+              placeholder="Enter SEO meta description (recommended: 150-160 characters)"
+              maxlength="500"
+            ></textarea>
+            <div class="char-counter" id="descCounter">0 / 500 characters</div>
+            <div class="help-text">
+              <i class="mdi mdi-lightbulb"></i>
+              <span>This will appear in search results as the page description</span>
             </div>
           </div>
         </div>
@@ -355,6 +451,37 @@
     } else {
       slugPreview.classList.remove('show');
     }
+  });
+
+  // Character counters
+  const metaTitleInput = document.getElementById('metaTitle');
+  const metaDescInput = document.getElementById('metaDescription');
+  const titleCounter = document.getElementById('titleCounter');
+  const descCounter = document.getElementById('descCounter');
+
+  function updateCounter(input, counter, max, recommended) {
+    const length = input.value.length;
+    counter.textContent = `${length} / ${max} characters`;
+    
+    counter.classList.remove('warning', 'danger');
+    if (length > max * 0.9) {
+      counter.classList.add('danger');
+    } else if (length > max * 0.8) {
+      counter.classList.add('warning');
+    }
+    
+    if (recommended && length > 0 && length < recommended.min) {
+      counter.textContent += ` (recommended: ${recommended.min}-${recommended.max})`;
+      counter.classList.add('warning');
+    }
+  }
+
+  metaTitleInput.addEventListener('input', function() {
+    updateCounter(this, titleCounter, 255, { min: 50, max: 60 });
+  });
+
+  metaDescInput.addEventListener('input', function() {
+    updateCounter(this, descCounter, 500, { min: 150, max: 160 });
   });
 
   // Form validation
