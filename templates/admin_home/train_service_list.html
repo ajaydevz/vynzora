@@ -573,7 +573,6 @@
   <div class="list-card">
     <div class="list-header">
       <h3>
-        <i class="mdi mdi-train"></i>
         All FAQ Services
       </h3>
     </div>
@@ -605,10 +604,14 @@
               </td>
               <td>
                 <div class="action-buttons">
-                  <a href="http://127.0.0.1:8000/ask-us/{{ service.slug }}/" class="btn-action btn-view" target="_blank" title="View page on website">
+                  {% comment %} <a href="http://127.0.0.1:8000/ask-us/{{ service.slug }}/" class="btn-action btn-view" target="_blank" title="View page on website">
                     <i class="mdi mdi-eye"></i>
                     View
-                  </a>
+                  </a> {% endcomment %}
+                  <a href="{% url 'faq_page' service.slug %}" target="_blank"  class="btn-action btn-view">
+    <i class="mdi mdi-eye"></i> View
+</a>
+
                   <button class="btn-action btn-edit" onclick='openEditModal({{ service.id }}, "{{ service.name|escapejs }}", "{{ service.meta_title|default:""|escapejs }}", "{{ service.meta_description|default:""|escapejs }}")'>
                     <i class="mdi mdi-pencil"></i>
                     Edit

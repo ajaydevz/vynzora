@@ -605,7 +605,7 @@
                   {% endif %}
                 </div>
                 {{ offer_form.id }}
-                {{ offer_form.DELETE }}
+                {% comment %} {{ offer_form.DELETE }} {% endcomment %}
                 <div class="form-group">
                   <label class="form-label">Title<span class="required">*</span></label>
                   {{ offer_form.title }}
@@ -649,7 +649,7 @@
                   </button>
                 </div>
                 {{ step_form.id }}
-                {{ step_form.DELETE }}
+                {% comment %} {{ step_form.DELETE }} {% endcomment %}
                 <div class="form-group">
                   <label class="form-label">Step Title<span class="required">*</span></label>
                   {{ step_form.title }}
@@ -699,7 +699,7 @@
                   {% endif %}
                 </div>
                 {{ faq_form.id }}
-                {{ faq_form.DELETE }}
+                {% comment %} {{ faq_form.DELETE }} {% endcomment %}
                 <div class="form-group">
                   <label class="form-label">Question<span class="required">*</span></label>
                   {{ faq_form.question }}

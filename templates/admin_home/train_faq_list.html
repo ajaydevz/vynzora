@@ -143,10 +143,6 @@
     font-weight: 600;
   }
 
-  .service-badge i {
-    font-size: 14px;
-  }
-
   .faq-question {
     font-weight: 600;
     color: #2c3e50;
@@ -517,7 +513,6 @@
               <td>{{ forloop.counter }}</td>
               <td>
                 <span class="service-badge">
-                  <i class="mdi mdi-help-circle"></i>
                   {{ faq.train_service.name }}
                 </span>
               </td>
@@ -530,48 +525,49 @@
               <td>
                 <div class="faq-answer">
                   {% if faq.answer|length > 100 %}
-<span class="faq-answer-short" id="short-{{ faq.id }}">
-{{ faq.answer|slice:":100" }}...
-</span>
-<span class="faq-answer-full" id="full-{{ faq.id }}">
-{{ faq.answer }}
-</span>
-<span class="show-more" onclick="toggleAnswer({{ faq.id }})">
-<span id="toggle-text-{{ faq.id }}">Show more</span>
-<i class="mdi mdi-chevron-down" id="toggle-icon-{{ faq.id }}"></i>
-</span>
-{% else %}
-{{ faq.answer }}
-{% endif %}
-</div>
-</td>
-<td>
-<div class="action-buttons">
-<button class="btn-action btn-edit" onclick='openEditModal({{ faq.id }}, {{ faq.train_service.id }}, "{{ faq.question|escapejs }}", "{{ faq.answer|escapejs }}")'>
-<i class="mdi mdi-pencil"></i>
-Edit
-</button>
-<button class="btn-action btn-delete" onclick='openDeleteModal({{ faq.id }}, "{{ faq.question|escapejs }}")'>
-<i class="mdi mdi-delete"></i>
-Delete
-</button>
-</div>
-</td>
-</tr>
-{% endfor %}
-</tbody>
-</table>
-</div>
-{% else %}
-<div class="empty-state">
-<i class="mdi mdi-help-circle-outline"></i>
-<h3>No Train FAQs Found</h3>
-<p>Get started by adding your first FAQ</p>
-</div>
-{% endif %}
-</div>
+                    <span class="faq-answer-short" id="short-{{ faq.id }}">
+                      {{ faq.answer|slice:":100" }}...
+                    </span>
+                    <span class="faq-answer-full" id="full-{{ faq.id }}">
+                      {{ faq.answer }}
+                    </span>
+                    <span class="show-more" onclick="toggleAnswer({{ faq.id }})">
+                      <span id="toggle-text-{{ faq.id }}">Show more</span>
+                      <i class="mdi mdi-chevron-down" id="toggle-icon-{{ faq.id }}"></i>
+                    </span>
+                  {% else %}
+                    {{ faq.answer }}
+                  {% endif %}
+                </div>
+              </td>
+              <td>
+                <div class="action-buttons">
+                  <button class="btn-action btn-edit" onclick='openEditModal({{ faq.id }}, {{ faq.train_service.id }}, "{{ faq.question|escapejs }}", `{{ faq.answer|escapejs }}`)'>
+                    <i class="mdi mdi-pencil"></i>
+                    Edit
+                  </button>
+                  <button class="btn-action btn-delete" onclick='openDeleteModal({{ faq.id }}, "{{ faq.question|escapejs }}")'>
+                    <i class="mdi mdi-delete"></i>
+                    Delete
+                  </button>
+                </div>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% else %}
+      <div class="empty-state">
+        <i class="mdi mdi-help-circle-outline"></i>
+        <h3>No Train FAQs Found</h3>
+        <p>Get started by adding your first FAQ</p>
+      </div>
+      {% endif %}
+    </div>
   </div>
 </div>
+
 <!-- Edit Modal -->
 <div id="editModal" class="modal">
   <div class="modal-content">
@@ -588,11 +584,6 @@ Delete
           <label class="form-label">Train Service</label>
           <select class="form-control" name="train_service" id="editTrainService" required>
             <option value="">Select a train service</option>
-            {% for service in train_faqs.0.train_service|default:''|add:'dummy' %}
-            {% endfor %}
-            {% for faq in train_faqs %}
-              <option value="{{ faq.train_service.id }}">{{ faq.train_service.name }}</option>
-            {% endfor %}
           </select>
         </div>
         <div class="form-group">
@@ -617,6 +608,7 @@ Delete
     </form>
   </div>
 </div>
+
 <!-- Delete Modal -->
 <div id="deleteModal" class="modal">
   <div class="modal-content">
@@ -656,9 +648,29 @@ Delete
     </form>
   </div>
 </div>
+
 <script>
   const updateUrlTemplate = "{% url 'update_train_faq' 0 %}";
   const deleteUrlTemplate = "{% url 'delete_train_faq' 0 %}";
+
+  // Get all unique services from FAQs
+  const allServices = [
+    {% for faq in train_faqs %}
+      { id: {{ faq.train_service.id }}, name: "{{ faq.train_service.name|escapejs }}" },
+    {% endfor %}
+  ];
+
+  // Remove duplicates
+  const uniqueServices = Array.from(new Map(allServices.map(s => [s.id, s])).values());
+
+  // Populate the edit modal service dropdown
+  const editServiceSelect = document.getElementById('editTrainService');
+  uniqueServices.forEach(service => {
+    const option = document.createElement('option');
+    option.value = service.id;
+    option.textContent = service.name;
+    editServiceSelect.appendChild(option);
+  });
 
   function toggleAnswer(id) {
     const shortEl = document.getElementById('short-' + id);
@@ -685,20 +697,24 @@ Delete
     document.getElementById('editAnswer').value = answer;
     document.getElementById('editForm').action = updateUrlTemplate.replace('0', id);
     document.getElementById('editModal').classList.add('show');
+    document.body.style.overflow = 'hidden';
   }
 
   function closeEditModal() {
     document.getElementById('editModal').classList.remove('show');
+    document.body.style.overflow = 'auto';
   }
 
   function openDeleteModal(id, question) {
     document.getElementById('deleteQuestion').textContent = question;
     document.getElementById('deleteForm').action = deleteUrlTemplate.replace('0', id);
     document.getElementById('deleteModal').classList.add('show');
+    document.body.style.overflow = 'hidden';
   }
 
   function closeDeleteModal() {
     document.getElementById('deleteModal').classList.remove('show');
+    document.body.style.overflow = 'auto';
   }
 
   window.onclick = function(event) {
@@ -715,10 +731,11 @@ Delete
   });
 
   document.getElementById('editForm').addEventListener('submit', function(e) {
+    const service = document.getElementById('editTrainService').value;
     const question = document.getElementById('editQuestion').value.trim();
     const answer = document.getElementById('editAnswer').value.trim();
 
-    if (!question || !answer) {
+    if (!service || !question || !answer) {
       e.preventDefault();
       alert('Please fill in all fields');
       return false;
@@ -726,6 +743,12 @@ Delete
 
     const submitBtn = this.querySelector('[type="submit"]');
     submitBtn.innerHTML = '<i class="mdi mdi-loading mdi-spin"></i> Updating...';
+    submitBtn.disabled = true;
+  });
+
+  document.getElementById('deleteForm').addEventListener('submit', function() {
+    const submitBtn = this.querySelector('[type="submit"]');
+    submitBtn.innerHTML = '<i class="mdi mdi-loading mdi-spin"></i> Deleting...';
     submitBtn.disabled = true;
   });
 </script>

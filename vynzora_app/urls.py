@@ -10,7 +10,10 @@ urlpatterns = [
     path('update-partner/<int:pk>/', views.update_partner, name='update_partner'),
     path('delete-partner/<int:pk>/', views.delete_partner, name='delete_partner'),
     
+    # path("ask-us/<slug:service_slug>/", views.faq_page, name="faq_page"),
+    
     path("ask-us/<slug:service_slug>/", views.faq_page, name="faq_page"),
+
     
   
 

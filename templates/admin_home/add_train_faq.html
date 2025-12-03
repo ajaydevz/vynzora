@@ -4,7 +4,7 @@
 {% block content %}
 <style>
   .add-faq-container {
-    max-width: 900px;
+    max-width: 1100px;
     margin: 0 auto;
     animation: fadeIn 0.5s ease;
   }
@@ -50,10 +50,6 @@
     color: #2980b9;
   }
 
-  .breadcrumb-nav i {
-    font-size: 12px;
-  }
-
   .form-card {
     background: #fff;
     border-radius: 16px;
@@ -80,25 +76,67 @@
     margin-bottom: 8px;
   }
 
-  .form-header p {
-    font-size: 14px;
-    opacity: 0.9;
-    margin: 0;
-  }
-
   .form-body {
     padding: 40px;
   }
 
-  .form-section {
+  .service-selector {
+    background: linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 100%);
+    padding: 25px;
+    border-radius: 12px;
     margin-bottom: 30px;
+    border: 2px solid #e1bee7;
+  }
+
+  .service-selector label {
+    display: block;
+    font-size: 15px;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 12px;
+  }
+
+  .service-selector select {
+    width: 100%;
+    padding: 14px 16px;
+    font-size: 15px;
+    border: 2px solid #ce93d8;
+    border-radius: 10px;
+    background: white;
+    transition: all 0.3s ease;
+  }
+
+  .service-selector select:focus {
+    outline: none;
+    border-color: #ba68c8;
+    box-shadow: 0 0 0 4px rgba(186, 104, 200, 0.1);
+  }
+
+  .faq-section {
+    display: none;
+  }
+
+  .faq-section.active {
+    display: block;
+    animation: slideDown 0.4s ease;
+  }
+
+  @keyframes slideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
   .section-title {
-    font-size: 16px;
+    font-size: 18px;
     font-weight: 600;
     color: #2c3e50;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
     display: flex;
     align-items: center;
     gap: 10px;
@@ -106,11 +144,87 @@
 
   .section-title i {
     color: #3498db;
-    font-size: 20px;
+    font-size: 24px;
+  }
+
+  .faq-count {
+    background: #3498db;
+    color: white;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    margin-left: auto;
+  }
+
+  .faq-items-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .faq-item {
+    background: #f8f9fa;
+    border: 2px solid #e9ecef;
+    border-radius: 12px;
+    padding: 25px;
+    position: relative;
+    transition: all 0.3s ease;
+  }
+
+  .faq-item:hover {
+    border-color: #3498db;
+    box-shadow: 0 4px 12px rgba(52, 152, 219, 0.1);
+  }
+
+  .faq-item-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+
+  .faq-number {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+    color: #2c3e50;
+  }
+
+  .faq-badge {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .remove-faq-btn {
+    background: #e74c3c;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+
+  .remove-faq-btn:hover {
+    background: #c0392b;
+    transform: scale(1.05);
   }
 
   .form-group {
-    margin-bottom: 24px;
+    margin-bottom: 20px;
   }
 
   .form-label {
@@ -133,50 +247,70 @@
     border: 2px solid #e9ecef;
     border-radius: 10px;
     transition: all 0.3s ease;
-    background: #f8f9fa;
+    background: white;
+    font-family: inherit;
   }
 
   .form-control:focus {
     outline: none;
     border-color: #3498db;
-    background: #fff;
     box-shadow: 0 0 0 4px rgba(52, 152, 219, 0.1);
   }
 
-  .form-control:hover {
-    border-color: #cbd5e0;
-  }
-
-  select.form-control {
-    cursor: pointer;
-    appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236c757d' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 16px center;
-    padding-right: 40px;
-  }
-
   textarea.form-control {
-    resize: vertical;
     min-height: 120px;
-    font-family: inherit;
+    resize: vertical;
+    line-height: 1.6;
   }
 
-  .input-icon-wrapper {
-    position: relative;
+  .add-more-btn {
+    width: 100%;
+    padding: 16px;
+    background: linear-gradient(135deg, #27ae60, #229954);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+    transition: all 0.3s ease;
   }
 
-  .input-icon-wrapper i {
-    position: absolute;
-    left: 16px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #6c757d;
-    font-size: 18px;
+  .add-more-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(39, 174, 96, 0.3);
   }
 
-  .input-icon-wrapper .form-control {
-    padding-left: 48px;
+  .add-more-btn:disabled {
+    background: #95a5a6;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  .add-more-btn i {
+    font-size: 20px;
+  }
+
+  .max-limit-message {
+    text-align: center;
+    padding: 16px;
+    background: #fff3cd;
+    border: 2px solid #ffc107;
+    border-radius: 12px;
+    color: #856404;
+    font-size: 14px;
+    font-weight: 600;
+    margin-top: 20px;
+    display: none;
+  }
+
+  .max-limit-message.show {
+    display: block;
   }
 
   .form-actions {
@@ -221,37 +355,13 @@
     background: #dee2e6;
   }
 
-  .btn i {
-    font-size: 18px;
-  }
-
-  .help-text {
-    font-size: 12px;
-    color: #6c757d;
-    margin-top: 6px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-
-  .help-text i {
-    font-size: 14px;
-  }
-
-  .char-counter {
-    font-size: 12px;
-    color: #6c757d;
-    text-align: right;
-    margin-top: 6px;
-  }
-
   @media (max-width: 768px) {
     .form-body {
       padding: 30px 20px;
     }
 
-    .form-header {
-      padding: 25px 20px;
+    .faq-item {
+      padding: 20px;
     }
 
     .form-actions {
@@ -267,99 +377,72 @@
 
 <div class="add-faq-container">
   <div class="page-header">
-    <h2>Add FAQ</h2>
-    <p>Create a new FAQ for an service</p>
+    <h2>Add FAQs</h2>
+    <p>Add multiple FAQs for a train service at once</p>
     <div class="breadcrumb-nav">
-      <a href="{% url 'train_faq_list' %}"><i class="mdi mdi-help-circle"></i> FAQs</a>
+      <a href="{% url 'train_faq_list' %}"><i class="mdi mdi-format-list-bulleted"></i> FAQs</a>
       <i class="mdi mdi-chevron-right"></i>
-      <span>Add FAQ</span>
+      <span>Add FAQs</span>
     </div>
   </div>
 
   <div class="form-card">
     <div class="form-header">
-      <i class="mdi mdi-help-circle"></i>
-      <h3>New FAQ</h3>
-      <p>Fill in the details below to add a new FAQ</p>
+      <i class="mdi mdi-help-circle-multiple"></i>
+      <h3>Add Multiple FAQs</h3>
+      <p>Select a service and add up to 10 FAQs at once</p>
     </div>
 
     <div class="form-body">
       <form method="POST" id="addFaqForm">
         {% csrf_token %}
         
-        <div class="form-section">
-          <div class="section-title">
-            <i class="mdi mdi-information"></i>
-            <span>FAQ Information</span>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label">
-              Faq Service<span class="required">*</span>
-            </label>
-            <div class="input-icon-wrapper">
-              <i class="mdi mdi-help-circle"></i>
-              <select class="form-control" name="train_service" id="trainService" required>
-                <option value="">Select a faq service</option>
-                {% for service in train_services %}
-                <option value="{{ service.id }}">{{ service.name }}</option>
-                {% endfor %}
-              </select>
-            </div>
-            <div class="help-text">
-              <i class="mdi mdi-information"></i>
-              <span>Select the train service this FAQ belongs to</span>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label">
-              Question<span class="required">*</span>
-            </label>
-            <div class="input-icon-wrapper">
-              <i class="mdi mdi-comment-question"></i>
-              <input 
-                type="text" 
-                class="form-control" 
-                name="question" 
-                id="faqQuestion"
-                placeholder="Enter the FAQ question" 
-                required
-                maxlength="255"
-              >
-            </div>
-            <div class="char-counter">
-              <span id="questionCount">0</span>/255 characters
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label">
-              Answer<span class="required">*</span>
-            </label>
-            <textarea 
-              class="form-control" 
-              name="answer" 
-              id="faqAnswer"
-              placeholder="Enter the FAQ answer"
-              required
-            ></textarea>
-            <div class="help-text">
-              <i class="mdi mdi-information"></i>
-              <span>Provide a clear and detailed answer</span>
-            </div>
-          </div>
+        <!-- Service Selection -->
+        <div class="service-selector">
+          <label>
+            
+            Select Train Service<span class="required" style="color: #e74c3c;">*</span>
+          </label>
+          <select name="train_service" id="serviceSelect" required>
+            <option value="">-- Choose a Service --</option>
+            {% for service in train_services %}
+            <option value="{{ service.id }}">{{ service.name }}</option>
+            {% endfor %}
+          </select>
         </div>
 
-        <div class="form-actions">
-          <button type="button" class="btn btn-secondary" onclick="window.location.href='{% url 'train_faq_list' %}'">
-            <i class="mdi mdi-arrow-left"></i>
-            Cancel
+        <!-- FAQ Section -->
+        <div class="faq-section" id="faqSection">
+          <div class="section-title">
+            <i class="mdi mdi-frequently-asked-questions"></i>
+            <span>FAQ Questions & Answers</span>
+            <span class="faq-count" id="faqCount">0 / 10</span>
+          </div>
+
+          <div class="faq-items-container" id="faqItemsContainer">
+            <!-- FAQ items will be added here dynamically -->
+          </div>
+
+          <button type="button" class="add-more-btn" id="addMoreBtn">
+            <i class="mdi mdi-plus-circle"></i>
+            <span>Add Another FAQ</span>
           </button>
-          <button type="submit" class="btn btn-primary">
-            <i class="mdi mdi-check"></i>
-            Add FAQ
-          </button>
+
+          <div class="max-limit-message" id="maxLimitMessage">
+            <i class="mdi mdi-alert-circle"></i>
+            Maximum limit of 10 FAQs reached
+          </div>
+
+          <div class="form-actions">
+            <button type="button" class="btn btn-secondary" onclick="window.location.href='{% url 'train_faq_list' %}'">
+              <i class="mdi mdi-arrow-left"></i>
+              Cancel
+            </button>
+            <button type="submit" class="btn btn-primary" id="submitBtn">
+              <i class="mdi mdi-check"></i>
+              Save All FAQs
+            </button>
+          </div>
         </div>
       </form>
     </div>
@@ -367,52 +450,207 @@
 </div>
 
 <script>
-  const questionInput = document.getElementById('faqQuestion');
-  const questionCount = document.getElementById('questionCount');
+  let faqCounter = 0;
+  const maxFaqs = 10;
+  const serviceSelect = document.getElementById('serviceSelect');
+  const faqSection = document.getElementById('faqSection');
+  const faqItemsContainer = document.getElementById('faqItemsContainer');
+  const addMoreBtn = document.getElementById('addMoreBtn');
+  const maxLimitMessage = document.getElementById('maxLimitMessage');
+  const faqCountDisplay = document.getElementById('faqCount');
 
-  questionInput.addEventListener('input', function() {
-    questionCount.textContent = this.value.length;
+  // Show FAQ section when service is selected
+  serviceSelect.addEventListener('change', function() {
+    if (this.value) {
+      faqSection.classList.add('active');
+      // Add first FAQ if none exist
+      if (faqCounter === 0) {
+        addFaqItem();
+      }
+    } else {
+      faqSection.classList.remove('active');
+    }
   });
 
+  // Add FAQ item
+  function addFaqItem() {
+    if (faqCounter >= maxFaqs) {
+      return;
+    }
+
+    faqCounter++;
+    const faqItem = document.createElement('div');
+    faqItem.className = 'faq-item';
+    faqItem.setAttribute('data-faq-index', faqCounter);
+    faqItem.innerHTML = `
+      <div class="faq-item-header">
+        <div class="faq-number">
+          <div class="faq-badge">
+            <i class="mdi mdi-help-circle"></i>
+            <span>FAQ #${faqCounter}</span>
+          </div>
+        </div>
+        ${faqCounter > 1 ? `
+        <button type="button" class="remove-faq-btn" onclick="removeFaqItem(this)">
+          <i class="mdi mdi-close"></i>
+          Remove
+        </button>
+        ` : ''}
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">
+          Question<span class="required">*</span>
+        </label>
+        <input 
+          type="text" 
+          class="form-control" 
+          name="question_${faqCounter}" 
+          placeholder="Enter your FAQ question..."
+          required
+        >
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">
+          Answer<span class="required">*</span>
+        </label>
+        <textarea 
+          class="form-control" 
+          name="answer_${faqCounter}" 
+          placeholder="Enter the answer to this question..."
+          required
+        ></textarea>
+      </div>
+    `;
+
+    faqItemsContainer.appendChild(faqItem);
+    updateFaqCount();
+    checkMaxLimit();
+
+    // Scroll to the new item
+    faqItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
+  // Remove FAQ item
+  window.removeFaqItem = function(btn) {
+    const faqItem = btn.closest('.faq-item');
+    faqItem.style.animation = 'fadeOut 0.3s ease';
+    setTimeout(() => {
+      faqItem.remove();
+      faqCounter--;
+      renumberFaqs();
+      updateFaqCount();
+      checkMaxLimit();
+    }, 300);
+  };
+
+  // Renumber FAQs after removal
+  function renumberFaqs() {
+    const faqItems = document.querySelectorAll('.faq-item');
+    faqItems.forEach((item, index) => {
+      const newIndex = index + 1;
+      item.setAttribute('data-faq-index', newIndex);
+      
+      const badge = item.querySelector('.faq-badge span');
+      if (badge) badge.textContent = `FAQ #${newIndex}`;
+      
+      const questionInput = item.querySelector('input[name^="question_"]');
+      if (questionInput) questionInput.name = `question_${newIndex}`;
+      
+      const answerTextarea = item.querySelector('textarea[name^="answer_"]');
+      if (answerTextarea) answerTextarea.name = `answer_${newIndex}`;
+    });
+    faqCounter = faqItems.length;
+  }
+
+  // Update FAQ count
+  function updateFaqCount() {
+    faqCountDisplay.textContent = `${faqCounter} / ${maxFaqs}`;
+  }
+
+  // Check max limit
+  function checkMaxLimit() {
+    if (faqCounter >= maxFaqs) {
+      addMoreBtn.disabled = true;
+      addMoreBtn.style.display = 'none';
+      maxLimitMessage.classList.add('show');
+    } else {
+      addMoreBtn.disabled = false;
+      addMoreBtn.style.display = 'flex';
+      maxLimitMessage.classList.remove('show');
+    }
+  }
+
+  // Add more button click
+  addMoreBtn.addEventListener('click', addFaqItem);
+
+  // Form submission
   const form = document.getElementById('addFaqForm');
   form.addEventListener('submit', function(e) {
-    const service = document.getElementById('trainService').value;
-    const question = questionInput.value.trim();
-    const answer = document.getElementById('faqAnswer').value.trim();
+    const serviceId = serviceSelect.value;
 
-    if (!service) {
+    if (!serviceId) {
       e.preventDefault();
-      alert('Please select a train service');
+      alert('Please select a service first');
+      serviceSelect.focus();
       return false;
     }
 
-    if (!question) {
+    if (faqCounter === 0) {
       e.preventDefault();
-      alert('Please enter a question');
+      alert('Please add at least one FAQ');
       return false;
     }
 
-    if (question.length < 10) {
+    // Check if all FAQs have both question and answer
+    const faqItems = document.querySelectorAll('.faq-item');
+    let allValid = true;
+    let emptyFound = false;
+
+    faqItems.forEach((item, index) => {
+      const question = item.querySelector('input[name^="question_"]').value.trim();
+      const answer = item.querySelector('textarea[name^="answer_"]').value.trim();
+      
+      if (!question || !answer) {
+        allValid = false;
+        if (!emptyFound) {
+          item.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          item.style.borderColor = '#e74c3c';
+          setTimeout(() => {
+            item.style.borderColor = '#e9ecef';
+          }, 2000);
+          emptyFound = true;
+        }
+      }
+    });
+
+    if (!allValid) {
       e.preventDefault();
-      alert('Question must be at least 10 characters long');
+      alert('Please fill in all questions and answers before submitting');
       return false;
     }
 
-    if (!answer) {
-      e.preventDefault();
-      alert('Please enter an answer');
-      return false;
-    }
-
-    if (answer.length < 20) {
-      e.preventDefault();
-      alert('Answer must be at least 20 characters long');
-      return false;
-    }
-
-    const submitBtn = form.querySelector('[type="submit"]');
-    submitBtn.innerHTML = '<i class="mdi mdi-loading mdi-spin"></i> Adding...';
+    const submitBtn = document.getElementById('submitBtn');
+    submitBtn.innerHTML = '<i class="mdi mdi-loading mdi-spin"></i> Saving FAQs...';
     submitBtn.disabled = true;
   });
+
+  // Fade out animation
+  const style = document.createElement('style');
+  style.textContent = `
+    @keyframes fadeOut {
+      from {
+        opacity: 1;
+        transform: scale(1);
+      }
+      to {
+        opacity: 0;
+        transform: scale(0.95);
+      }
+    }
+  `;
+  document.head.appendChild(style);
 </script>
 {% endblock %}
+
