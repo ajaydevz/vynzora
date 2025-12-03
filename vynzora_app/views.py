@@ -88,7 +88,12 @@ def faq_page(request, service_slug):
     train_service = get_object_or_404(TrainService, slug=service_slug)
 
     services = Services.objects.all()
+    print('service from faq>>>>>>>>',services)
+
+    
+    # Get services for footer
     footer_services = Services.objects.order_by("?")[:4]
+    
     train_services = TrainService.objects.all()
 
     faqs = TrainFAQ.objects.filter(train_service=train_service)
@@ -103,25 +108,25 @@ def faq_page(request, service_slug):
 
 
 
-def filter_faqs(request):
-    service_id = request.GET.get("service_id")
+# def filter_faqs(request):
+#     service_id = request.GET.get("service_id")
 
-    if service_id == "all":
-        faqs = TrainFAQ.objects.all()
-    else:
-        faqs = TrainFAQ.objects.filter(train_service_id=service_id)
+#     if service_id == "all":
+#         faqs = TrainFAQ.objects.all()
+#     else:
+#         faqs = TrainFAQ.objects.filter(train_service_id=service_id)
 
-    data = {
-        "faqs": [
-            {
-                "id": faq.id,
-                "question": faq.question,
-                "answer": faq.answer,
-            }
-            for faq in faqs
-        ]
-    }
-    return JsonResponse(data)
+#     data = {
+#         "faqs": [
+#             {
+#                 "id": faq.id,
+#                 "question": faq.question,
+#                 "answer": faq.answer,
+#             }
+#             for faq in faqs
+#         ]
+#     }
+#     return JsonResponse(data)
 
 
 

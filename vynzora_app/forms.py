@@ -54,8 +54,8 @@ StepFormSet = inlineformset_factory(
 FAQFormSet = inlineformset_factory(
     Services, ServiceFAQ,
     fields=["question", "answer"],
-    extra=6,  # max 6 FAQ inputs
-    max_num=6,
+    extra=10,  # max 6 FAQ inputs
+    max_num=10,
     can_delete=True
 )
 

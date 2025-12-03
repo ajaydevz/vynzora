@@ -1,11 +1,11 @@
 {% extends "home/base.html" %}
 {% load static %}
 
-{% block meta_title %}{{ train_service.meta_title }} - FAQs | Vynzora{% endblock %}
+{% block title %}{{ train_service.meta_title|default:train_service.name }} - FAQs | Vynzora{% endblock %}
 
-{% block meta_description %}{{ train_service.meta_description }}{% endblock %}
+{% block meta_description %}{{ train_service.meta_description|default:"Frequently asked questions about "|add:train_service.name }}{% endblock %}
 
-{% block canonical_url %}https://127.0.0.1:8000/ask-us/{{ train_service.slug }}/{% endblock %}
+{% block canonical_url %}{{ request.build_absolute_uri }}{% endblock %}
 
 {% block extra_css %}
 <style>
@@ -259,6 +259,90 @@
     font-size: 18px;
 }
 
+/* --- FAQ PAGE OVERRIDE STYLES --- */
+.tp-faq-area,
+.accordion-item,
+.tp-faq-btn,
+.tp-faq-question-text,
+.tp-faq-answer p,
+.tp-faq-details-para,
+.tp-faq-ai-title-wrap span,
+.tp-section-ai-title,
+.tp-no-faq-message h3,
+.tp-breadcrumb-list ul li a,
+.tp-service-hero-left h2 {
+    color: #000 !important;
+}
+
+/* Question button */
+.tp-faq-btn {
+    background: transparent !important;
+    font-size: 24px;
+    font-weight: 600;
+}
+
+/* Question number */
+.tp-faq-ai-count {
+    color: #000 !important;
+    font-weight: 700;
+}
+
+/* Accordion icon container */
+.accordion-btn {
+    position: absolute;
+    right: 0;
+    top: 30px;
+    width: 40px;
+    height: 40px;
+    background: #000 !important;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+/* + icon */
+.accordion-btn::before,
+.accordion-btn::after {
+    content: "";
+    background: #fff !important;
+    position: absolute;
+    transition: all 0.3s ease;
+}
+
+.accordion-btn::before {
+    width: 16px;
+    height: 2px;
+}
+
+.accordion-btn::after {
+    height: 16px;
+    width: 2px;
+}
+
+/* When Open → Show Minus */
+.tp-faq-btn:not(.collapsed) .accordion-btn::after {
+    opacity: 0 !important;
+}
+
+/* Answer area */
+.tp-faq-answer p {
+    color: #000 !important;
+    line-height: 1.7;
+}
+
+/* Improve spacing for answers */
+.accordion-body {
+    padding-left: 70px !important;
+}
+
+/* Remove borders completely & clean look */
+.accordion-item {
+    border: none !important;
+    border-bottom: 1px solid #dcdcdc !important;
+}
+
 /* Responsive Styles */
 @media (max-width: 1199px) {
     .tp-section-ai-title {
@@ -311,7 +395,7 @@
     }
     
     .accordion-body {
-        padding: 0 0 25px 50px;
+        padding: 0 0 25px 50px !important;
     }
     
     .accordion-btn {
@@ -348,7 +432,7 @@
     }
     
     .accordion-body {
-        padding: 0 0 20px 45px;
+        padding: 0 0 20px 45px !important;
     }
 }
 </style>
@@ -450,7 +534,7 @@
                                  class="accordion-collapse collapse {% if forloop.first %}show{% endif %}" 
                                  aria-labelledby="faq_{{ forloop.counter }}" 
                                  data-bs-parent="#faq_accordion">
-                                <div class="accordion-body tp-faq-details-para" >
+                                <div class="accordion-body tp-faq-details-para">
                                     <div class="tp-faq-answer">
                                         {{ faq.answer|linebreaks }}
                                     </div>
@@ -475,104 +559,5 @@
         </div>
     </div>
 </div>
-
-
-<style>
-/* --- FAQ PAGE OVERRIDE STYLES --- */
-.tp-faq-area,
-.accordion-item,
-.tp-faq-btn,
-.tp-faq-question-text,
-.tp-faq-answer p,
-.tp-faq-details-para,
-.tp-faq-ai-title-wrap span,
-.tp-section-ai-title,
-.tp-no-faq-message h3,
-.tp-breadcrumb-list ul li a,
-.tp-service-hero-left h2 {
-    color: #000 !important;
-}
-
-/* Question button */
-.tp-faq-btn {
-    background: transparent !important;
-    font-size: 24px;
-    font-weight: 600;
-}
-
-/* Question number */
-.tp-faq-ai-count {
-    color: #000 !important;
-    font-weight: 700;
-}
-
-/* Accordion icon container */
-.accordion-btn {
-    position: absolute;
-    right: 0;
-    top: 30px;
-    width: 40px;
-    height: 40px;
-    background: #000 !important;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s ease;
-}
-
-/* + icon */
-.accordion-btn::before,
-.accordion-btn::after {
-    content: "";
-    background: #fff !important;
-    position: absolute;
-    transition: all 0.3s ease;
-}
-
-.accordion-btn::before {
-    width: 16px;
-    height: 2px;
-}
-
-.accordion-btn::after {
-    height: 16px;
-    width: 2px;
-}
-
-/* When Open → Show Minus */
-.tp-faq-btn:not(.collapsed) .accordion-btn::after {
-    opacity: 0 !important;
-}
-
-/* Answer area */
-.tp-faq-answer p {
-    color: #000 !important;
-    line-height: 1.7;
-}
-
-/* Improve spacing for answers */
-.accordion-body {
-    padding-left: 70px !important;
-}
-
-/* Remove borders completely & clean look */
-.accordion-item {
-    border: none !important;
-    border-bottom: 1px solid #dcdcdc !important;
-}
-
-/* Responsive adjustments */
-@media (max-width: 767px) {
-    .accordion-body {
-        padding-left: 40px !important;
-    }
-    .tp-faq-btn {
-        font-size: 18px;
-    }
-}
-</style>
-
-
 <!-- FAQ Area End -->
 {% endblock %}

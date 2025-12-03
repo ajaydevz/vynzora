@@ -891,7 +891,7 @@
     const items = container.querySelectorAll('.formset-item');
     const totalForms = document.querySelector(`input[name="${formsetType}_formset-TOTAL_FORMS"]`);
     
-    const maxForms = formsetType === 'step' ? 4 : formsetType === 'faq' ? 6 : 999;
+    const maxForms = formsetType === 'step' ? 4 : formsetType === 'faq' ? 10 : 999;
     
     // Count visible items
     const visibleItems = Array.from(items).filter(item => item.style.display !== 'none');
@@ -989,7 +989,7 @@
   }
 
   function updateAddButton(formsetType) {
-    const maxForms = formsetType === 'step' ? 4 : formsetType === 'faq' ? 6 : 999;
+    const maxForms = formsetType === 'step' ? 4 : formsetType === 'faq' ? 10 : 999;
     const container = document.getElementById(`${formsetType}Formset`);
     const visibleItems = Array.from(container.querySelectorAll('.formset-item')).filter(
       item => item.style.display !== 'none'

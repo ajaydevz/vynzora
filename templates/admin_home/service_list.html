@@ -1386,7 +1386,7 @@ document.addEventListener('DOMContentLoaded', function() {
         <div id="faqs-tab" class="tab-content">
           <div class="formset-container">
             <div class="tab-header">
-              <h4>FAQs (Optional, Max 6)</h4>
+              <h4>FAQs (Optional, Max 10)</h4>
               <button type="button" class="btn-add-formset" id="addFaqBtn" onclick="addFaq()">
                 <i class="mdi mdi-plus"></i>
                 Add FAQ
@@ -1654,354 +1654,7 @@ document.addEventListener('DOMContentLoaded', function() {
 }
 
 </style>
-{% comment %} 
-<script>
-let currentServiceId = null;
-let offerCounter = 0;
-let faqCounter = 0;
-let descriptionEditor; // CKEditor instance
 
-// Initialize CKEditor
-function initCKEditor() {
-    const descriptionField = document.getElementById('updateDescription');
-    if (descriptionField) {
-        // Remove required attribute to prevent browser validation issues
-        descriptionField.removeAttribute('required');
-        
-        ClassicEditor
-            .create(descriptionField, {
-                toolbar: [
-                    'heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList',
-                    '|', 'insertTable', 'blockQuote', 'undo', 'redo'
-                ]
-            })
-            .then(editor => {
-                descriptionEditor = editor;
-                console.log('CKEditor initialized successfully');
-            })
-            .catch(error => {
-                console.error('CKEditor initialization error:', error);
-                // Fallback: if CKEditor fails, ensure the textarea is visible
-                descriptionField.style.display = 'block';
-            });
-    }
-}
-
-// Destroy CKEditor when modal closes
-function destroyCKEditor() {
-    if (descriptionEditor) {
-        descriptionEditor.destroy().then(() => {
-            descriptionEditor = null;
-            console.log('CKEditor destroyed successfully');
-        }).catch(error => {
-            console.error('Error destroying CKEditor:', error);
-        });
-    }
-}
-
-// Escape HTML
-function escapeHtml(text) {
-  const div = document.createElement('div');
-  div.textContent = text || '';
-  return div.innerHTML;
-}
-
-// Show Alert
-function showAlert(message, type = 'success') {
-  const alert = document.getElementById('alertMessage');
-  alert.textContent = message;
-  alert.className = `alert-message alert-${type}`;
-  alert.style.display = 'block';
-  setTimeout(() => alert.style.display = 'none', 5000);
-}
-
-// Tab functionality
-function initTabs() {
-  document.querySelectorAll('.tab-button').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.tab-button').forEach(b => b.classList.remove('active'));
-      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-      btn.classList.add('active');
-      document.getElementById(btn.dataset.tab).classList.add('active');
-    });
-  });
-}
-
-// Add Offer
-function addOffer(data = {}) {
-  offerCounter++;
-  const html = `
-    <div class="formset-item" id="offer-${offerCounter}">
-      <div class="formset-header">
-        <div class="formset-title">
-          <span class="formset-number">${offerCounter}</span>
-          Offer ${offerCounter}
-        </div>
-        <button type="button" class="btn-remove-formset" onclick="removeOffer(${offerCounter})">
-          <i class="mdi mdi-delete"></i> Remove
-        </button>
-      </div>
-      <input type="hidden" name="offers-${offerCounter}-id" value="${data.id || ''}">
-      <input type="hidden" name="offers-${offerCounter}-DELETE" value="">
-      <div class="form-group">
-        <label class="form-label">Title<span class="required">*</span></label>
-        <input type="text" class="form-control" name="offers-${offerCounter}-title" value="${escapeHtml(data.title || '')}" required>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Description<span class="required">*</span></label>
-        <textarea class="form-control" name="offers-${offerCounter}-description" rows="3" required>${escapeHtml(data.description || '')}</textarea>
-      </div>
-    </div>
-  `;
-  document.getElementById('offerFormset').insertAdjacentHTML('beforeend', html);
-}
-
-// Remove Offer
-function removeOffer(id) {
-  const item = document.getElementById(`offer-${id}`);
-  const deleteInput = item.querySelector('input[name$="-DELETE"]');
-  deleteInput.value = 'on';
-  item.classList.add('marked-for-deletion');
-  item.style.display = 'none';
-}
-
-// Add FAQ
-function addFaq(data = {}) {
-  const currentFaqs = document.querySelectorAll('#faqFormset .formset-item:not(.marked-for-deletion)').length;
-  if (currentFaqs >= 6) {
-    showAlert('Maximum 6 FAQs allowed', 'error');
-    return;
-  }
-  
-  faqCounter++;
-  const html = `
-    <div class="formset-item" id="faq-${faqCounter}">
-      <div class="formset-header">
-        <div class="formset-title">
-          <span class="formset-number">${faqCounter}</span>
-          FAQ ${faqCounter}
-        </div>
-        <button type="button" class="btn-remove-formset" onclick="removeFaq(${faqCounter})">
-          <i class="mdi mdi-delete"></i> Remove
-        </button>
-      </div>
-      <input type="hidden" name="faqs-${faqCounter}-id" value="${data.id || ''}">
-      <input type="hidden" name="faqs-${faqCounter}-DELETE" value="">
-      <div class="form-group">
-        <label class="form-label">Question<span class="required">*</span></label>
-        <input type="text" class="form-control" name="faqs-${faqCounter}-question" value="${escapeHtml(data.question || '')}" required>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Answer<span class="required">*</span></label>
-        <textarea class="form-control" name="faqs-${faqCounter}-answer" rows="4" required>${escapeHtml(data.answer || '')}</textarea>
-      </div>
-    </div>
-  `;
-  document.getElementById('faqFormset').insertAdjacentHTML('beforeend', html);
-  
-  const addBtn = document.getElementById('addFaqBtn');
-  if (currentFaqs + 1 >= 6) {
-    addBtn.style.display = 'none';
-  }
-}
-
-// Remove FAQ
-function removeFaq(id) {
-  const item = document.getElementById(`faq-${id}`);
-  const deleteInput = item.querySelector('input[name$="-DELETE"]');
-  deleteInput.value = 'on';
-  item.classList.add('marked-for-deletion');
-  item.style.display = 'none';
-  
-  const currentFaqs = document.querySelectorAll('#faqFormset .formset-item:not(.marked-for-deletion)').length;
-  const addBtn = document.getElementById('addFaqBtn');
-  if (currentFaqs < 6) {
-    addBtn.style.display = 'inline-flex';
-  }
-}
-
-// Load Steps (Always 4)
-function loadSteps(steps) {
-  const container = document.getElementById('stepFormset');
-  container.innerHTML = '';
-  
-  // Always create exactly 4 steps (numbered 1-4)
-  for (let i = 1; i <= 4; i++) {
-    const step = steps[i - 1] || {};
-    const html = `
-      <div class="formset-item">
-        <div class="formset-header">
-          <div class="formset-title">
-            <span class="formset-number">${i}</span>
-            Step ${i}
-          </div>
-        </div>
-        <input type="hidden" name="steps-${i}-id" value="${step.id || ''}">
-        <div class="form-group">
-          <label class="form-label">Step Title<span class="required">*</span></label>
-          <input type="text" class="form-control" name="steps-${i}-title" value="${escapeHtml(step.title || '')}" required>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Tagline<span class="required">*</span></label>
-          <input type="text" class="form-control" name="steps-${i}-tagline" value="${escapeHtml(step.tagline || '')}" required>
-        </div>
-      </div>
-    `;
-    container.insertAdjacentHTML('beforeend', html);
-  }
-}
-
-// Open Update Modal
-function openUpdateModal(serviceId) {
-  currentServiceId = serviceId;
-  
-  // Reset
-  offerCounter = 0;
-  faqCounter = 0;
-  document.getElementById('offerFormset').innerHTML = '';
-  document.getElementById('faqFormset').innerHTML = '';
-  document.getElementById('formErrors').style.display = 'none';
-  
-  // Load data
-  fetch(`/api/service/${serviceId}/`)
-    .then(res => res.json())
-    .then(data => {
-      // Basic fields
-      document.getElementById('updateName').value = data.name;
-      document.getElementById('updateDescription').value = data.description;
-
-      document.getElementById('updateMetaTitle').value = data.meta_title || '';
-      document.getElementById('updateMetaDescription').value = data.meta_description || '';
-
-// Update character counters
-      updateCharCount('updateMetaTitle', 'metaTitleCount', 70);
-      updateCharCount('updateMetaDescription', 'metaDescCount', 160);
-
-      // Character count helper
-function updateCharCount(inputId, counterId, max) {
-  const input = document.getElementById(inputId);
-  const counter = document.getElementById(counterId);
-  if (input && counter) {
-    const count = input.value.length;
-    counter.textContent = `${count}/${max}`;
-    counter.classList.remove('warning', 'error');
-    if (count > max) {
-      counter.classList.add('error');
-    } else if (count > max - 20) {
-      counter.classList.add('warning');
-    }
-  }
-}
-
-// Add event listeners for real-time counting
-document.addEventListener('DOMContentLoaded', function() {
-  const metaTitle = document.getElementById('updateMetaTitle');
-  const metaDesc = document.getElementById('updateMetaDescription');
-  
-  if (metaTitle) {
-    metaTitle.addEventListener('input', () => updateCharCount('updateMetaTitle', 'metaTitleCount', 70));
-  }
-  if (metaDesc) {
-    metaDesc.addEventListener('input', () => updateCharCount('updateMetaDescription', 'metaDescCount', 160));
-  }
-});
-      
-      // Image
-      const imageWrapper = document.getElementById('currentImageWrapper');
-      const imageEl = document.getElementById('currentImage');
-      if (data.image) {
-        imageEl.src = data.image;
-        imageWrapper.style.display = 'block';
-      } else {
-        imageWrapper.style.display = 'none';
-      }
-      
-      // Offers
-      data.offers.forEach(offer => addOffer(offer));
-      
-      // Steps (always 4)
-      loadSteps(data.steps);
-      
-      // FAQs
-      data.faqs.forEach(faq => addFaq(faq));
-      
-      // Update FAQ button visibility
-      const addBtn = document.getElementById('addFaqBtn');
-      if (data.faqs.length >= 6) {
-        addBtn.style.display = 'none';
-      } else {
-        addBtn.style.display = 'inline-flex';
-      }
-      
-      initTabs();
-      document.getElementById('updateModal').classList.add('show');
-      document.body.style.overflow = 'hidden';
-    })
-    .catch(err => {
-      console.error(err);
-      showAlert('Error loading service data', 'error');
-    });
-}
-
-// Close Update Modal
-function closeUpdateModal() {
-  document.getElementById('updateModal').classList.remove('show');
-  document.body.style.overflow = 'auto';
-  document.getElementById('imageInput').value = '';
-}
-
-// Submit Form
-document.getElementById('updateForm').addEventListener('submit', function(e) {
-  e.preventDefault();
-  
-  const formData = new FormData(this);
-  formData.set('offers-TOTAL_FORMS', offerCounter);
-  formData.set('steps-TOTAL_FORMS', '4');
-  formData.set('faqs-TOTAL_FORMS', faqCounter);
-  
-  fetch(`/edit/${currentServiceId}/`, {
-    method: 'POST',
-    body: formData,
-    headers: {'X-Requested-With': 'XMLHttpRequest'}
-  })
-  .then(res => res.json())
-  .then(data => {
-    if (data.success) {
-      showAlert(data.message, 'success');
-      closeUpdateModal();
-      location.reload(); // Reload to see changes
-    } else {
-      document.getElementById('formErrors').textContent = data.message;
-      document.getElementById('formErrors').style.display = 'block';
-    }
-  })
-  .catch(err => {
-    console.error(err);
-    showAlert('Error updating service', 'error');
-  });
-});
-
-// Delete Modal
-function openDeleteModal(id, name) {
-  document.getElementById('deleteForm').action = `/delete/${id}/`;
-  document.getElementById('deleteServiceName').textContent = name;
-  document.getElementById('deleteModal').classList.add('show');
-  document.body.style.overflow = 'hidden';
-}
-
-function closeDeleteModal() {
-  document.getElementById('deleteModal').classList.remove('show');
-  document.body.style.overflow = 'auto';
-}
-
-// Close modals on outside click
-window.addEventListener('click', (e) => {
-  if (e.target.classList.contains('modal')) {
-    e.target.classList.remove('show');
-    document.body.style.overflow = 'auto';
-  }
-});
-</script> {% endcomment %}
 
 <script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
 
@@ -2158,7 +1811,7 @@ function removeOffer(id) {
 // Add FAQ
 function addFaq(data = {}) {
     const currentFaqs = document.querySelectorAll('#faqFormset .formset-item:not(.marked-for-deletion)').length;
-    if (currentFaqs >= 6) {
+    if (currentFaqs >= 10) {
         showAlert('Maximum 6 FAQs allowed', 'error');
         return;
     }
@@ -2190,7 +1843,7 @@ function addFaq(data = {}) {
     document.getElementById('faqFormset').insertAdjacentHTML('beforeend', html);
     
     const addBtn = document.getElementById('addFaqBtn');
-    if (currentFaqs + 1 >= 6) {
+    if (currentFaqs + 1 >= 10) {
         addBtn.style.display = 'none';
     }
 }
@@ -2205,7 +1858,7 @@ function removeFaq(id) {
     
     const currentFaqs = document.querySelectorAll('#faqFormset .formset-item:not(.marked-for-deletion)').length;
     const addBtn = document.getElementById('addFaqBtn');
-    if (currentFaqs < 6) {
+    if (currentFaqs < 10) {
         addBtn.style.display = 'inline-flex';
     }
 }
