@@ -758,6 +758,7 @@
             <th>Phone</th>
             <th>Email</th>
             <th>Message</th>
+            <th>Date</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -792,6 +793,11 @@
             <td>
               <div class="contact-message">
                 {{ contact.message|default:"No message"|truncatewords:20 }}
+              </div>
+            </td>
+            <td>
+              <div class="contact-message">
+                {{ contact.created_at|date|default:"No Date" }}
               </div>
             </td>
             <td>

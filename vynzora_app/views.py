@@ -83,28 +83,28 @@ def delete_partner(request, pk):
 #     })
 
 
-def faq_page(request, service_slug):
-    # Get the specific service using slug
-    train_service = get_object_or_404(TrainService, slug=service_slug)
+# def faq_page(request, service_slug):
+#     # Get the specific service using slug
+#     train_service = get_object_or_404(TrainService, slug=service_slug)
 
-    services = Services.objects.all()
-    print('service from faq>>>>>>>>',services)
+#     services = Services.objects.all()
+#     print('service from faq>>>>>>>>',services)
 
     
-    # Get services for footer
-    footer_services = Services.objects.order_by("?")[:4]
+#     # Get services for footer
+#     footer_services = Services.objects.order_by("?")[:4]
     
-    train_services = TrainService.objects.all()
+#     train_services = TrainService.objects.all()
 
-    faqs = TrainFAQ.objects.filter(train_service=train_service)
+#     faqs = TrainFAQ.objects.filter(train_service=train_service)
 
-    return render(request, "home/faq.html", {
-        "train_services": train_services,
-        "faqs": faqs,
-        "services": services,
-        "footer_services": footer_services,
-        "train_service": train_service,
-    })
+#     return render(request, "home/faq.html", {
+#         "train_services": train_services,
+#         "faqs": faqs,
+#         "services": services,
+#         "footer_services": footer_services,
+#         "train_service": train_service,
+#     })
 
 
 
@@ -1986,6 +1986,12 @@ from .models import TrainService, TrainFAQ, Services, Client_Logo, Blog, ClientR
 
 def faq_page(request, service_slug):
     selected_service = get_object_or_404(TrainService, slug=service_slug)
+    
+    
+    services = Services.objects.all()
+
+    
+    footer_services = Services.objects.order_by("?")[:4]
 
     services = TrainService.objects.annotate(
         faq_count=Count('faqs')
@@ -1995,6 +2001,8 @@ def faq_page(request, service_slug):
 
     return render(request, "home/faq.html", {
         "train_service": selected_service,
+        "services":services,
+        "footer_services":footer_services,
         "faqs": faqs,
         "all_train_services": services,
     })

@@ -563,6 +563,18 @@
       <p>Manage your train services and their configurations</p>
     </div>
     <div class="header-right">
+      <div class="search-box">
+  <i class="mdi mdi-magnify"></i>
+  <input 
+    type="text" 
+    id="searchInput" 
+    placeholder="Search by service name or slug..." 
+    autocomplete="off"
+  >
+  <button type="button" class="clear-search" id="clearSearch">
+    <i class="mdi mdi-close"></i>
+  </button>
+</div>
       <a href="{% url 'add_train_service' %}" class="btn-add">
         <i class="mdi mdi-plus-circle"></i>
         Add New Service
@@ -570,6 +582,101 @@
     </div>
   </div>
 
+ <style>
+  .header-right {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+.search-box {
+  position: relative;
+  width: 300px;
+}
+
+.search-box input {
+  width: 100%;
+  padding: 12px 45px 12px 45px;
+  border: 2px solid #e9ecef;
+  border-radius: 10px;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  background: #f8f9fa;
+}
+
+.search-box input:focus {
+  outline: none;
+  border-color: #3498db;
+  background: #fff;
+  box-shadow: 0 0 0 4px rgba(52, 152, 219, 0.1);
+}
+
+.search-box i {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #6c757d;
+  font-size: 18px;
+}
+
+.clear-search {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #6c757d;
+  cursor: pointer;
+  font-size: 18px;
+  display: none;
+  transition: color 0.3s ease;
+}
+
+.clear-search:hover {
+  color: #e74c3c;
+}
+
+.clear-search.show {
+  display: block;
+}
+
+.highlight {
+  background: #fff3cd;
+  padding: 2px 4px;
+  border-radius: 3px;
+  font-weight: 600;
+}
+
+.no-results {
+  text-align: center;
+  padding: 60px 20px;
+  display: none;
+}
+
+.no-results i {
+  font-size: 48px;
+  color: #cbd5e0;
+  margin-bottom: 15px;
+}
+
+.no-results p {
+  font-size: 14px;
+  color: #6c757d;
+}
+
+@media (max-width: 768px) {
+  .header-right {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .search-box {
+    width: 100%;
+  }
+}
+ </style>
   <div class="list-card">
     <div class="list-header">
       <h3>
@@ -904,6 +1011,107 @@
       closeDeleteModal();
     }
   });
+</script>
+
+<script>
+  // Search functionality
+const searchInput = document.getElementById('searchInput');
+const clearSearch = document.getElementById('clearSearch');
+const serviceTableBody = document.querySelector('.service-table tbody');
+const tableResponsive = document.querySelector('.table-responsive');
+
+// Create and add no results element
+const noResultsDiv = document.createElement('div');
+noResultsDiv.className = 'no-results';
+noResultsDiv.id = 'noResults';
+noResultsDiv.innerHTML = `
+  <i class="mdi mdi-magnify"></i>
+  <p>No services found matching your search.</p>
+`;
+if (tableResponsive) {
+  tableResponsive.parentNode.insertBefore(noResultsDiv, tableResponsive.nextSibling);
+}
+
+// Highlight text function
+function highlightText(text, searchTerm) {
+  if (!searchTerm) return text;
+  const regex = new RegExp(`(${searchTerm})`, 'gi');
+  return text.replace(regex, '<span class="highlight">$1</span>');
+}
+
+// Remove highlighting
+function removeHighlighting() {
+  const highlightedElements = document.querySelectorAll('.highlight');
+  highlightedElements.forEach(el => {
+    const parent = el.parentNode;
+    parent.replaceChild(document.createTextNode(el.textContent), el);
+    parent.normalize();
+  });
+}
+
+// Search event listener
+if (searchInput && serviceTableBody) {
+  searchInput.addEventListener('input', function() {
+    const searchTerm = this.value.toLowerCase().trim();
+    
+    if (searchTerm) {
+      clearSearch.classList.add('show');
+    } else {
+      clearSearch.classList.remove('show');
+      removeHighlighting();
+    }
+
+    const rows = serviceTableBody.getElementsByTagName('tr');
+    let visibleCount = 0;
+
+    Array.from(rows).forEach(row => {
+      // Get service name and slug
+      const serviceNameEl = row.querySelector('.service-name');
+      const slugEl = row.querySelector('.slug-badge');
+      
+      if (serviceNameEl && slugEl) {
+        const serviceName = serviceNameEl.textContent.toLowerCase().trim();
+        const slug = slugEl.textContent.toLowerCase().trim();
+        
+        if (serviceName.includes(searchTerm) || slug.includes(searchTerm)) {
+          row.style.display = '';
+          visibleCount++;
+          
+          // Get original text without icon
+          const iconHTML = '<i class="mdi mdi-help-circle"></i>';
+          const originalName = serviceNameEl.textContent.trim();
+          const originalSlug = slugEl.textContent.trim();
+          
+          // Apply highlighting
+          serviceNameEl.innerHTML = iconHTML + ' ' + highlightText(originalName, searchTerm);
+          slugEl.innerHTML = highlightText(originalSlug, searchTerm);
+        } else {
+          row.style.display = 'none';
+        }
+      }
+    });
+
+    // Show/hide no results message
+    if (visibleCount === 0 && searchTerm) {
+      noResultsDiv.style.display = 'block';
+      if (tableResponsive) {
+        tableResponsive.style.display = 'none';
+      }
+    } else {
+      noResultsDiv.style.display = 'none';
+      if (tableResponsive) {
+        tableResponsive.style.display = 'block';
+      }
+    }
+  });
+
+  // Clear search button
+  clearSearch.addEventListener('click', function() {
+    searchInput.value = '';
+    searchInput.dispatchEvent(new Event('input'));
+    searchInput.focus();
+  });
+}
 </script>
 
 {% endblock %}
